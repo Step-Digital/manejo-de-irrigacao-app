@@ -3,7 +3,6 @@ export const defaultTheme = {
         positive: "#1ECB4F",
         negative: "#FF3441",
         ["neagtive-medium"]: "#BE3A43",
-        ["gray-7"]: "#00344A",
         ["neutral-1"]: "#0166FF",
         ["neutral-4"]: "#00344A",
         ["gray-5"]: "#737D86",
