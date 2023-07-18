@@ -6,6 +6,8 @@ import { Image } from "expo-image";
 import { Button } from "../../ui/components/button";
 import { Typography } from "../../ui/components/typography";
 
+import { strings } from "../../utils";
+
 export const HomeScreen: React.FC = () => {
   return (
     <S.StyledView>
@@ -51,12 +53,12 @@ export const HomeScreen: React.FC = () => {
         <S.StyledActions>
           <Button bg-color="positive">
             <Typography color="pure-white" size="large" weight="bold">
-              Crie uma conta gratuitamente
+              {strings.userNotLoggedIn.createAccount}
             </Typography>
           </Button>
           <Button bg-color="transparent">
             <Typography color="neutral-4" size="large" weight="bold">
-              Já possuo cadastro
+              {strings.userNotLoggedIn.haveRegistration}
             </Typography>
           </Button>
         </S.StyledActions>
