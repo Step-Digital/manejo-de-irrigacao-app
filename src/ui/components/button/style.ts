@@ -4,7 +4,7 @@ import { ButtonProps } from '.';
 export const StyledButton = styled.TouchableOpacity<ButtonProps>`
   ${(props) => css`
     background-color: ${props.theme.colors[props['bg-color']]};
-    height: 44px;
+    height: 50px;
     
     display: flex;
     align-items: center;

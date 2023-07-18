@@ -5,7 +5,7 @@ import { StyledButton } from "./style";
 
 export type ButtonProps = {
   ["bg-color"]: keyof typeof defaultTheme.colors;
-  color: keyof typeof defaultTheme.colors;
+  color?: keyof typeof defaultTheme.colors;
 } & TouchableOpacityProps;
 
 export const Button: React.FC<PropsWithChildren<ButtonProps>> = (props) => {
