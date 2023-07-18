@@ -10,6 +10,7 @@ export const defaultTheme = {
     ["gray-7"]: "#3B444F",
     ["gray-8"]: "#22272E",
     ["pure-white"]: "#FFFFFF",
+    transparent: "transparent"
   },
   font: {
     sizes: {
