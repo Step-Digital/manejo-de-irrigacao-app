@@ -18,8 +18,8 @@ export const GlobalRoutes: React.FC = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={MakeHome} />
-      <Stack.Screen name="Login" component={MakeLogin} />
+      <Stack.Screen name="Home" component={HomeLogged} />
+      <Stack.Screen name="Login" component={HomeLogged} />
       <Stack.Screen name="HomeLogged" component={HomeLogged} />
       <Stack.Screen name="Signup" component={MakeSignup} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
