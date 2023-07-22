@@ -6,6 +6,7 @@ import { Button } from "../../components/button";
 
 import * as S from './style'
 import { Text } from 'react-native';
+import { OnboardingModal } from '../../components/OnboardingModal';
 
 export const HomeLogged = () => {
   const [openButtonsMOdal, setOpenButtonsModal] = useState(false)
@@ -113,6 +114,7 @@ export const HomeLogged = () => {
           </S.AddPropertyButton>
         </S.ButtonModalContainer>
       )}
+      <OnboardingModal />
     </S.Container>
   )
 }

@@ -5,6 +5,7 @@ export const defaultTheme = {
     ["negative-medium"]: "#BE3A43",
     ["neutral-1"]: "#0166FF",
     ["neutral-4"]: "#00344A",
+    ["gray-2"]: "#E9EBEE",
     ["gray-4"]: "#3B454F",
     ["gray-5"]: "#737D86",
     ["gray-6"]: "#5A646E",
