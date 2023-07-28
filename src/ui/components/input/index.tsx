@@ -11,9 +11,9 @@ export type InputProps = {
 export const Input: React.FC<InputProps> = (props) => {
   return (
     <S.StyledWrapper behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Typography color="neutral-4" size="small" weight="bold">
+      <S.SyledLabel>
         {props.label}
-      </Typography>
+      </S.SyledLabel>
       <S.StyledInput
         {...props}
         keyboardAppearance="light"

@@ -2,17 +2,22 @@ import React, { useState } from 'react';
 import { Typography } from "../../components/typography";
 import { Header } from "../../components/Header";
 import { Image } from "expo-image";
-import { Button } from "../../components/button";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProps } from "../../routes/types/StackNavigationProps";
+import { strings } from "../../../utils";
 
 import * as S from './style'
-import { Text } from 'react-native';
+import { OnboardingModal } from '../../components/OnboardingModal';
 
 export const HomeLogged = () => {
-  const [openButtonsMOdal, setOpenButtonsModal] = useState(false)
+  const [openButtonsMOdal, setOpenButtonsModal] = useState(false);
+
+  const navigation = useNavigation<NavigationProps>();
+  
 
   return (
     <S.Container>
-      <Header />
+      <Header minHeader={false} />
       <S.Content>
         <Image
           source={require("../../../../assets/culture.png")}
@@ -34,7 +39,7 @@ export const HomeLogged = () => {
           size="normal"
           weight="regular"
         >
-          Você ainda não possui nenhuma cultura cadastrada.
+          {strings.homeLogged.noProperty}
         </Typography>
         <Typography
           style={{
@@ -48,7 +53,7 @@ export const HomeLogged = () => {
           size="normal"
           weight="regular"
         >
-          Para calcular a irrigação diária para sua produção agrícola, &nbsp; 
+          {strings.homeLogged.addPropertyText1} &nbsp; 
           <Typography
           style={{
             textAlign: "center",
@@ -59,8 +64,9 @@ export const HomeLogged = () => {
           color="positive"
           size="normal"
           weight="bold"
+          onPress={() => navigation.navigate('NewProperty')}
         >
-          cadastre sua propriedade
+          {strings.homeLogged.addPropertyText2}
         </Typography>
         </Typography>
       </S.Content>
@@ -89,11 +95,12 @@ export const HomeLogged = () => {
               size="normal" 
               weight="medium"
             >
-            Adicionar Cultura
+            {strings.homeLogged.addButton.addCulture}
             </Typography>
           </S.AddCultureButton>
           <S.AddPropertyButton
             bg-color="positive"
+            onPress={() => navigation.navigate('NewProperty')}
             >
             <Image
               source={require("../../../../assets/Regular.png")}
@@ -108,11 +115,12 @@ export const HomeLogged = () => {
               size="normal" 
               weight="medium"
             >
-              Nova Propriedade
+              {strings.homeLogged.addButton.addProperty}
             </Typography>
           </S.AddPropertyButton>
         </S.ButtonModalContainer>
       )}
+      <OnboardingModal />
     </S.Container>
   )
 }
