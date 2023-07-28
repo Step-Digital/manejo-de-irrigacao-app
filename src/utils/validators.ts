@@ -4,6 +4,12 @@ export const RULES = {
   GENERAL: {
     REQUIRED: 'Preencha todos os campos',
   },
+  EMAIL: {
+    VALID: 'Digite um email válido',
+  },
+  PASSWORD: {
+    VALID: 'A senha deve conter pelo menos 8 caracteres',
+  },
   CEP: {
     VALID: 'Digite um cep válido',
   },
@@ -53,6 +59,11 @@ export const RULES = {
     VALID: 'Digite uma eficiência do sistema válida',
   },
 };
+
+export const loginValidators = Yup.object().shape({
+  email: Yup.string().email(RULES.EMAIL.VALID).required(RULES.GENERAL.REQUIRED),
+  password: Yup.string().min(8, RULES.PASSWORD.VALID).required(RULES.GENERAL.REQUIRED),
+});
 
 export const propertyValidators = Yup.object().shape({
   nome: Yup.string().required(RULES.GENERAL.REQUIRED),
