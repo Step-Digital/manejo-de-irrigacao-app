@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AuthDomain } from "../../../core/domain/auth.domain";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { Button } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
@@ -12,6 +12,7 @@ import { SignupDTO } from "../../../core/dtos/auth";
 import { SignupModel } from "../../../core/models/auth";
 import { AxiosError } from "axios";
 import { FlashMessage } from "../../components/flash-message";
+import { signupValidators } from '../../../utils/validators';
 
 export type SignupProps = {
   auth: AuthDomain;
@@ -19,6 +20,9 @@ export type SignupProps = {
 
 export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
   const navigation = useNavigation<NavigationProps>();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState({ type: '', message: '' })
   const [data, setData] = useState<SignupDTO>({
     email: "user_test@manejodeirrigacao.agr.br",
     telefone1: "1",
@@ -36,12 +40,43 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
     cidade: "SLM",
   });
 
+  const validateValues = {
+    email,
+    password,
+  }
+
+  async function validate() {
+    try {
+      await signupValidators.validate(validateValues)
+      return true
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: err.errors
+      })
+      return false
+    }
+  } 
+  
   const onSignup = useMutation<SignupModel, AxiosError>({
     mutationFn: () => auth.signup(data),
     onSuccess: (data) => {
       console.log(data);
     },
   });
+
+  const onSumbit = async () => {
+    if(!(await validate()))
+    {
+      return Alert.alert(status.message[0])
+    } else {
+      return onSignup.mutate()
+    } 
+  }
+
+  useEffect(() => {
+    validate()
+  }, []);
 
   return (
     <ScrollView

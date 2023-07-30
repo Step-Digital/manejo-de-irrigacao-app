@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "../../components/input";
 import { Button } from "../../components/button";
 import { Typography } from "../../components/typography";
 import { Image } from "expo-image";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import Icon from "@expo/vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
@@ -16,6 +16,7 @@ import { FlashMessage } from "../../components/flash-message";
 import { useBottomSheet } from "../../components/bottomsheet/bottomsheet.contex";
 import { BottomSheet } from "../../components/bottomsheet";
 import { HeaderAuth } from "../../components/header-auth";
+import { loginValidators } from '../../../utils/validators';
 
 export type LoginProps = {
   auth: AuthDomain;
@@ -27,12 +28,33 @@ export const LoginScreen: React.FC<LoginProps> = ({ auth, cache }) => {
   const { toggleBottomNavigationView } = useBottomSheet();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [status, setStatus] = useState({ type: '', message: '' })
+
+  const validateValues = {
+    email,
+    password,
+  }
+
+  async function validate() {
+    try {
+      await loginValidators.validate(validateValues)
+      return true
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: err.errors
+      })
+      return false
+    }
+  } 
+
+  
   const onLogin = useMutation<LoginModel, AxiosError>({
     mutationFn: () =>
-      auth.login({
-        email,
-        password,
-      }),
+    auth.login({
+      email,
+      password,
+    }),
     onSuccess: async (data) => {
       await cache.set({
         key: "@token",
@@ -41,10 +63,23 @@ export const LoginScreen: React.FC<LoginProps> = ({ auth, cache }) => {
       navigation.navigate("HomeLogged");
     },
   });
-
+  
+  const onSumbit = async () => {
+      if(!(await validate()))
+      {
+        return Alert.alert(status.message[0])
+      } else {
+        return onLogin.mutate()
+      } 
+  }
   // const onForgotPassword = useMutation({
   //   mutationFn: () => {}
   // })
+
+  useEffect(() => {
+    validate()
+  }, [email, password]);
+
 
   return (
     <>
@@ -113,9 +148,9 @@ export const LoginScreen: React.FC<LoginProps> = ({ auth, cache }) => {
         </View>
         <Button
           bg-color="positive"
-          disabled={onLogin.isLoading || password === "" || email === ""}
+          // disabled={onLogin.isLoading || password === "" || email === ""}
           loading={onLogin.isLoading}
-          onPress={() => onLogin.mutate()}
+          onPress={() => onSumbit()}
         >
           <Typography color="pure-white" size="normal" weight="bold">
             Continuar
