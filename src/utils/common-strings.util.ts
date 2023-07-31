@@ -218,6 +218,68 @@ export default {
       text6: 'cadastrar uma cultura ',
       text7: 'e você terá acesso aos números de irrigação diários para cada cultura em sua propriedade! ',
     }
+  },
+  CultureInfo: {
+    title: 'Nova Cultura',
+    subTitle: 'Selecione a cultura',
+    button: 'Concluir',
+    cultureFinished: 'Cadastro concluído',
+    cultureRegistered: 'Cultura Cadastrada',
+    gobackButton: 'Voltar para o Início',
+    text1: 'Parabéns, você cadastrou uma cultura!',
+    text2: 'Volte para o Início e veja os seus números diários de irrigação.',
+    inputs: {
+      search: {
+        label: 'Pesquisar',
+        placeholder: 'Digite...'
+      },
+      culture: {
+        label: 'Cultura',
+        placeholder: ''
+      },
+      cultureName: {
+        label: 'Nome da Cultura',
+        placeholder: 'Ex: Caturra, da Terra...'
+      },
+      date: {
+        label: 'Data do Plantio',
+        placeholder: 'Ex: dd/mm/aaaa'
+      },
+      area: {
+        label: 'Área do Plantio',
+        placeholder: 'Ex: 1 ha'
+      },
+      sector: {
+        label: 'Setores',
+        placeholder: 'Ex: 0'
+      },
+      stage: {
+        label: 'Estágio da Colheita',
+        placeholder: 'Automático'
+      },
+      property: {
+        label: 'Propriedade',
+        placeholder: 'Selecione...'
+      },
+      groundType: {
+        label: 'Tipo de Solo',
+        placeholder: 'Selecione...'
+      },
+      bomb: {
+        label: 'Motobomba',
+        placeholder: 'Selecione...'
+      },
+      irrigationSystem: {
+        label: 'Sistema de Irrigação',
+        placeholder: 'Selecione...'
+      },
+    },
+  },
+  menu: {
+    recomendations: 'Recomendação Diária',
+    myProperties: 'Minhas Propriedades',
+    profile: 'Meu Perfil',
+    about: 'Sobre o Projeto',
+    close: 'Sair do Aplicativo'
   }
-
 };

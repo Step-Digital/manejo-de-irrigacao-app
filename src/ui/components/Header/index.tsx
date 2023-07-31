@@ -12,9 +12,10 @@ interface HeaderProps {
   minHeader: boolean;
   minTitle?: string;
   action?: () => void;
+  isFinalStep?: boolean;
 }
 
-export const Header = ({ minHeader, minTitle, action }: HeaderProps) => {
+export const Header = ({ minHeader, minTitle, action, isFinalStep }: HeaderProps) => {
   const navigation = useNavigation<NavigationProps>();
 
   return(
@@ -22,7 +23,7 @@ export const Header = ({ minHeader, minTitle, action }: HeaderProps) => {
       <S.HeaderContainer minHeader={minHeader}>
        {!minHeader ? (
         <>
-          <S.DropDownButton>
+          <S.DropDownButton onPress={() => navigation.navigate('Menu')}>
             <MaterialIcons name="menu" size={26} color="#fff" />
           </S.DropDownButton>
           <S.ProfileButton>
@@ -32,11 +33,15 @@ export const Header = ({ minHeader, minTitle, action }: HeaderProps) => {
         ) : (
           <>
             <S.BackButton onPress={action}>
-              <AntDesign name="arrowleft" size={24} color="#fff" />
+              {!isFinalStep && (
+                <AntDesign name="arrowleft" size={24} color="#fff" />
+              )}
             </S.BackButton>
             <S.MinTitle>{minTitle}</S.MinTitle>
             <S.CloseButton onPress={() => navigation.navigate('HomeLogged')}>
+            {!isFinalStep && (
               <AntDesign name="close" size={24} color="#fff" />
+            )}
             </S.CloseButton>
           </>
         )}

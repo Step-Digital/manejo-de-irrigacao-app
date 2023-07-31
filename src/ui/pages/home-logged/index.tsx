@@ -81,6 +81,7 @@ export const HomeLogged = () => {
         <S.ButtonModalContainer>
           <S.AddCultureButton
             bg-color="positive"
+            onPress={() => navigation.navigate('CultureInfo')}
             >
             <Image
             source={require("../../../../assets/Light.png")}

@@ -198,14 +198,14 @@ export const OnboardingModal = () => {
                 activeButton={progressActive === 1 ? false : true}
                 onPress={() => setProgessActive(progressActive - 1)}
               >
-                <MaterialIcons name="arrow-left" size={24} color={progressActive === 1 ? 'black' : 'white'} />
+                <MaterialIcons name="arrow-left" size={32} color={progressActive === 1 ? 'black' : 'white'} />
               </S.LeftButton>
               <S.RightButton 
                 activeButton={progressActive === 4 ? false : true}
                 disabled={progressActive === 4}
                 onPress={() => setProgessActive(progressActive + 1)}
               >
-                <MaterialIcons name="arrow-right" size={24} color={progressActive === 4 ? 'black' : 'white'} />
+                <MaterialIcons name="arrow-right" size={32} color={progressActive === 4 ? 'black' : 'white'} />
               </S.RightButton>
             </S.ButtonsContainer>
           </S.FooterContent>

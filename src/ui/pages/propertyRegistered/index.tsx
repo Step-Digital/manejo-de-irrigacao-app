@@ -1,7 +1,9 @@
 import React from "react";
 import { Image } from "expo-image";
+import { useNavigation } from "@react-navigation/native";
 
 import { strings } from "../../../utils";
+import { NavigationProps } from "../../routes/types/StackNavigationProps";
 
 import { Header } from "../../components/Header";
 import { Typography } from "../../components/typography";
@@ -10,9 +12,15 @@ import * as S from './style';
 import { Button } from "../../components/button";
 
 export const PropertyRegistered: React.FC = () => {
+  const navigation = useNavigation<NavigationProps>();
+
   return (
     <S.Container>
-      <Header minHeader minTitle={strings.propertyRegistered.title} />
+      <Header 
+        minHeader 
+        minTitle={strings.propertyRegistered.title} 
+        isFinalStep
+      />
       <S.Content>
       <Typography
         style={{
@@ -146,7 +154,9 @@ export const PropertyRegistered: React.FC = () => {
         </Typography>
       </Typography>
       </S.TextContainer>
-      <S.registerCultureButton>
+      <S.registerCultureButton
+        onPress={() => navigation.navigate('CultureInfo')}
+      >
       <Typography
         style={{
           fontFamily: 'Poppins-bold',
@@ -161,7 +171,11 @@ export const PropertyRegistered: React.FC = () => {
           {strings.propertyRegistered.regiterCulture}
         </Typography>
       </S.registerCultureButton>
-      <Button bg-color="neutral-4" style={{ marginTop: 8}} >
+      <Button 
+        onPress={() => navigation.navigate('HomeLogged')}
+        bg-color="neutral-4" 
+        style={{ marginTop: 8}} 
+      >
       <Typography
         style={{
           fontFamily: 'Poppins-bold',

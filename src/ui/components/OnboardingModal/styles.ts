@@ -79,19 +79,25 @@ export const ButtonsContainer = styled.View`
 export const LeftButton = styled.TouchableOpacity<ProgressButton>`
   ${({ activeButton, theme }) => css`
     background-color: ${activeButton ? theme.colors["positive"] : theme.colors["gray-2"]};
-    width: 24px;
-    height: 24px;
+    width: 34px;
+    height: 34px;
     border-radius: 50px;
-    margin-right: 8px;
+    margin-right: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   `}
 `;
 
 export const RightButton = styled.TouchableOpacity<ProgressButton>`
   ${({ activeButton, theme }) => css`
     background-color: ${activeButton ? theme.colors["positive"] : theme.colors["gray-2"]};
-    width: 24px;
-    height: 24px;
+    width: 34px;
+    height: 34px;
     border-radius: 50px;
+    justify-content: center;
+    align-items: center;
   `}
 `;
 

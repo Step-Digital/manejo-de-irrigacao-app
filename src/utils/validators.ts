@@ -121,5 +121,15 @@ export const systemValidators = Yup.object().shape({
   eficiencia_sistema: Yup.number().required(RULES.GENERAL.REQUIRED),
 });
 
-
-
+export const cultureValidators = Yup.object().shape({
+  nome_cultura: Yup.string().required(RULES.GENERAL.REQUIRED),
+  data_plantio: Yup.number().required(RULES.GENERAL.REQUIRED),
+  area_plantio: Yup.number().required(RULES.GENERAL.REQUIRED),
+  setores: Yup.number().required(RULES.GENERAL.REQUIRED),
+  estagio_colheita: Yup.string().required(RULES.GENERAL.REQUIRED),
+  id_dados_cultura: Yup.number().required(RULES.GENERAL.REQUIRED),
+  id_propriedade: Yup.number().required(RULES.GENERAL.REQUIRED),
+  id_sistema_irrigacao: Yup.string().required(RULES.GENERAL.REQUIRED),
+  id_motobomba: Yup.number().required(RULES.GENERAL.REQUIRED),
+  id_solo: Yup.number().required(RULES.GENERAL.REQUIRED),
+});

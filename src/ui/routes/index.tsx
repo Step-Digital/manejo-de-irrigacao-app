@@ -11,7 +11,10 @@ import { MakeNewProperty } from "../../core/main/factories/pages/newProperty/new
 import { MakeGroundInfo } from "../../core/main/factories/pages/GroundInfo/groundInfo.factory";
 import { MakeBombInfo } from "../../core/main/factories/pages/bombInfo/bombInfo.factory";
 import { MakeSystemInfo } from "../../core/main/factories/pages/systemInfo/systemInfo.factory";
-import { PropertyRegistered } from "../pages/propertyRegistered"
+import { PropertyRegistered } from "../pages/propertyRegistered";
+import { CultureInfo } from "../pages/CultureInfo";
+import { CultureRegistered } from "../pages/CultureRegistered";
+import { Menu } from "../pages/Menu";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,8 +26,9 @@ export const GlobalRoutes: React.FC = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={MakeHome} />
-      <Stack.Screen name="Login" component={MakeLogin} />
+      <Stack.Screen name="Home" component={HomeLogged} />
+      <Stack.Screen name="Login" component={HomeLogged} />
+      <Stack.Screen name="Menu" component={Menu} />
       <Stack.Screen name="HomeLogged" component={HomeLogged} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
@@ -33,6 +37,8 @@ export const GlobalRoutes: React.FC = () => {
       <Stack.Screen name="BombInfo" component={MakeBombInfo} />
       <Stack.Screen name="SystemInfo" component={MakeSystemInfo} />
       <Stack.Screen name="PropertyRegistered" component={PropertyRegistered} />
+      <Stack.Screen name="CultureInfo" component={CultureInfo} />
+      <Stack.Screen name="CultureRegistered" component={CultureRegistered} />
     </Stack.Navigator>
   );
 };
