@@ -18,13 +18,13 @@ const Stack = createNativeStackNavigator();
 export const GlobalRoutes: React.FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Login"
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={HomeLogged} />
-      <Stack.Screen name="Login" component={HomeLogged} />
+      <Stack.Screen name="Home" component={MakeHome} />
+      <Stack.Screen name="Login" component={MakeLogin} />
       <Stack.Screen name="HomeLogged" component={HomeLogged} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />

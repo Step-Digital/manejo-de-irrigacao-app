@@ -2,7 +2,7 @@ import { STATUS_CODE } from "../../../utils";
 import { UserUnauthorized, UnexpectedError } from "./errors";
 
 import { LoginDTO, RequestPasswordResetDTO, SignupDTO } from "../../dtos/auth";
-import { LoginModel, SignupModel } from "../../models/auth";
+import { GetTokenModel, LoginModel, SignupModel } from "../../models/auth";
 
 import { AuthDomain } from "../../domain/auth.domain";
 import { AuthRepository } from "../../repositories/auth/auth.repository";
@@ -10,6 +10,10 @@ import { RequestPasswordResetModel } from "../../models/auth/request-password-re
 
 export class AuthService implements AuthDomain {
   constructor(private readonly authRepository: AuthRepository) {}
+  async getToken (): Promise<GetTokenModel> {
+    return await this.authRepository.getToken();
+  }
+
   async login(params: LoginDTO): Promise<LoginModel> {
     try {
       return await this.authRepository.login(params);
@@ -25,11 +29,9 @@ export class AuthService implements AuthDomain {
       }
     }
   }
-  async requestPasswordReset(
-    params: RequestPasswordResetDTO
-  ): Promise<any> {
+  async requestPasswordReset(params: RequestPasswordResetDTO): Promise<any> {
     try {
-      return await this.authRepository.requestPasswordReset(params)
+      return await this.authRepository.requestPasswordReset(params);
     } catch (error) {
       return error;
     }
