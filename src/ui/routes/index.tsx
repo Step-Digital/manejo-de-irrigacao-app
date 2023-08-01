@@ -3,6 +3,7 @@ import React from "react";
 import { MakeHome } from "../../core/main/factories/pages/home/home.factory";
 import { LoginScreen } from "../pages/login";
 import { MakeLogin } from "../../core/main/factories/pages/login/login.factory";
+import { MakeHomeLogged } from "../../core/main/factories/pages/home-logged/home-logged.factory";
 import { HomeLogged } from "../pages/home-logged";
 import { SignupScreen } from "../pages/signup";
 import { ResetPasswordScreen } from "../pages/reset-password";
@@ -21,15 +22,14 @@ const Stack = createNativeStackNavigator();
 export const GlobalRoutes: React.FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Login"
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={HomeLogged} />
-      <Stack.Screen name="Login" component={HomeLogged} />
-      <Stack.Screen name="Menu" component={Menu} />
-      <Stack.Screen name="HomeLogged" component={HomeLogged} />
+      <Stack.Screen name="Home" component={MakeHome} />
+      <Stack.Screen name="Login" component={MakeLogin} />
+      <Stack.Screen name="HomeLogged" component={MakeHomeLogged} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
       <Stack.Screen name="NewProperty" component={MakeNewProperty} />

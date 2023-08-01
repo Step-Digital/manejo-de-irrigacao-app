@@ -1,19 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography } from "../../components/typography";
 import { Header } from "../../components/Header";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
 import { strings } from "../../../utils";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import * as S from './style'
 import { OnboardingModal } from '../../components/OnboardingModal';
+import { AuthDomain } from '../../../core/domain/auth.domain';
+import { CacheDomain } from '../../../core/domain/cache.domain';
+import { NewPropertyDomain } from '../../../core/domain/newProperty.domain';
 
-export const HomeLogged = () => {
+type HomeLoggedProps = {
+  auth: AuthDomain;
+  cache: CacheDomain;
+  propertyService: NewPropertyDomain;
+};
+
+export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
   const [openButtonsMOdal, setOpenButtonsModal] = useState(false);
 
+  const { data } = useQuery<AxiosError>({
+    queryKey: ["properties"], 
+    queryFn: () => propertyService.getProperties()
+  })
+
+  console.log('data teste', data)
+  // const getProperties = useQuery<AxiosError>({
+  //   queryFn: () => propertyService.getProperties(),
+  //   onSuccess: (data) => {
+  //     console.log(data);
+  //   },
+  // });
+
   const navigation = useNavigation<NavigationProps>();
-  
 
   return (
     <S.Container>

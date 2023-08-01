@@ -22,15 +22,17 @@ import { Button } from "../../components/button";
 import { Select } from "../../components/SelectInput";
 
 import * as S from './style'
+import { AuthDomain } from "../../../core/domain/auth.domain";
 
 type NewPropertyProps = {
-  auth: NewPropertyDomain;
+  auth: AuthDomain;
   cache: CacheDomain;
+  propertyService: NewPropertyDomain;
 };
 
 const inputStrings = strings.newProperty.inputs;
 
-export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ auth }) => {
+export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ propertyService }) => {
   const [showForm, setShowForm] = useState(false);
   const [nome, setNome] = useState('')
   const [latitude, setLatitude] = useState('')
@@ -106,7 +108,7 @@ export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ auth }) => {
   }
 
   const createProperty = useMutation<AxiosError>({
-    mutationFn: () => auth.newProperty(sumbitValues),
+    mutationFn: () => propertyService.newProperty(sumbitValues),
     onSuccess: (data) => {
       console.log(data);
     },

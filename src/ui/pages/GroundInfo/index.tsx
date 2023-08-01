@@ -22,15 +22,17 @@ import { Button } from "../../components/button";
 import { Select } from "../../components/SelectInput";
 
 import * as S from './style'
+import { AuthDomain } from "../../../core/domain/auth.domain";
 
 type GroundInfoProps = {
-  auth: NewPropertyDomain;
+  auth: AuthDomain;
   cache: CacheDomain;
+  propertyService: NewPropertyDomain;
 };
 
 const inputStrings = strings.groundInfo.inputs;
 
-export const GroundInfo:React.FC<GroundInfoProps> = ({ auth }) => {
+export const GroundInfo:React.FC<GroundInfoProps> = ({ propertyService }) => {
   const navigation = useNavigation<NavigationProps>();
   const [grounds, setGrounds] = useState([]);
   const [tipo_solo, setTipo_solo] = useState('');
@@ -81,7 +83,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ auth }) => {
   } 
 
   const createGround = useMutation<AxiosError>({
-    mutationFn: () => auth.newGround(sumbitValues),
+    mutationFn: () => propertyService.newGround(sumbitValues),
     onSuccess: (data) => {
       console.log(data);
     },

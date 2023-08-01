@@ -20,15 +20,17 @@ import { Header } from "../../components/Header";
 import { Button } from "../../components/button";
 
 import * as S from './style';
+import { AuthDomain } from "../../../core/domain/auth.domain";
 
 type BombInfoProps = {
-  auth: NewPropertyDomain;
+  auth: AuthDomain;
   cache: CacheDomain;
+  propertyService: NewPropertyDomain;
 };
 
 const inputStrings = strings.bombInfo.inputs;
 
-export const BombInfo:React.FC<BombInfoProps> = ({ auth }) => {
+export const BombInfo:React.FC<BombInfoProps> = ({ propertyService }) => {
   const navigation = useNavigation<NavigationProps>();
   const [bombs, setBombs] = useState([]);
   const [fabricante, setFabricante] = useState('');
@@ -113,7 +115,7 @@ export const BombInfo:React.FC<BombInfoProps> = ({ auth }) => {
   }
 
   const createBomb = useMutation<AxiosError>({
-    mutationFn: () => auth.newBomb(sumbitValues),
+    mutationFn: () => propertyService.newBomb(sumbitValues),
     onSuccess: (data) => {
       console.log(data);
     },

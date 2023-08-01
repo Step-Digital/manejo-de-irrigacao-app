@@ -23,15 +23,17 @@ import { Button } from "../../components/button";
 import { Select } from "../../components/SelectInput";
 
 import * as S from './style';
+import { AuthDomain } from "../../../core/domain/auth.domain";
 
 type SystemInfoProps = {
-  auth: NewPropertyDomain;
+  auth: AuthDomain;
   cache: CacheDomain;
+  propertyService: NewPropertyDomain;
 };
 
 const inputStrings = strings.SystemInfo.inputs;
 
-export const SystemInfo:React.FC<SystemInfoProps> = ({ auth }) => {
+export const SystemInfo:React.FC<SystemInfoProps> = ({ propertyService }) => {
   const navigation = useNavigation<NavigationProps>();
   const [systems, setSystems] = useState([]);
   const [tipo_irrigacao, setTipo_irrigacao] = useState('');
@@ -107,7 +109,7 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ auth }) => {
   }
 
   const createSystem = useMutation<AxiosError>({
-    mutationFn: () => auth.newIrrigationSystem(sumbitValues),
+    mutationFn: () => propertyService.newIrrigationSystem(sumbitValues),
     onSuccess: (data) => {
       console.log(data);
     },

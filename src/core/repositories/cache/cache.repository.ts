@@ -7,7 +7,7 @@ export class CacheRepository implements CacheDomain {
     private readonly cacheClient: AsyncStorageStatic
   ) {}
 
-  async get (params: GetDTO): Promise<any> {
+  async get<T = any>(params: GetDTO): Promise<T> {
     const response = await this.cacheClient.getItem(params.key);
     return JSON.parse(response);
   }
