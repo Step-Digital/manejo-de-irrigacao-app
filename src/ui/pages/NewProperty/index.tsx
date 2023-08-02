@@ -85,7 +85,7 @@ export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ propertyService }
     numero,
     cep,
     area_propriedade: Number(area_propriedade),
-    precipitacao: 0
+    precipitacao: 70
   }
   
   async function validate() {

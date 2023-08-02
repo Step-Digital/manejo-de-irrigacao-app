@@ -25,21 +25,8 @@ export class NewPropertyRepository implements NewPropertyDomain {
 
   async getProperties(token: string): Promise<any> {
     const {
-      data: { data },
-    } = await this.httpClient.get<any>("/propriedade", {
-      headers: {
-        ["Authorization"]: `Bearer ${token}`
-      }
-    });
-    return {
       data,
-    };
-  }
-
-  async newGround(params: NewGroundDTO, token: string): Promise<any> {
-    const {
-      data: { data },
-    } = await this.httpClient.post<any>("/solo", params, {
+    } = await this.httpClient.get<any>("/propriedade", {
       headers: {
         ["Authorization"]: `Bearer ${token}`
       }

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Alert, ScrollView, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Formik } from 'formik';
 
 import { CacheDomain } from "../../../core/domain/cache.domain";
+import { GroundDomain } from "../../../core/domain/ground.domain";
 import { NewPropertyDomain } from "../../../core/domain/newProperty.domain";
 import { strings } from "../../../utils";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
@@ -27,12 +28,13 @@ import { AuthDomain } from "../../../core/domain/auth.domain";
 type GroundInfoProps = {
   auth: AuthDomain;
   cache: CacheDomain;
+  groundService: GroundDomain;
   propertyService: NewPropertyDomain;
 };
 
 const inputStrings = strings.groundInfo.inputs;
 
-export const GroundInfo:React.FC<GroundInfoProps> = ({ propertyService }) => {
+export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertyService }) => {
   const navigation = useNavigation<NavigationProps>();
   const [grounds, setGrounds] = useState([]);
   const [tipo_solo, setTipo_solo] = useState('');
@@ -41,11 +43,16 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ propertyService }) => {
   const [densidade, setDensidade] = useState('');
   const [status, setStatus] = useState({ type: '', message: '' })
 
-  const removeGround = (id) => {
-    const newArrGrounds = grounds.filter(ground => ground.id !== id)
+  const { data, isLoading } = useQuery({
+    queryKey: ["properties"], 
+    queryFn: () => propertyService.getProperties()
+  })
 
-    return setGrounds(newArrGrounds);
-  }
+  const { data: dataGround, isLoading: isLoadingGrounds } = useQuery({
+    queryKey: ["grounds"], 
+    queryFn: () => groundService.getGrounds()
+  })
+
 
   const initialValues = {
     tipo_solo: '',
@@ -66,7 +73,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ propertyService }) => {
     capacidade_campo: Number(capacidade_campo),
     ponto_murcha: Number(ponto_murcha),
     densidade: Number(densidade),
-    id_propriedade: 1,
+    id_propriedade: data.data[data.data.length - 1].id_propriedade,
   }
 
   async function validate() {
@@ -83,43 +90,43 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ propertyService }) => {
   } 
 
   const createGround = useMutation<AxiosError>({
-    mutationFn: () => propertyService.newGround(sumbitValues),
+    mutationFn: () => groundService.newGround(sumbitValues),
     onSuccess: (data) => {
       console.log(data);
     },
   });
 
-  const onSubmit = async (action) => {
-    if(!(await validate()))  return Alert.alert(status.message[0])
+  const removeGround = useMutation<AxiosError>({
+    // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
+    mutationFn: () => groundService.deleteGround(5),
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
 
-    return action
+  const onSubmit = async () => {
+    if(!(await validate()))  {
+      return Alert.alert(status.message[0])
+    } else {
+      return createGround.mutate()
+    }
   }
 
   useEffect(() => {
     validate()
   }, [])
 
-  // const onSubmit = (values, errors, isValid, dirty) => {
-  //   console.log(values)
-  //   console.log('errors', errors)
-  //   console.log('isValid', isValid)
-    
-  //   if (errors.capacidade_campo || values.capacidade_campo === 0) return Alert.alert(RULES.CAPACIDADE_CAMPO.VALID)
-  //   if (errors.ponto_murcha || values.ponto_murcha === 0) return Alert.alert(RULES.PONTO_MURCHA.VALID)
-  //   if (errors.densidade || values.densidade === 0) return Alert.alert(RULES.DENSIDADE.VALID)
-  //   if (isValid === false || !dirty) return Alert.alert('Preencha todos os campos!')
+ 
 
-  //   setGrounds([
-  //     ...grounds,
-  //     {
-  //       id: Math.random(),
-  //       groundType: values.tipo_solo,
-  //       capacity: values.capacidade_campo,
-  //       point: values.ponto_murcha,
-  //       density: values.densidade
-  //     }]
-  //   )
-  // }
+  if (!isLoading) {
+    console.log('properties', JSON.stringify(data.data, null, 2))
+  }
+
+  if (!isLoadingGrounds) {
+    console.log('grounds', JSON.stringify(dataGround.data, null, 2))
+  }
+
+  if (isLoading && isLoadingGrounds) return <Text>Carregando...</Text>
 
   return (
     <S.Container>
@@ -188,7 +195,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ propertyService }) => {
               inputMode="numeric"
             />
 
-            <S.AddButton  onPress={() => onSubmit(createGround.mutate())}>
+            <S.AddButton  onPress={() => onSubmit()}>
                 <Ionicons name="add" size={24} color="#fff" />
                 <Typography
                   style={{
@@ -205,15 +212,15 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ propertyService }) => {
                 </Typography>
             </S.AddButton>
 
-            {grounds && grounds.map(item => (
-              <S.CardContainer key={item.id}>
+            {dataGround && dataGround.data.map(item => (
+              <S.CardContainer key={item.id_solo}>
                 <S.CardContent>
-                  <S.InfoTitle>{item.groundType}</S.InfoTitle>
-                  <S.InfoText>Capacidade de Campo: <S.InfoTextBold>{item.capacity}%</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Ponto de Murcha: <S.InfoTextBold>{item.point}%</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Densidade: <S.InfoTextBold>{item.density}g/m²</S.InfoTextBold></S.InfoText>
+                  <S.InfoTitle>{item.tipo_solo}</S.InfoTitle>
+                  <S.InfoText>Capacidade de Campo: <S.InfoTextBold>{item.capacidade_campo}%</S.InfoTextBold></S.InfoText>
+                  <S.InfoText>Ponto de Murcha: <S.InfoTextBold>{item.ponto_murcha}%</S.InfoTextBold></S.InfoText>
+                  <S.InfoText>Densidade: <S.InfoTextBold>{item.densidade}g/m²</S.InfoTextBold></S.InfoText>
                 </S.CardContent>
-                <TouchableOpacity onPress={() => removeGround(item.id)}>
+                <TouchableOpacity onPress={() => removeGround.mutate()}>
                   <Ionicons name="trash-outline" size={24} color="red" />
                 </TouchableOpacity>
               </S.CardContainer>
@@ -221,7 +228,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ propertyService }) => {
 
             <Button 
               onPress={() =>{ navigation.navigate('BombInfo')}}
-              disabled={!grounds} 
+              disabled={!dataGround} 
               bg-color="positive" 
               style={{ 
                 display: 'flex', 

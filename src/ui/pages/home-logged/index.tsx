@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Text } from 'react-native'
 import { Typography } from "../../components/typography";
 import { Header } from "../../components/Header";
 import { Image } from "expo-image";
@@ -23,12 +24,13 @@ type HomeLoggedProps = {
 export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
   const [openButtonsMOdal, setOpenButtonsModal] = useState(false);
 
-  const { data } = useQuery<AxiosError>({
+  const { data, isLoading } = useQuery({
     queryKey: ["properties"], 
     queryFn: () => propertyService.getProperties()
   })
 
-  console.log('data teste', data)
+  // console.log('data', JSON.stringify(data.data, null, 2))
+
   // const getProperties = useQuery<AxiosError>({
   //   queryFn: () => propertyService.getProperties(),
   //   onSuccess: (data) => {
@@ -37,6 +39,8 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
   // });
 
   const navigation = useNavigation<NavigationProps>();
+
+  if (isLoading) return <Text>Carregando...</Text>
 
   return (
     <S.Container>
@@ -64,34 +68,36 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
         >
           {strings.homeLogged.noProperty}
         </Typography>
-        <Typography
-          style={{
-            // width: 338,
-            textAlign: "center",
-            marginTop: 16,
-            fontFamily: 'Poppins-regular',
-            padding: 16
-          }}
-          color="gray-4"
-          size="normal"
-          weight="regular"
-        >
-          {strings.homeLogged.addPropertyText1} &nbsp; 
+        {data.data.length === 0 && (
           <Typography
-          style={{
-            textAlign: "center",
-            width: 328,
-            marginTop: 32,
-            textDecorationLine: "underline",
-          }}
-          color="positive"
-          size="normal"
-          weight="bold"
-          onPress={() => navigation.navigate('NewProperty')}
-        >
-          {strings.homeLogged.addPropertyText2}
-        </Typography>
-        </Typography>
+            style={{
+              // width: 338,
+              textAlign: "center",
+              marginTop: 16,
+              fontFamily: 'Poppins-regular',
+              padding: 16
+            }}
+            color="gray-4"
+            size="normal"
+            weight="regular"
+          >
+            {strings.homeLogged.addPropertyText1} &nbsp; 
+            <Typography
+            style={{
+              textAlign: "center",
+              width: 328,
+              marginTop: 32,
+              textDecorationLine: "underline",
+            }}
+            color="positive"
+            size="normal"
+            weight="bold"
+            onPress={() => navigation.navigate('NewProperty')}
+          >
+            {strings.homeLogged.addPropertyText2}
+          </Typography>
+          </Typography>
+         )}
       </S.Content>
       <S.ButtonContainer>
         <S.OpenModalButton onPress={() => setOpenButtonsModal(!openButtonsMOdal)}>

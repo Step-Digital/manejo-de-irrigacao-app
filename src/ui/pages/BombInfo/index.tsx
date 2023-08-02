@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Alert, ScrollView, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
 import { Formik } from 'formik';
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 import { CacheDomain } from "../../../core/domain/cache.domain";
 import { NewPropertyDomain } from "../../../core/domain/newProperty.domain";
+import { BombDomain } from "../../../core/domain/bomb.domain";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
 import { strings } from "../../../utils";
 import { bombValidators } from '../../../utils/validators'
@@ -25,12 +26,13 @@ import { AuthDomain } from "../../../core/domain/auth.domain";
 type BombInfoProps = {
   auth: AuthDomain;
   cache: CacheDomain;
+  bombService: BombDomain;
   propertyService: NewPropertyDomain;
 };
 
 const inputStrings = strings.bombInfo.inputs;
 
-export const BombInfo:React.FC<BombInfoProps> = ({ propertyService }) => {
+export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService }) => {
   const navigation = useNavigation<NavigationProps>();
   const [bombs, setBombs] = useState([]);
   const [fabricante, setFabricante] = useState('');
@@ -41,30 +43,16 @@ export const BombInfo:React.FC<BombInfoProps> = ({ propertyService }) => {
   const [valor_kw, setValor_kw] = useState('');
   const [status, setStatus] = useState({ type: '', message: '' })
 
-  // const onSubmit = (values, errors, isValid, dirty) => {
-  //   console.log(values)
-  //   console.log('errors', errors)
-  //   console.log('isValid', isValid)
-    
-  //   if (errors.potencia || values.potencia === 0) return Alert.alert(RULES.POTENCIA.VALID)
-  //   if (errors.vazao_maxima || values.vazao_maxima === 0) return Alert.alert(RULES.VAZAO_MAXIMA.VALID)
-  //   if (errors.consumo || values.consumo === 0) return Alert.alert(RULES.CONSUMO.VALID)
-  //   if (errors.valor_kw || values.valor_kw === 0) return Alert.alert(RULES.VALOR_KW.VALID)
-  //   if (isValid === false || !dirty) return Alert.alert('Preencha todos os campos!')
+  const { data, isLoading } = useQuery({
+    queryKey: ["properties"], 
+    queryFn: () => propertyService.getProperties()
+  })
 
-  //   setBombs([
-  //     ...bombs,
-  //     {
-  //       id: Math.random(),
-  //       manufacturer: values.fabricante,
-  //       model: values.modelo,
-  //       power: values.potencia,
-  //       flowRate: values.vazao_maxima,
-  //       consumption: values.consumo,
-  //       value: values.valor_kw
-  //     }]
-  //   )
-  // }
+  const { data: dataBomb, isLoading: isLoadingBombs } = useQuery({
+    queryKey: ["bombs"], 
+    queryFn: () => bombService.getBombs()
+  })
+
 
   const initialValues = {
     fabricante: '',
@@ -92,7 +80,7 @@ export const BombInfo:React.FC<BombInfoProps> = ({ propertyService }) => {
     consumo: Number(consumo),
     valor_kw: Number(valor_kw),
     ativada: true,
-    id_propriedade: 1
+    id_propriedade: data.data[data.data.length - 1].id_propriedade,
   }
   
   async function validate() {
@@ -108,29 +96,44 @@ export const BombInfo:React.FC<BombInfoProps> = ({ propertyService }) => {
     }
   } 
 
-  const onSumbit = async (action) => {
-    if(!(await validate()))  return Alert.alert(status.message[0])
-
-    return action
-  }
-
   const createBomb = useMutation<AxiosError>({
-    mutationFn: () => propertyService.newBomb(sumbitValues),
+    mutationFn: () => bombService.newBomb(sumbitValues),
     onSuccess: (data) => {
       console.log(data);
     },
   });
 
-
-  const removeGround = (id) => {
-    const newArrGrounds = bombs.filter(ground => ground.id !== id)
-
-    return setBombs(newArrGrounds);
+  const onSumbit = async () => {
+    if(!(await validate()))  {
+      return Alert.alert(status.message[0])
+   } else {
+    return createBomb.mutate()
+   }
   }
+
+  const removeBomb = useMutation<AxiosError>({
+    // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
+    mutationFn: () => bombService.deleteBomb(3),
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
 
   useEffect(() => {
     validate()
   }, [])
+
+  console.log('isLoad', isLoading)
+
+  if (!isLoading) {
+    console.log('properties', JSON.stringify(data.data[data.data.length - 1].id_propriedade, null, 2))
+  }
+
+  if (!isLoadingBombs) {
+    console.log('bombs', JSON.stringify(dataBomb.data, null, 2))
+  }
+
+  if (isLoading && isLoadingBombs) return <Text>Carregando...</Text>
 
   return (
     <S.Container>
@@ -209,7 +212,7 @@ export const BombInfo:React.FC<BombInfoProps> = ({ propertyService }) => {
                 inputMode="numeric"
               />
 
-              <S.AddButton onPress={() => onSumbit(createBomb.mutate())}>
+              <S.AddButton onPress={() => onSumbit()}>
                   <Ionicons name="add" size={24} color="#fff" />
                   <Typography
                     style={{
@@ -224,17 +227,17 @@ export const BombInfo:React.FC<BombInfoProps> = ({ propertyService }) => {
                   </Typography>
               </S.AddButton>
   
-              {bombs && bombs.map(item => (
-                <S.CardContainer key={item.id}>
+              {dataBomb && dataBomb.data.map(item => (
+                <S.CardContainer key={item.id_motobomba}>
                   <S.CardContent>
-                    <S.InfoTitle>{item.model}</S.InfoTitle>
-                    <S.InfoText>Fabricante: <S.InfoTextBold>{item.manufacturer}</S.InfoTextBold></S.InfoText>
-                    <S.InfoText>Potência: <S.InfoTextBold>{item.power}w</S.InfoTextBold></S.InfoText>
-                    <S.InfoText>Vazão Máxima: <S.InfoTextBold>{item.flowRate}m³/ha</S.InfoTextBold></S.InfoText>
-                    <S.InfoText>Consumo: <S.InfoTextBold>{item.consumption}kw/h</S.InfoTextBold></S.InfoText>
-                    <S.InfoText>Valor do Kw: <S.InfoTextBold>R${item.value}</S.InfoTextBold></S.InfoText>
+                    <S.InfoTitle>{item.modelo}</S.InfoTitle>
+                    <S.InfoText>Fabricante: <S.InfoTextBold>{item.fabricante}</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Potência: <S.InfoTextBold>{item.potencia}w</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Vazão Máxima: <S.InfoTextBold>{item.vazao_maxima}m³/ha</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Consumo: <S.InfoTextBold>{item.consumo}kw/h</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Valor do Kw: <S.InfoTextBold>R${item.valor_kw}</S.InfoTextBold></S.InfoText>
                   </S.CardContent>
-                  <TouchableOpacity onPress={() => removeGround(item.id)}>
+                  <TouchableOpacity onPress={() => removeBomb.mutate()}>
                     <Ionicons name="trash-outline" size={24} color="red" />
                   </TouchableOpacity>
                 </S.CardContainer>

@@ -110,15 +110,15 @@ export const bombValidators = Yup.object().shape({
 
 export const systemValidators = Yup.object().shape({
   nome: Yup.string().required(RULES.GENERAL.REQUIRED),
-  eficiencia_irrigacao: Yup.number().required(RULES.GENERAL.REQUIRED),
-  area_total_plantio: Yup.number().required(RULES.GENERAL.REQUIRED),
-  quantidade_setores: Yup.number().required(RULES.GENERAL.REQUIRED),
+  eficiencia_irrigacao: Yup.string().required(RULES.GENERAL.REQUIRED),
+  area_total_plantio: Yup.string().required(RULES.GENERAL.REQUIRED),
+  quantidade_setores: Yup.string().required(RULES.GENERAL.REQUIRED),
   tipo_irrigacao: Yup.string().required(RULES.GENERAL.REQUIRED),
-  area_irrigada: Yup.number().required(RULES.GENERAL.REQUIRED),
-  espacamento_linha: Yup.number().required(RULES.GENERAL.REQUIRED),
+  area_irrigada: Yup.string().required(RULES.GENERAL.REQUIRED),
+  espacamento_linha: Yup.string().required(RULES.GENERAL.REQUIRED),
   nome_setor: Yup.string().required(RULES.GENERAL.REQUIRED),
-  coeficiente_uniformidade: Yup.number().required(RULES.GENERAL.REQUIRED),
-  eficiencia_sistema: Yup.number().required(RULES.GENERAL.REQUIRED),
+  coeficiente_uniformidade: Yup.string().required(RULES.GENERAL.REQUIRED),
+  eficiencia_sistema: Yup.string().required(RULES.GENERAL.REQUIRED),
 });
 
 export const cultureValidators = Yup.object().shape({

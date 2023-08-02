@@ -18,8 +18,6 @@ export class AuthRepository implements AuthDomain {
       accessToken: string,
     }>({ key: "@token" });
 
-    console.log(`CHEGUEIII PRA FICAR PAPAI ${JSON.stringify(token, null, 2)}`)
-
     if(token !== undefined) {
       return {
         token: token.accessToken

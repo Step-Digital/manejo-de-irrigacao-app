@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Alert, ScrollView, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
 import { Formik } from 'formik';
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 
@@ -24,16 +24,18 @@ import { Select } from "../../components/SelectInput";
 
 import * as S from './style';
 import { AuthDomain } from "../../../core/domain/auth.domain";
+import { IrrigationSystemDomain } from "../../../core/domain/irrigationSystem.domain";
 
 type SystemInfoProps = {
   auth: AuthDomain;
   cache: CacheDomain;
   propertyService: NewPropertyDomain;
+  irrigationSystemService: IrrigationSystemDomain;
 };
 
 const inputStrings = strings.SystemInfo.inputs;
 
-export const SystemInfo:React.FC<SystemInfoProps> = ({ propertyService }) => {
+export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, propertyService }) => {
   const navigation = useNavigation<NavigationProps>();
   const [systems, setSystems] = useState([]);
   const [tipo_irrigacao, setTipo_irrigacao] = useState('');
@@ -52,13 +54,18 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ propertyService }) => {
   const [espacamento_emissor, setEspacamento_emissor] = useState('');
   const [percentual_area_molhada, setpercentual_area_molhada] = useState('');
   const [percentual_area_sombreada, setPercentual_area_sombreada] = useState('');
-  const [irrigationType, setIrrigationType] = useState('');
+  const [status, setStatus] = useState({ type: '', message: '' })
 
-  const removeGround = (id) => {
-    const newArrSystems = systems.filter(ground => ground.id !== id)
+  const { data, isLoading } = useQuery({
+    queryKey: ["properties"], 
+    queryFn: () => propertyService.getProperties()
+  })
 
-    return setSystems(newArrSystems);
-  }
+  const { data: dataSystems, isLoading: isLoadingSystems } = useQuery({
+    queryKey: ["irrigationSystems"], 
+    queryFn: () => irrigationSystemService.getSystems()
+  })
+
 
   const initialValues = {
     nome: '',
@@ -83,6 +90,19 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ propertyService }) => {
     velocidade_ultima_torre: 0,
   }
 
+  const validateValues = {
+    nome,
+    eficiencia_irrigacao,
+    area_total_plantio,
+    quantidade_setores,
+    tipo_irrigacao,
+    nome_setor,
+    area_irrigada,
+    espacamento_linha,
+    coeficiente_uniformidade,
+    eficiencia_sistema,
+  }
+
   const sumbitValues = {
     nome,
     eficiencia_irrigacao: Number(eficiencia_irrigacao),
@@ -105,15 +125,58 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ propertyService }) => {
     comprimento_vao_balanco: 0,
     velocidade_ultima_torre: 0,
     ativo: true,
-    id_propriedade: 0,
+    id_propriedade: data.data[data.data.length - 1].id_propriedade,
   }
 
   const createSystem = useMutation<AxiosError>({
-    mutationFn: () => propertyService.newIrrigationSystem(sumbitValues),
+    mutationFn: () => irrigationSystemService.newIrrigationSystem(sumbitValues),
     onSuccess: (data) => {
       console.log(data);
     },
   });
+
+  async function validate() {
+    try {
+      await systemValidators.validate(validateValues)
+      return true
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: err.errors
+      })
+      return false
+    }
+  } 
+
+  const removeSystem = useMutation<AxiosError>({
+    // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
+    mutationFn: () => irrigationSystemService.deleteSystem(2),
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+
+  const onSumbit = async () => {
+    if(!(await validate()))  {
+      return Alert.alert(status.message[0])
+   } else {
+    return createSystem.mutate()
+   }
+  }
+
+  if (!isLoading) {
+    console.log('properties', JSON.stringify(data.data[data.data.length - 1].id_propriedade, null, 2))
+  }
+
+  if (!isLoadingSystems) {
+    console.log('systems', JSON.stringify(dataSystems.data, null, 2))
+  }
+
+  if (isLoading && isLoadingSystems) return <Text>Carregando...</Text>
+
+  useEffect(() => {
+    validate()
+  }, [])
 
   return (
     <S.Container>
@@ -298,7 +361,7 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ propertyService }) => {
               </>
             )}
 
-            <S.AddButton onPress={() => createSystem.mutate()}>
+            <S.AddButton onPress={() => onSumbit()}>
                 <Ionicons name="add" size={24} color="#fff" />
                 <Typography
                   style={{
@@ -313,27 +376,56 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ propertyService }) => {
                 </Typography>
             </S.AddButton>
 
-            {systems && systems.map(item => (
-              <S.CardContainer key={item.id}>
-                <S.CardContent>
-                  <S.InfoTitle>{item.nome}</S.InfoTitle>
-                  <S.InfoText>Eficiência de Irrigação: <S.InfoTextBold>{item.eficiencia_irrigacao}%</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Área total do Plantio: <S.InfoTextBold>{item.area_total_plantio}m²</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Quantidade de Setores: <S.InfoTextBold>{item.quantidade_setores}</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Tipo de Irrigação: <S.InfoTextBold>{item.tipo_irrigacao}</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Nome do Setor: <S.InfoTextBold>{item.nome_setor}</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Área irrigada: <S.InfoTextBold>{item.area_irrigada}m²</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Vazão do Aspersor: <S.InfoTextBold>{item.vazao_aspressor}L/H</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>spaçamento entre Aspersores: <S.InfoTextBold>{item.espacamento_aspressor}m</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Espaçamento entre linhas: <S.InfoTextBold>{item.espacamento_linha}m</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Coeficiente de Uniformidade CUC: <S.InfoTextBold>{item.coeficiente_uniformidade}%</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Eficiência do Sistema: <S.InfoTextBold>{item.eficiencia_sistema}%</S.InfoTextBold></S.InfoText>
-                </S.CardContent>
-                <TouchableOpacity onPress={() => removeGround(item.id)}>
-                  <Ionicons name="trash-outline" size={24} color="red" />
-                </TouchableOpacity>
-              </S.CardContainer>
-            ))}
+            {dataSystems && dataSystems.data.map(item => {
+              if (item.tipo_irrigacao === 'Aspersão Convencional') {
+                return (
+                  <S.CardContainer key={item.id_sistema_irrigacao}>
+                    <S.CardContent>
+                      <S.InfoTitle>{item.nome}</S.InfoTitle>
+                      <S.InfoText>Eficiência de Irrigação: <S.InfoTextBold>{item.eficiencia_irrigacao}%</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Área total do Plantio: <S.InfoTextBold>{item.area_total_plantio}m²</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Quantidade de Setores: <S.InfoTextBold>{item.quantidade_setores}</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Tipo de Irrigação: <S.InfoTextBold>{item.tipo_irrigacao}</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Nome do Setor: <S.InfoTextBold>{item.nome_setor}</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Área irrigada: <S.InfoTextBold>{item.area_irrigada}m²</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Vazão do Aspersor: <S.InfoTextBold>{item.vazao_aspressor}L/H</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Espaçamento entre Aspersores: <S.InfoTextBold>{item.espacamento_aspressor}m</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Espaçamento entre linhas: <S.InfoTextBold>{item.espacamento_linha}m</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Coeficiente de Uniformidade CUC: <S.InfoTextBold>{item.coeficiente_uniformidade}%</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Eficiência do Sistema: <S.InfoTextBold>{item.eficiencia_sistema}%</S.InfoTextBold></S.InfoText>
+                    </S.CardContent>
+                    <TouchableOpacity onPress={() => removeSystem.mutate()}>
+                      <Ionicons name="trash-outline" size={24} color="red" />
+                    </TouchableOpacity>
+                  </S.CardContainer>
+                )
+              }
+              if (item.tipo_irrigacao === 'Microaspersão ou Gotejamento') {
+                return (
+                  <S.CardContainer key={item.id_sistema_irrigacao}>
+                    <S.CardContent>
+                      <S.InfoTitle>{item.nome}</S.InfoTitle>
+                      <S.InfoText>Eficiência de Irrigação: <S.InfoTextBold>{item.eficiencia_irrigacao}%</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Área total do Plantio: <S.InfoTextBold>{item.area_total_plantio}m²</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Quantidade de Setores: <S.InfoTextBold>{item.quantidade_setores}</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Tipo de Irrigação: <S.InfoTextBold>{item.tipo_irrigacao}</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Nome do Setor: <S.InfoTextBold>{item.nome_setor}</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Área irrigada: <S.InfoTextBold>{item.area_irrigada}m²</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Vazão do Emissor: <S.InfoTextBold>{item.vazao_emissor}L/H</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Espaçamento entre Emissores: <S.InfoTextBold>{item.espacamento_emissor}m</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Espaçamento entre linhas: <S.InfoTextBold>{item.espacamento_linha}m</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Coeficiente de Uniformidade CUC: <S.InfoTextBold>{item.coeficiente_uniformidade}%</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Eficiência do Sistema: <S.InfoTextBold>{item.eficiencia_sistema}%</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Percentual de aŕea molhada: <S.InfoTextBold>{item.percentual_area_molhada}%</S.InfoTextBold></S.InfoText>
+                      <S.InfoText>Percentual de aŕea sombreada: <S.InfoTextBold>{item.percentual_area_sombreada}%</S.InfoTextBold></S.InfoText>
+                    </S.CardContent>
+                    <TouchableOpacity onPress={() => removeSystem.mutate()}>
+                      <Ionicons name="trash-outline" size={24} color="red" />
+                    </TouchableOpacity>
+                  </S.CardContainer>
+                )
+              }
+            })}
 
             <Button 
               onPress={() => navigation.navigate('PropertyRegistered')}

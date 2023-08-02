@@ -3,7 +3,6 @@ import { UserUnauthorized, UnexpectedError } from "../auth/errors";
 
 import {
   NewPropertyDTO,
-  NewGroundDTO,
   NewBombDTO,
   SystemInfoDTO,
 } from "../../dtos/newProperty";
@@ -27,7 +26,7 @@ export class NewPropertyService implements NewPropertyDomain {
     }
   }
 
-  async getProperties (): Promise<any> {
+  async getProperties(): Promise<any> {
     try {
       console.log("ENTREI PAPAI")
       const { token } = await this.authRepository.getToken();
@@ -35,40 +34,6 @@ export class NewPropertyService implements NewPropertyDomain {
     } catch (error) {
       console.log("CHORAAA")
       console.log(error)
-    }
-  }
-
-  async newGround(params: NewGroundDTO): Promise<any> {
-    try {
-      const { token } = await this.authRepository.getToken();
-      return await this.newPropertyRepository.newGround(params, token);
-    } catch (error) {
-      const {
-        response: { status },
-      } = error;
-      switch (status) {
-        case STATUS_CODE.UNAUTHORIZED:
-          throw new UserUnauthorized();
-        default:
-          throw new UnexpectedError();
-      }
-    }
-  }
-
-  async newBomb(params: NewBombDTO): Promise<any> {
-    try {
-      const { token } = await this.authRepository.getToken();
-      return await this.newPropertyRepository.newBomb(params, token);
-    } catch (error) {
-      const {
-        response: { status },
-      } = error;
-      switch (status) {
-        case STATUS_CODE.UNAUTHORIZED:
-          throw new UserUnauthorized();
-        default:
-          throw new UnexpectedError();
-      }
     }
   }
 
