@@ -61,7 +61,7 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
     queryFn: () => propertyService.getProperties()
   })
 
-  const { data: dataSystems, isLoading: isLoadingSystems } = useQuery({
+  const { data: dataSystems, isLoading: isLoadingSystems, refetch } = useQuery({
     queryKey: ["irrigationSystems"], 
     queryFn: () => irrigationSystemService.getSystems()
   })
@@ -131,7 +131,7 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
   const createSystem = useMutation<AxiosError>({
     mutationFn: () => irrigationSystemService.newIrrigationSystem(sumbitValues),
     onSuccess: (data) => {
-      console.log(data);
+      refetch()
     },
   });
 
@@ -150,9 +150,9 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
 
   const removeSystem = useMutation<AxiosError>({
     // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
-    mutationFn: () => irrigationSystemService.deleteSystem(2),
+    mutationFn: () => irrigationSystemService.deleteSystem(3),
     onSuccess: (data) => {
-      console.log(data);
+      refetch()
     },
   });
 

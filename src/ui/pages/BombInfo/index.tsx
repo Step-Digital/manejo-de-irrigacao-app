@@ -48,7 +48,7 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
     queryFn: () => propertyService.getProperties()
   })
 
-  const { data: dataBomb, isLoading: isLoadingBombs } = useQuery({
+  const { data: dataBomb, isLoading: isLoadingBombs, refetch } = useQuery({
     queryKey: ["bombs"], 
     queryFn: () => bombService.getBombs()
   })
@@ -98,8 +98,8 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
 
   const createBomb = useMutation<AxiosError>({
     mutationFn: () => bombService.newBomb(sumbitValues),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
+      refetch()
     },
   });
 
@@ -113,25 +113,15 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
 
   const removeBomb = useMutation<AxiosError>({
     // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
-    mutationFn: () => bombService.deleteBomb(3),
+    mutationFn: () => bombService.deleteBomb(5),
     onSuccess: (data) => {
-      console.log(data);
+      refetch()
     },
   });
 
   useEffect(() => {
     validate()
   }, [])
-
-  console.log('isLoad', isLoading)
-
-  if (!isLoading) {
-    console.log('properties', JSON.stringify(data.data[data.data.length - 1].id_propriedade, null, 2))
-  }
-
-  if (!isLoadingBombs) {
-    console.log('bombs', JSON.stringify(dataBomb.data, null, 2))
-  }
 
   if (isLoading && isLoadingBombs) return <Text>Carregando...</Text>
 

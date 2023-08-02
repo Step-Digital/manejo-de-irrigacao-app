@@ -129,211 +129,193 @@ export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ propertyService }
         <ProgressBar active={false} width="80px" />
       </S.ProgressBarContainer>
       <S.Content>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={() => {}}
-          validationSchema={propertyValidators}
-        >
-          {({ 
-            values,
-            errors,
-            handleChange,
-            isValid,
-            dirty
-         }) => (
-          <View>
+          <Typography
+            style={{
+              marginTop: 24,
+              fontFamily: 'Poppins-bold',
+              fontSize: 22,
+            }}
+            color="positive"
+            size="normal"
+            weight="regular"
+          >
+            {strings.newProperty.title}
+          </Typography>
+          <Input 
+            label={inputStrings.name.label} 
+            placeholder={inputStrings.name.placeholder}  
+            value={nome}
+            onChangeText={(value) => setNome(value)}
+          />
+          <Typography
+            style={{
+              fontFamily: 'Poppins-bold',
+              fontSize: 14,
+              marginTop: 12,
+              marginBottom: 10,
+            }}
+            color="neutral-4"
+            size="normal"
+            weight="regular"
+          >
+            {strings.newProperty.insertButton.label}
+          </Typography>
+          {!showForm && (<S.ButtonsContainer>
+          <S.InsertButton onPress={() => setShowForm(true)}>
             <Typography
               style={{
-                marginTop: 24,
-                fontFamily: 'Poppins-bold',
-                fontSize: 22,
-              }}
-              color="positive"
-              size="normal"
-              weight="regular"
-            >
-              {strings.newProperty.title}
-            </Typography>
-            <Input 
-              label={inputStrings.name.label} 
-              placeholder={inputStrings.name.placeholder}  
-              value={nome}
-              onChangeText={(value) => setNome(value)}
-            />
-            <Typography
-              style={{
-                fontFamily: 'Poppins-bold',
+                fontFamily: 'Poppins-regular',
                 fontSize: 14,
-                marginTop: 12,
-                marginBottom: 10,
+                width: 88,
+                textAlign: 'center',
+                lineHeight: 15
               }}
               color="neutral-4"
               size="normal"
-              weight="regular"
-            >
-              {strings.newProperty.insertButton.label}
+              weight="bold"
+              >
+              {strings.newProperty.insertButton.text}
             </Typography>
-            {!showForm && (<S.ButtonsContainer>
-            <S.InsertButton onPress={() => setShowForm(true)}>
+          </S.InsertButton>
+          <S.GPSBUtton>
+            <EvilIcons name="location" size={24} color="#00344A" />
+            <Typography
+              style={{
+                fontFamily: 'Poppins-regular',
+                fontSize: 14,
+                width: 88,
+                textAlign: 'center',
+                lineHeight: 15
+              }}
+              color="neutral-4"
+              size="normal"
+              weight="bold"
+              >
+              {strings.newProperty.gpsButton.text}
+            </Typography>
+          </S.GPSBUtton>
+          </S.ButtonsContainer>)}
+          {showForm && (
+            <S.GPSButtonFull onPress={() => onSumbit(createProperty.mutate())}>
+              <EvilIcons name="location" size={24} color="#fff" />
               <Typography
                 style={{
                   fontFamily: 'Poppins-regular',
                   fontSize: 14,
-                  width: 88,
                   textAlign: 'center',
-                  lineHeight: 15
+                  lineHeight: 15,
+                  marginLeft: 16,
                 }}
-                color="neutral-4"
-                size="normal"
-                weight="bold"
-                >
-                {strings.newProperty.insertButton.text}
-              </Typography>
-            </S.InsertButton>
-            <S.GPSBUtton>
-              <EvilIcons name="location" size={24} color="#00344A" />
-              <Typography
-                style={{
-                  fontFamily: 'Poppins-regular',
-                  fontSize: 14,
-                  width: 88,
-                  textAlign: 'center',
-                  lineHeight: 15
-                }}
-                color="neutral-4"
+                color="pure-white"
                 size="normal"
                 weight="bold"
                 >
                 {strings.newProperty.gpsButton.text}
               </Typography>
-            </S.GPSBUtton>
-            </S.ButtonsContainer>)}
-            {showForm && (
-              <S.GPSButtonFull onPress={() => onSumbit(createProperty.mutate())}>
-                <EvilIcons name="location" size={24} color="#fff" />
-                <Typography
-                  style={{
-                    fontFamily: 'Poppins-regular',
-                    fontSize: 14,
-                    textAlign: 'center',
-                    lineHeight: 15,
-                    marginLeft: 16,
-                  }}
-                  color="pure-white"
-                  size="normal"
-                  weight="bold"
-                  >
-                  {strings.newProperty.gpsButton.text}
-                </Typography>
-              </S.GPSButtonFull>
-            )}
-            {showForm && (
-            <View style={{ flex: 1}}>
-              <Input 
-                label={inputStrings.latidude.label} 
-                placeholder={inputStrings.latidude.placeholder} 
-                style={{ fontFamily: 'Poppins-regular' }} 
-                value={latitude}
-                onChangeText={(value) => setLatitude(value)}
-                inputMode="numeric"
-                />
-                 <Input 
-                label={inputStrings.longitude.label} 
-                placeholder={inputStrings.longitude.placeholder} 
-                value={longitude}
-                onChangeText={(value) => setLongitude(value)}
-                inputMode="numeric" 
-                />
-              <Input 
-                label={inputStrings.street.label} 
-                placeholder={inputStrings.street.placeholder} 
-                value={logradouro}
-                onChangeText={(value) => setLogradouro(value)}
-              />
-              <S.InputsContainer>
-                <Input 
-                  label={inputStrings.number.label} 
-                  placeholder={inputStrings.number.placeholder} 
-                  value={numero}
-                  onChangeText={(value) => setNumero(value)}
-                  inputMode="numeric"
-                  style={{ width: 180 }} 
-                /> 
-                <Input 
-                  label={inputStrings.complement.label} 
-                  placeholder={inputStrings.complement.placeholder} 
-                  value={complemento}
-                  onChangeText={(value) => setComplemento(value)}
-                  style={{ width: 180 }} 
-                />
-              </S.InputsContainer>
-              <Input 
-                label={inputStrings.city.label} 
-                placeholder={inputStrings.city.placeholder} 
-                value={cidade}
-                onChangeText={(value) => setCidade(value)}
-              />
-              <S.InputsContainer>
-                <Select
-                  label="Estado"
-                  touchableText="Selecione..."
-                  width="180px"
-                  data={states}
-                  objKey="id" 
-                  objValue="name" 
-                  title="Estado"
-                  setValue={setEstado}
-                />
-                <Input 
-                  label={inputStrings.cep.label} 
-                  placeholder={inputStrings.cep.placeholder} 
-                  style={{ width: 180 }} 
-                  value={cep}
-                  onChangeText={(value) => setCep(value)}
-                  maxLength={8}
-                />
-              </S.InputsContainer>
-            </View>
-            )}
-
-            <Input 
-              label={inputStrings.area.label} 
-              placeholder={inputStrings.area.placeholder} 
-              value={area_propriedade}
-              onChangeText={(value) => setArea_propriedade(value)}
-              inputMode="numeric"
-            />
-
-            <Button 
-            bg-color="positive" 
-            style={{ 
-              display: 'flex', 
-              flexDirection: 'row', 
-              justifyContent: 'flex-end',
-              paddingRight: 24, 
-              marginTop: 24, 
-              marginBottom: 24 }}
-            onPress={() => {navigation.navigate('GroundInfo')}}
-            >
-            <Typography
-              style={{
-                fontFamily: 'Poppins-regular',
-                fontSize: 18,
-                width: 180,
-              }}
-              color="pure-white"
-              size="normal"
-              weight="bold"
-              >
-            Continuar
-            </Typography>
-            <AntDesign name="arrowright" size={24} color="#fff" />
-            </Button>
-          </View>
-
+            </S.GPSButtonFull>
           )}
-        </Formik>
+          {showForm && (
+          <View style={{ flex: 1}}>
+            <Input 
+              label={inputStrings.latidude.label} 
+              placeholder={inputStrings.latidude.placeholder} 
+              style={{ fontFamily: 'Poppins-regular' }} 
+              value={latitude}
+              onChangeText={(value) => setLatitude(value)}
+              inputMode="numeric"
+              />
+            <Input 
+              label={inputStrings.longitude.label} 
+              placeholder={inputStrings.longitude.placeholder} 
+              value={longitude}
+              onChangeText={(value) => setLongitude(value)}
+              inputMode="numeric" 
+              />
+            <Input 
+              label={inputStrings.street.label} 
+              placeholder={inputStrings.street.placeholder} 
+              value={logradouro}
+              onChangeText={(value) => setLogradouro(value)}
+            />
+            <S.InputsContainer>
+              <Input 
+                label={inputStrings.number.label} 
+                placeholder={inputStrings.number.placeholder} 
+                value={numero}
+                onChangeText={(value) => setNumero(value)}
+                inputMode="numeric"
+                style={{ width: 180 }} 
+              /> 
+              <Input 
+                label={inputStrings.complement.label} 
+                placeholder={inputStrings.complement.placeholder} 
+                value={complemento}
+                onChangeText={(value) => setComplemento(value)}
+                style={{ width: 180 }} 
+              />
+            </S.InputsContainer>
+            <Input 
+              label={inputStrings.city.label} 
+              placeholder={inputStrings.city.placeholder} 
+              value={cidade}
+              onChangeText={(value) => setCidade(value)}
+            />
+            <S.InputsContainer>
+              <Select
+                label="Estado"
+                touchableText="Selecione..."
+                width="180px"
+                data={states}
+                objKey="id" 
+                objValue="name" 
+                title="Estado"
+                setValue={setEstado}
+              />
+              <Input 
+                label={inputStrings.cep.label} 
+                placeholder={inputStrings.cep.placeholder} 
+                style={{ width: 180 }} 
+                value={cep}
+                onChangeText={(value) => setCep(value)}
+                maxLength={8}
+              />
+            </S.InputsContainer>
+          </View>
+          )}
 
+          <Input 
+            label={inputStrings.area.label} 
+            placeholder={inputStrings.area.placeholder} 
+            value={area_propriedade}
+            onChangeText={(value) => setArea_propriedade(value)}
+            inputMode="numeric"
+          />
+
+          <Button 
+          bg-color="positive" 
+          style={{ 
+            display: 'flex', 
+            flexDirection: 'row', 
+            justifyContent: 'flex-end',
+            paddingRight: 24, 
+            marginTop: 24, 
+            marginBottom: 24 }}
+          onPress={() => {navigation.navigate('GroundInfo')}}
+          >
+          <Typography
+            style={{
+              fontFamily: 'Poppins-regular',
+              fontSize: 18,
+              width: 180,
+            }}
+            color="pure-white"
+            size="normal"
+            weight="bold"
+            >
+          Continuar
+          </Typography>
+          <AntDesign name="arrowright" size={24} color="#fff" />
+          </Button>
       </S.Content>
       </ScrollView>
     </S.Container>

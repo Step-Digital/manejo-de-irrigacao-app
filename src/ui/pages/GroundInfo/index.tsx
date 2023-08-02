@@ -5,7 +5,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Formik } from 'formik';
 
 import { CacheDomain } from "../../../core/domain/cache.domain";
 import { GroundDomain } from "../../../core/domain/ground.domain";
@@ -36,7 +35,6 @@ const inputStrings = strings.groundInfo.inputs;
 
 export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertyService }) => {
   const navigation = useNavigation<NavigationProps>();
-  const [grounds, setGrounds] = useState([]);
   const [tipo_solo, setTipo_solo] = useState('');
   const [capacidade_campo, setCapacidade_campo] = useState('');
   const [ponto_murcha, setPonto_murcha] = useState('');
@@ -48,18 +46,10 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
     queryFn: () => propertyService.getProperties()
   })
 
-  const { data: dataGround, isLoading: isLoadingGrounds } = useQuery({
+  const { data: dataGround, isLoading: isLoadingGrounds, refetch } = useQuery({
     queryKey: ["grounds"], 
     queryFn: () => groundService.getGrounds()
   })
-
-
-  const initialValues = {
-    tipo_solo: '',
-    capacidade_campo: 0,
-    ponto_murcha: 0,
-    densidade: 0,
-  }
 
   const validateValues = {
     tipo_solo,
@@ -91,16 +81,16 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
 
   const createGround = useMutation<AxiosError>({
     mutationFn: () => groundService.newGround(sumbitValues),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
+      refetch()
     },
   });
 
   const removeGround = useMutation<AxiosError>({
     // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
-    mutationFn: () => groundService.deleteGround(5),
+    mutationFn: () => groundService.deleteGround(6),
     onSuccess: (data) => {
-      console.log(data);
+      refetch()
     },
   });
 
@@ -116,16 +106,6 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
     validate()
   }, [])
 
- 
-
-  if (!isLoading) {
-    console.log('properties', JSON.stringify(data.data, null, 2))
-  }
-
-  if (!isLoadingGrounds) {
-    console.log('grounds', JSON.stringify(dataGround.data, null, 2))
-  }
-
   if (isLoading && isLoadingGrounds) return <Text>Carregando...</Text>
 
   return (
@@ -139,122 +119,106 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
         <ProgressBar active={false} width="80px" />
       </S.ProgressBarContainer>
       <S.Content>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={() => {}}
-          validationSchema={groundValidators}
+        <Typography
+          style={{
+            marginTop: 24,
+            fontFamily: 'Poppins-bold',
+            fontSize: 22,
+          }}
+          color="positive"
+          size="normal"
+          weight="regular"
         >
-          {({ 
-            values,
-            errors,
-            handleChange,
-            isValid,
-            dirty,
-          }) => (
-          <View>
+          {strings.groundInfo.title}
+        </Typography>
+        <Select 
+          touchableText="Selecione..." 
+          title="State" 
+          objKey="id" 
+          objValue="name" 
+          data={groundTypes} 
+          label="Tipo de Solo"
+          setValue={(value) => setTipo_solo(value)}
+        />
+        <Input 
+          label={inputStrings.capacity.label} 
+          placeholder={inputStrings.capacity.placeholder}  
+          value={capacidade_campo}
+          onChangeText={(value) => setCapacidade_campo(value)}
+          inputMode="numeric"
+        />
+        <Input 
+          label={inputStrings.point.label} 
+          placeholder={inputStrings.point.placeholder}   
+          value={ponto_murcha}
+          onChangeText={(value) => setPonto_murcha(value)}
+          inputMode="numeric"
+        />
+        <Input 
+          label={inputStrings.density.label} 
+          placeholder={inputStrings.density.placeholder}   
+          value={densidade}
+          onChangeText={(value) => setDensidade(value)}
+          inputMode="numeric"
+        />
+
+        <S.AddButton  onPress={() => onSubmit()}>
+            <Ionicons name="add" size={24} color="#fff" />
             <Typography
               style={{
-                marginTop: 24,
                 fontFamily: 'Poppins-bold',
-                fontSize: 22,
+                fontSize: 12,
+                marginLeft: 8,
+                width: 100
               }}
-              color="positive"
+              color="pure-white"
               size="normal"
               weight="regular"
-            >
-              {strings.groundInfo.title}
+              >
+              {strings.groundInfo.addButtonn}
             </Typography>
-            <Select 
-              touchableText="Selecione..." 
-              title="State" 
-              objKey="id" 
-              objValue="name" 
-              data={groundTypes} 
-              label="Tipo de Solo"
-              setValue={(value) => setTipo_solo(value)}
-            />
-            <Input 
-              label={inputStrings.capacity.label} 
-              placeholder={inputStrings.capacity.placeholder}  
-              value={capacidade_campo}
-              onChangeText={(value) => setCapacidade_campo(value)}
-              inputMode="numeric"
-            />
-            <Input 
-              label={inputStrings.point.label} 
-              placeholder={inputStrings.point.placeholder}   
-              value={ponto_murcha}
-              onChangeText={(value) => setPonto_murcha(value)}
-              inputMode="numeric"
-            />
-            <Input 
-              label={inputStrings.density.label} 
-              placeholder={inputStrings.density.placeholder}   
-              value={densidade}
-              onChangeText={(value) => setDensidade(value)}
-              inputMode="numeric"
-            />
+        </S.AddButton>
 
-            <S.AddButton  onPress={() => onSubmit()}>
-                <Ionicons name="add" size={24} color="#fff" />
-                <Typography
-                  style={{
-                    fontFamily: 'Poppins-bold',
-                    fontSize: 12,
-                    marginLeft: 8,
-                    width: 100
-                  }}
-                  color="pure-white"
-                  size="normal"
-                  weight="regular"
-                  >
-                  {strings.groundInfo.addButtonn}
-                </Typography>
-            </S.AddButton>
+        {dataGround && dataGround.data.map(item => (
+          <S.CardContainer key={item.id_solo}>
+            <S.CardContent>
+              <S.InfoTitle>{item.tipo_solo}</S.InfoTitle>
+              <S.InfoText>Capacidade de Campo: <S.InfoTextBold>{item.capacidade_campo}%</S.InfoTextBold></S.InfoText>
+              <S.InfoText>Ponto de Murcha: <S.InfoTextBold>{item.ponto_murcha}%</S.InfoTextBold></S.InfoText>
+              <S.InfoText>Densidade: <S.InfoTextBold>{item.densidade}g/m²</S.InfoTextBold></S.InfoText>
+            </S.CardContent>
+            <TouchableOpacity onPress={() => removeGround.mutate()}>
+              <Ionicons name="trash-outline" size={24} color="red" />
+            </TouchableOpacity>
+          </S.CardContainer>
+        ))}
 
-            {dataGround && dataGround.data.map(item => (
-              <S.CardContainer key={item.id_solo}>
-                <S.CardContent>
-                  <S.InfoTitle>{item.tipo_solo}</S.InfoTitle>
-                  <S.InfoText>Capacidade de Campo: <S.InfoTextBold>{item.capacidade_campo}%</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Ponto de Murcha: <S.InfoTextBold>{item.ponto_murcha}%</S.InfoTextBold></S.InfoText>
-                  <S.InfoText>Densidade: <S.InfoTextBold>{item.densidade}g/m²</S.InfoTextBold></S.InfoText>
-                </S.CardContent>
-                <TouchableOpacity onPress={() => removeGround.mutate()}>
-                  <Ionicons name="trash-outline" size={24} color="red" />
-                </TouchableOpacity>
-              </S.CardContainer>
-            ))}
-
-            <Button 
-              onPress={() =>{ navigation.navigate('BombInfo')}}
-              disabled={!dataGround} 
-              bg-color="positive" 
-              style={{ 
-                display: 'flex', 
-                flexDirection: 'row', 
-                justifyContent: 'flex-end', 
-                paddingRight: 24, 
-                marginTop: 24, 
-                marginBottom: 24 
-              }}>
-              <Typography
-                style={{
-                  fontFamily: 'Poppins-regular',
-                  fontSize: 18,
-                  width: 180,
-                }}
-                color="pure-white"
-                size="normal"
-                weight="bold"
-                >
-              Continuar
-              </Typography>
-              <AntDesign name="arrowright" size={24} color="#fff" />
-            </Button>
-          </View>
-          )}
-        </Formik>
+        <Button 
+          onPress={() =>{ navigation.navigate('BombInfo')}}
+          disabled={!dataGround} 
+          bg-color="positive" 
+          style={{ 
+            display: 'flex', 
+            flexDirection: 'row', 
+            justifyContent: 'flex-end', 
+            paddingRight: 24, 
+            marginTop: 24, 
+            marginBottom: 24 
+          }}>
+          <Typography
+            style={{
+              fontFamily: 'Poppins-regular',
+              fontSize: 18,
+              width: 180,
+            }}
+            color="pure-white"
+            size="normal"
+            weight="bold"
+            >
+          Continuar
+          </Typography>
+          <AntDesign name="arrowright" size={24} color="#fff" />
+        </Button>
       </S.Content>
       </ScrollView>
     </S.Container>

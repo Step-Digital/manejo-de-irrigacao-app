@@ -15,8 +15,8 @@ export const ProgressBarContainer = styled.View`
 
 export const Content = styled.View`
   display: flex;
-  flex-direction: "column";
   gap: 10px;
+  flex: 1;
 `;
 
 export const ButtonsContainer = styled.View`
@@ -60,7 +60,6 @@ ${({ theme }) => css `
 `}
 `;
 
-
 export const ButtonText = styled.Text`
 ${({ theme }) => css`
   font-family: 'Poppins-regular';
@@ -74,7 +73,6 @@ export const InputsContainer = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 100%;
 `;
 
 export const Label = styled.Text`
