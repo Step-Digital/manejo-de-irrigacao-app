@@ -24,20 +24,20 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState({ type: '', message: '' })
   const [data, setData] = useState<SignupDTO>({
+    nome: "Liandro 2",
     email: "user_test@manejodeirrigacao.agr.br",
     telefone1: "1",
     telefone2: "1",
-    password: "12345678",
-    nome: "Liandro 2",
     celular: "1",
+    password: "12345678",
     roles: ["user"],
     cep: "54723085",
-    numero: "60",
-    complemento: "sad",
-    estado: "PE",
     logradouro: "Rua Severino Antonio da Silva",
-    bairro: "Muribara",
+    numero: "60",
+    estado: "PE",
     cidade: "SLM",
+    complemento: "sad",
+    bairro: "Muribara",
   });
 
   const validateValues = {
@@ -140,7 +140,7 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
             marginVertical: 30,
           }}
           loading={onSignup.isLoading}
-          onPress={() => onSignup.mutate()}
+          onPress={() => onSumbit()}
         >
           <Typography size="normal" color="pure-white" weight="bold">
             Cadastrar

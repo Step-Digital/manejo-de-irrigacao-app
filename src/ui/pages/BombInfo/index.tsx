@@ -53,16 +53,6 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
     queryFn: () => bombService.getBombs()
   })
 
-
-  const initialValues = {
-    fabricante: '',
-    modelo: '',
-    potencia: '',
-    vazao_maxima: 0,
-    consumo: 0,
-    valor_kw: 0,
-  }
-
   const validateValues = {
     fabricante,
     modelo,
@@ -136,134 +126,123 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
         <ProgressBar active={false} width="80px" />
       </S.ProgressBarContainer>
       <S.Content>
-      <Formik
-          initialValues={initialValues}
-          onSubmit={() => {}}
-          validationSchema={bombValidators}
-        >
-          {({ 
-            values,
-            errors,
-            handleChange,
-            isValid,
-            dirty,
-          }) => (
-            <View>
+        <View>
+          <Typography
+            style={{
+              marginTop: 24,
+              fontFamily: 'Poppins-bold',
+              fontSize: 22,
+            }}
+            color="positive"
+            size="normal"
+            weight="regular"
+            >
+              {strings.bombInfo.title}
+          </Typography>
+          <Input 
+            label={inputStrings.manufacturer.label} 
+            placeholder={inputStrings.manufacturer.placeholder}  
+            value={fabricante}
+            onChangeText={(value) => setFabricante(value)}
+          />
+          <Input 
+            label={inputStrings.model.label} 
+            placeholder={inputStrings.model.placeholder}   
+            value={modelo}
+            onChangeText={(value) => setModelo(value)}
+          />
+          <Input 
+            label={inputStrings.power.label} 
+            placeholder={inputStrings.power.placeholder}   
+            value={potencia}
+            onChangeText={(value) => setPotencia(value)}
+            inputMode="numeric"
+          />
+          <View>
+            <Input 
+              label={inputStrings.flowRate.label} 
+              placeholder={inputStrings.flowRate.placeholder}   
+              value={vazao_maxima}
+              onChangeText={(value) => setVazao_maxima(value)}
+              inputMode="numeric"
+            />
+          </View>
+          <View>
+            <Input 
+              label={inputStrings.consumption.label} 
+              placeholder={inputStrings.consumption.placeholder}   
+              value={consumo}
+              onChangeText={(value) => setConsumo(value)}
+              inputMode="numeric"
+            />
+            </View>
+          <Input 
+            label={inputStrings.value.label} 
+            placeholder={inputStrings.value.placeholder}   
+            value={valor_kw}
+            onChangeText={(value) => setValor_kw(value)}
+            inputMode="numeric"
+          />
+
+          <S.AddButton onPress={() => onSumbit()}>
+              <Ionicons name="add" size={24} color="#fff" />
               <Typography
                 style={{
-                  marginTop: 24,
                   fontFamily: 'Poppins-bold',
-                  fontSize: 22,
+                  marginLeft: 8,
                 }}
-                color="positive"
-                size="normal"
+                color="pure-white"
+                size="tiny"
                 weight="regular"
                 >
-                  {strings.bombInfo.title}
+                {strings.bombInfo.addButtonn}
               </Typography>
-              <Input 
-                label={inputStrings.manufacturer.label} 
-                placeholder={inputStrings.manufacturer.placeholder}  
-                value={fabricante}
-                onChangeText={(value) => setFabricante(value)}
-              />
-              <Input 
-                label={inputStrings.model.label} 
-                placeholder={inputStrings.model.placeholder}   
-                value={modelo}
-                onChangeText={(value) => setModelo(value)}
-              />
-              <Input 
-                label={inputStrings.power.label} 
-                placeholder={inputStrings.power.placeholder}   
-                value={potencia}
-                onChangeText={(value) => setPotencia(value)}
-                inputMode="numeric"
-              />
-              <Input 
-                label={inputStrings.flowRate.label} 
-                placeholder={inputStrings.flowRate.placeholder}   
-                value={vazao_maxima}
-                onChangeText={(value) => setVazao_maxima(value)}
-                inputMode="numeric"
-              />
-              <Input 
-                label={inputStrings.consumption.label} 
-                placeholder={inputStrings.consumption.placeholder}   
-                value={consumo}
-                onChangeText={(value) => setConsumo(value)}
-                inputMode="numeric"
-              />
-              <Input 
-                label={inputStrings.value.label} 
-                placeholder={inputStrings.value.placeholder}   
-                value={valor_kw}
-                onChangeText={(value) => setValor_kw(value)}
-                inputMode="numeric"
-              />
+          </S.AddButton>
 
-              <S.AddButton onPress={() => onSumbit()}>
-                  <Ionicons name="add" size={24} color="#fff" />
-                  <Typography
-                    style={{
-                      fontFamily: 'Poppins-bold',
-                      marginLeft: 8,
-                    }}
-                    color="pure-white"
-                    size="tiny"
-                    weight="regular"
-                    >
-                    {strings.bombInfo.addButtonn}
-                  </Typography>
-              </S.AddButton>
-  
-              {dataBomb && dataBomb.data.map(item => (
-                <S.CardContainer key={item.id_motobomba}>
-                  <S.CardContent>
-                    <S.InfoTitle>{item.modelo}</S.InfoTitle>
-                    <S.InfoText>Fabricante: <S.InfoTextBold>{item.fabricante}</S.InfoTextBold></S.InfoText>
-                    <S.InfoText>Potência: <S.InfoTextBold>{item.potencia}w</S.InfoTextBold></S.InfoText>
-                    <S.InfoText>Vazão Máxima: <S.InfoTextBold>{item.vazao_maxima}m³/ha</S.InfoTextBold></S.InfoText>
-                    <S.InfoText>Consumo: <S.InfoTextBold>{item.consumo}kw/h</S.InfoTextBold></S.InfoText>
-                    <S.InfoText>Valor do Kw: <S.InfoTextBold>R${item.valor_kw}</S.InfoTextBold></S.InfoText>
-                  </S.CardContent>
-                  <TouchableOpacity onPress={() => removeBomb.mutate()}>
-                    <Ionicons name="trash-outline" size={24} color="red" />
-                  </TouchableOpacity>
-                </S.CardContainer>
-              ))}
-  
-              <Button 
-                onPress={() => navigation.navigate('SystemInfo')}
-                disabled={!bombs} 
-                bg-color="positive" 
-                style={{ 
-                  display: 'flex', 
-                  flexDirection: 'row', 
-                  justifyContent: 'flex-end', 
-                  paddingRight: 24, 
-                  marginTop: 24, 
-                  marginBottom: 24 
-                }}
-              >
-                <Typography
-                  style={{
-                    fontFamily: 'Poppins-regular',
-                    fontSize: 18,
-                    width: 180,
-                  }}
-                  color="pure-white"
-                  size="normal"
-                  weight="bold"
-                >
-                  Continuar
-                </Typography>
-                <AntDesign name="arrowright" size={24} color="#fff" />
-              </Button>
-          </View>
+          {dataBomb && dataBomb.data.map(item => (
+            <S.CardContainer key={item.id_motobomba}>
+              <S.CardContent>
+                <S.InfoTitle>{item.modelo}</S.InfoTitle>
+                <S.InfoText>Fabricante: <S.InfoTextBold>{item.fabricante}</S.InfoTextBold></S.InfoText>
+                <S.InfoText>Potência: <S.InfoTextBold>{item.potencia}w</S.InfoTextBold></S.InfoText>
+                <S.InfoText>Vazão Máxima: <S.InfoTextBold>{item.vazao_maxima}m³/ha</S.InfoTextBold></S.InfoText>
+                <S.InfoText>Consumo: <S.InfoTextBold>{item.consumo}kw/h</S.InfoTextBold></S.InfoText>
+                <S.InfoText>Valor do Kw: <S.InfoTextBold>R${item.valor_kw}</S.InfoTextBold></S.InfoText>
+              </S.CardContent>
+              <TouchableOpacity onPress={() => removeBomb.mutate()}>
+                <Ionicons name="trash-outline" size={24} color="red" />
+              </TouchableOpacity>
+            </S.CardContainer>
+          ))}
 
-          )}
-      </Formik>
+          <Button 
+            onPress={() => navigation.navigate('SystemInfo')}
+            disabled={!bombs} 
+            bg-color="positive" 
+            style={{ 
+              display: 'flex', 
+              flexDirection: 'row', 
+              justifyContent: 'flex-end', 
+              paddingRight: 24, 
+              marginTop: 24, 
+              marginBottom: 24 
+            }}
+          >
+            <Typography
+              style={{
+                fontFamily: 'Poppins-regular',
+                fontSize: 18,
+                width: 180,
+              }}
+              color="pure-white"
+              size="normal"
+              weight="bold"
+            >
+              Continuar
+            </Typography>
+            <AntDesign name="arrowright" size={24} color="#fff" />
+          </Button>
+        </View>
       </S.Content>
       </ScrollView>
     </S.Container>

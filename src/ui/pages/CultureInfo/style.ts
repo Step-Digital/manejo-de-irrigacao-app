@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1
@@ -17,3 +17,17 @@ export const Content = styled.View`
   flex-direction: "column";
   gap: 10px;
 `;
+
+export const CategoryContainer = styled.View``;
+
+export const CategoryTitle = styled.Text`
+${({ theme }) => css`
+  color: ${theme.colors["positive"]};
+  font-family: 'Poppins-bold';
+  font-size: 16px;
+  font-style: normal;
+  margin-top: 16px;
+`}
+`;
+
+export const CategoryButton = styled.TouchableOpacity``;

@@ -88,7 +88,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
 
   const removeGround = useMutation<AxiosError>({
     // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
-    mutationFn: () => groundService.deleteGround(6),
+    mutationFn: () => groundService.deleteGround(7),
     onSuccess: (data) => {
       refetch()
     },
@@ -139,6 +139,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
           data={groundTypes} 
           label="Tipo de Solo"
           setValue={(value) => setTipo_solo(value)}
+          setId={() => {}}
         />
         <Input 
           label={inputStrings.capacity.label} 
@@ -154,13 +155,15 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
           onChangeText={(value) => setPonto_murcha(value)}
           inputMode="numeric"
         />
-        <Input 
-          label={inputStrings.density.label} 
-          placeholder={inputStrings.density.placeholder}   
-          value={densidade}
-          onChangeText={(value) => setDensidade(value)}
-          inputMode="numeric"
-        />
+        <View>
+          <Input 
+            label={inputStrings.density.label} 
+            placeholder={inputStrings.density.placeholder}   
+            value={densidade}
+            onChangeText={(value) => setDensidade(value)}
+            inputMode="numeric"
+          />
+        </View>
 
         <S.AddButton  onPress={() => onSubmit()}>
             <Ionicons name="add" size={24} color="#fff" />

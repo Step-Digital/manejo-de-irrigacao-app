@@ -12,8 +12,8 @@ import { MakeNewProperty } from "../../core/main/factories/pages/newProperty/new
 import { MakeGroundInfo } from "../../core/main/factories/pages/GroundInfo/groundInfo.factory";
 import { MakeBombInfo } from "../../core/main/factories/pages/bombInfo/bombInfo.factory";
 import { MakeSystemInfo } from "../../core/main/factories/pages/systemInfo/systemInfo.factory";
+import { MakeCulture } from "../../core/main/factories/pages/Culture/culture.factory";
 import { PropertyRegistered } from "../pages/propertyRegistered";
-import { CultureInfo } from "../pages/CultureInfo";
 import { CultureRegistered } from "../pages/CultureRegistered";
 import { Menu } from "../pages/Menu";
 
@@ -37,8 +37,11 @@ export const GlobalRoutes: React.FC = () => {
       <Stack.Screen name="BombInfo" component={MakeBombInfo} />
       <Stack.Screen name="SystemInfo" component={MakeSystemInfo} />
       <Stack.Screen name="PropertyRegistered" component={PropertyRegistered} />
-      <Stack.Screen name="CultureInfo" component={CultureInfo} />
+      <Stack.Screen name="CultureInfo" component={MakeCulture} />
       <Stack.Screen name="CultureRegistered" component={CultureRegistered} />
+      <Stack.Screen name="Menu" component={Menu} />
+      
+
     </Stack.Navigator>
   );
 };

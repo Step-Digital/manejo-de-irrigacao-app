@@ -254,12 +254,14 @@ export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ propertyService }
                 style={{ width: 180 }} 
               />
             </S.InputsContainer>
-            <Input 
-              label={inputStrings.city.label} 
-              placeholder={inputStrings.city.placeholder} 
-              value={cidade}
-              onChangeText={(value) => setCidade(value)}
-            />
+            <View>
+              <Input 
+                label={inputStrings.city.label} 
+                placeholder={inputStrings.city.placeholder} 
+                value={cidade}
+                onChangeText={(value) => setCidade(value)}
+              />
+            </View>
             <S.InputsContainer>
               <Select
                 label="Estado"
@@ -270,6 +272,7 @@ export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ propertyService }
                 objValue="name" 
                 title="Estado"
                 setValue={setEstado}
+                setId={() => {}}
               />
               <Input 
                 label={inputStrings.cep.label} 

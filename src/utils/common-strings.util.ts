@@ -228,6 +228,15 @@ export default {
     gobackButton: 'Voltar para o Início',
     text1: 'Parabéns, você cadastrou uma cultura!',
     text2: 'Volte para o Início e veja os seus números diários de irrigação.',
+    category: {
+      hotalicas: 'Hortaliças',
+      frutíferas: 'Frutíferas',
+      forrageiras: 'Forrageiras',
+      grãosecereais: 'Grãos e Cereais',
+      raiz: 'Raiz',
+      pastagem: 'Pastagem',
+      capineira: 'Capineira',
+    },
     inputs: {
       search: {
         label: 'Pesquisar',
