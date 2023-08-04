@@ -58,12 +58,14 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
     densidade,
   }
 
+  const id = !isLoading && !isLoadingGrounds && data.data[data.data.length - 1].id_propriedade
+
   const sumbitValues = {
     tipo_solo,
     capacidade_campo: Number(capacidade_campo),
     ponto_murcha: Number(ponto_murcha),
     densidade: Number(densidade),
-    id_propriedade: data.data[data.data.length - 1].id_propriedade,
+    id_propriedade: id,
   }
 
   async function validate() {
@@ -88,7 +90,8 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
 
   const removeGround = useMutation<AxiosError>({
     // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
-    mutationFn: () => groundService.deleteGround(7),
+    mutationFn: (id) => groundService.deleteGround(Number(id)),
+    mutationKey: ['grounds'],
     onSuccess: (data) => {
       refetch()
     },
@@ -190,7 +193,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
               <S.InfoText>Ponto de Murcha: <S.InfoTextBold>{item.ponto_murcha}%</S.InfoTextBold></S.InfoText>
               <S.InfoText>Densidade: <S.InfoTextBold>{item.densidade}g/m²</S.InfoTextBold></S.InfoText>
             </S.CardContent>
-            <TouchableOpacity onPress={() => removeGround.mutate()}>
+            <TouchableOpacity onPress={() => removeGround.mutate(item.id_solo)}>
               <Ionicons name="trash-outline" size={24} color="red" />
             </TouchableOpacity>
           </S.CardContainer>

@@ -70,7 +70,7 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
     consumo: Number(consumo),
     valor_kw: Number(valor_kw),
     ativada: true,
-    id_propriedade: data.data[data.data.length - 1].id_propriedade,
+    id_propriedade: !isLoading && data.data[data.data.length - 1].id_propriedade,
   }
   
   async function validate() {
@@ -103,7 +103,8 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
 
   const removeBomb = useMutation<AxiosError>({
     // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
-    mutationFn: () => bombService.deleteBomb(5),
+    mutationFn: (id) => bombService.deleteBomb(Number(id)),
+    mutationKey: ['bombs'],
     onSuccess: (data) => {
       refetch()
     },
@@ -209,7 +210,7 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
                 <S.InfoText>Consumo: <S.InfoTextBold>{item.consumo}kw/h</S.InfoTextBold></S.InfoText>
                 <S.InfoText>Valor do Kw: <S.InfoTextBold>R${item.valor_kw}</S.InfoTextBold></S.InfoText>
               </S.CardContent>
-              <TouchableOpacity onPress={() => removeBomb.mutate()}>
+              <TouchableOpacity onPress={() => removeBomb.mutate(item.id_motobomba)}>
                 <Ionicons name="trash-outline" size={24} color="red" />
               </TouchableOpacity>
             </S.CardContainer>

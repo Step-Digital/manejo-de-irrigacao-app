@@ -168,9 +168,6 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
     id_solo: Number(id_solo),
   }
 
-  console.log('sumbitValues', sumbitValues)
-  console.log('validateValues', validateValues)
-
   async function validate() {
     try {
       await cultureValidators.validate(validateValues)
@@ -187,7 +184,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
   const createCulture = useMutation<AxiosError>({
     mutationFn: () => cultureService.newCulture(sumbitValues),
     onSuccess: () => {
-      refetch()
+      navigation.navigate('CultureRegistered')
     },
   });
 
@@ -196,8 +193,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
     if(!(await validate()))  {
       return Alert.alert(status.message[0])
     } else {
-      createCulture.mutate()
-      return navigation.navigate('CultureRegistered')
+      return createCulture.mutate()
    }
   }
 

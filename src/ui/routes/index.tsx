@@ -30,7 +30,7 @@ export const GlobalRoutes: React.FC = () => {
       <Stack.Screen name="Home" component={MakeHome} />
       <Stack.Screen name="Login" component={MakeLogin} />
       <Stack.Screen name="HomeLogged" component={MakeHomeLogged} />
-      <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen name="Signup" component={MakeSignup} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
       <Stack.Screen name="NewProperty" component={MakeNewProperty} />
       <Stack.Screen name="GroundInfo" component={MakeGroundInfo} />

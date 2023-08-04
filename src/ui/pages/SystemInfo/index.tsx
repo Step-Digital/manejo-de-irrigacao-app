@@ -125,7 +125,7 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
     comprimento_vao_balanco: 0,
     velocidade_ultima_torre: 0,
     ativo: true,
-    id_propriedade: data.data[data.data.length - 1].id_propriedade,
+    id_propriedade: !isLoading && data.data[data.data.length - 1].id_propriedade,
   }
 
   const createSystem = useMutation<AxiosError>({
@@ -150,7 +150,8 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
 
   const removeSystem = useMutation<AxiosError>({
     // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
-    mutationFn: () => irrigationSystemService.deleteSystem(3),
+    mutationFn: (id) => irrigationSystemService.deleteSystem(Number(id)),
+    mutationKey: ['irrigationSystems'],
     onSuccess: (data) => {
       refetch()
     },
@@ -377,7 +378,7 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
                     <S.InfoText>Coeficiente de Uniformidade CUC: <S.InfoTextBold>{item.coeficiente_uniformidade}%</S.InfoTextBold></S.InfoText>
                     <S.InfoText>Eficiência do Sistema: <S.InfoTextBold>{item.eficiencia_sistema}%</S.InfoTextBold></S.InfoText>
                   </S.CardContent>
-                  <TouchableOpacity onPress={() => removeSystem.mutate()}>
+                  <TouchableOpacity onPress={() => removeSystem.mutate(item.id_sistema_irrigacao)}>
                     <Ionicons name="trash-outline" size={24} color="red" />
                   </TouchableOpacity>
                 </S.CardContainer>
@@ -402,7 +403,7 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
                     <S.InfoText>Percentual de aŕea molhada: <S.InfoTextBold>{item.percentual_area_molhada}%</S.InfoTextBold></S.InfoText>
                     <S.InfoText>Percentual de aŕea sombreada: <S.InfoTextBold>{item.percentual_area_sombreada}%</S.InfoTextBold></S.InfoText>
                   </S.CardContent>
-                  <TouchableOpacity onPress={() => removeSystem.mutate()}>
+                  <TouchableOpacity onPress={() => removeSystem.mutate(item.id_sistema_irrigacao)}>
                     <Ionicons name="trash-outline" size={24} color="red" />
                   </TouchableOpacity>
                 </S.CardContainer>

@@ -101,18 +101,18 @@ export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ propertyService }
     }
   } 
 
-  const onSumbit = async (action) => {
-    if(!(await validate()))  return Alert.alert(status.message[0])
-
-    return action
-  }
-
   const createProperty = useMutation<AxiosError>({
     mutationFn: () => propertyService.newProperty(sumbitValues),
-    onSuccess: (data) => {
-      console.log(data);
-    },
+    onSuccess: () => navigation.navigate('GroundInfo')
   });
+
+  const onSubmit = async () => {
+    if(!(await validate()))  {
+      return Alert.alert(status.message[0])
+    } else {
+      return createProperty.mutate()
+    }
+  }
 
   useEffect(() => {
     validate()
@@ -196,7 +196,7 @@ export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ propertyService }
           </S.GPSBUtton>
           </S.ButtonsContainer>)}
           {showForm && (
-            <S.GPSButtonFull onPress={() => onSumbit(createProperty.mutate())}>
+            <S.GPSButtonFull>
               <EvilIcons name="location" size={24} color="#fff" />
               <Typography
                 style={{
@@ -303,7 +303,7 @@ export const NewPropertyScreen:React.FC<NewPropertyProps> = ({ propertyService }
             paddingRight: 24, 
             marginTop: 24, 
             marginBottom: 24 }}
-          onPress={() => {navigation.navigate('GroundInfo')}}
+          onPress={() => onSubmit()}
           >
           <Typography
             style={{

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import MaskInput from 'react-native-mask-input';
 import { AuthDomain } from "../../../core/domain/auth.domain";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { Button } from "../../components/button";
@@ -12,70 +13,101 @@ import { SignupDTO } from "../../../core/dtos/auth";
 import { SignupModel } from "../../../core/models/auth";
 import { AxiosError } from "axios";
 import { FlashMessage } from "../../components/flash-message";
-import { signupValidators } from '../../../utils/validators';
+import { signupValidators } from "../../../utils/validators";
+import { strings } from "../../../utils";
+
+import * as S from './style';
 
 export type SignupProps = {
   auth: AuthDomain;
 };
 
+const inputStrings = strings.signup.inputs;
+
 export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
   const navigation = useNavigation<NavigationProps>();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [status, setStatus] = useState({ type: '', message: '' })
-  const [data, setData] = useState<SignupDTO>({
-    nome: "Liandro 2",
-    email: "user_test@manejodeirrigacao.agr.br",
-    telefone1: "1",
-    telefone2: "1",
-    celular: "1",
-    password: "12345678",
-    roles: ["user"],
-    cep: "54723085",
-    logradouro: "Rua Severino Antonio da Silva",
-    numero: "60",
-    estado: "PE",
-    cidade: "SLM",
-    complemento: "sad",
-    bairro: "Muribara",
-  });
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefone1, setTelefone1] = useState("");
+  const [telefone2, setTelefone2] = useState("");
+  const [celular, setCelular] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [cep, setCep] = useState("");
+  const [logradouro, setLogradouro] = useState("");
+  const [numero, setNumero] = useState("");
+  const [estado, setEstado] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [complemento, setComplemento] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [status, setStatus] = useState({ type: "", message: "" });
 
   const validateValues = {
+    nome,
     email,
     password,
-  }
+    telefone1,
+    celular,
+    passwordConfirm,
+    cep,
+    logradouro,
+    numero,
+    bairro,
+    cidade,
+    estado,
+  };
+
+  const submitValues = {
+    nome,
+    email,
+    telefone1,
+    telefone2,
+    celular,
+    cep,
+    logradouro,
+    numero,
+    bairro,
+    complemento,
+    cidade,
+    password,
+    estado,
+    roles: ["user"]
+  };
+
+  console.log('submitvalues',submitValues )
+
 
   async function validate() {
     try {
-      await signupValidators.validate(validateValues)
-      return true
+      await signupValidators.validate(validateValues);
+      return true;
     } catch (err) {
       setStatus({
-        type: 'error',
-        message: err.errors
-      })
-      return false
+        type: "error",
+        message: err.errors,
+      });
+      return false;
     }
-  } 
-  
+  }
+
   const onSignup = useMutation<SignupModel, AxiosError>({
-    mutationFn: () => auth.signup(data),
-    onSuccess: (data) => {
-      console.log(data);
+    mutationFn: () => auth.signup(submitValues),
+    onSuccess: () => {
+      navigation.navigate('Login') 
     },
+    onError: (data) => console.log('data', JSON.stringify(data, null, 2)) 
   });
 
   const onSumbit = async () => {
-    if(!(await validate()))
-    {
-      return Alert.alert(status.message[0])
+    if (!(await validate())) {
+      return Alert.alert(status.message[0]);
     } else {
-      return onSignup.mutate()
-    } 
-  }
+      return onSignup.mutate();
+    }
+  };
 
   useEffect(() => {
-    validate()
+    validate();
   }, []);
 
   return (
@@ -91,48 +123,118 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
         <Typography
           style={{
             marginVertical: 15,
+            fontFamily: "Poppins-bold",
           }}
-          color="gray-5"
+          color="positive"
           size="huge"
           weight="regular"
         >
-          Dados Pessoais
+          {strings.signup.title}
         </Typography>
-        <Input label="Nome" placeholder="Insira seu nome" />
-        <Input label="Email" placeholder="Insira seu email" />
-        <Input label="Telefone" placeholder="Insira seu número de telefone" />
-        <Input label="Celular" placeholder="Insira seu número de celular" />
-        <Input label="Senha" placeholder="Insira sua senha" />
         <Input
-          label="Confirme sua senha"
-          placeholder="Insira sua senha novamente"
+          label={inputStrings.name.label}
+          placeholder={inputStrings.name.placeholder}
+          value={nome}
+          onChangeText={(value) => setNome(value)}
+        />
+        <Input
+          label={inputStrings.email.label}
+          placeholder={inputStrings.email.placeholder}
+          value={email}
+          onChangeText={(value) => setEmail(value)}
+        />
+        <Input
+          label={inputStrings.phone1.label}
+          placeholder={inputStrings.phone1.placeholder}
+          value={telefone1}
+          onChangeText={(value) => setTelefone1(value)}
+        />
+        <View>
+        <Input
+          label={inputStrings.phone2.label}
+          placeholder={inputStrings.phone2.placeholder}
+          value={telefone2}
+          onChangeText={(value) => setTelefone2(value)}
+          />
+          </View>
+        <View>
+
+        <Input
+          label={inputStrings.cel.label}
+          placeholder={inputStrings.cel.placeholder}
+          value={celular}
+          onChangeText={(value) => setCelular(value)}
+          />
+          </View>
+        <Input
+          label={inputStrings.password.label}
+          placeholder={inputStrings.password.placeholder}
+          value={password}
+          onChangeText={(value) => setPassword(value)}
+        />
+        <Input
+          label={inputStrings.passwordConfirm.label}
+          placeholder={inputStrings.passwordConfirm.placeholder}
+          value={passwordConfirm}
+          onChangeText={(value) => setPasswordConfirm(value)}
         />
         <Typography
           style={{
             marginVertical: 15,
+            fontFamily: "Poppins-bold",
           }}
-          color="gray-5"
+          color="positive"
           size="huge"
           weight="regular"
         >
           Endereço
         </Typography>
-        <Input label="CEP" placeholder="Insira seu CEP" />
+          {console.log('cep', cep)}
+          <S.Label>{inputStrings.cep.placeholder}</S.Label>
+        <S.ContainerInput>
+          <MaskInput
+            // label={inputStrings.cep.label}
+            placeholder={inputStrings.cep.placeholder}
+            value={cep}
+            onChangeText={(masked, unmasked) => {setCep(masked)}}
+            mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
+            />
+          </S.ContainerInput>
         <Input
-          label="Logradouro"
-          placeholder="Insira seu CEP"
-          editable={false}
+          label={inputStrings.street.label}
+          placeholder={inputStrings.street.placeholder}
+          value={logradouro}
+          onChangeText={(value) => setLogradouro(value)}
         />
-        <Input label="Número" placeholder="Nº 60" />
         <Input
-          label="Estado"
-          placeholder="Insira o nome do seu estado"
-          editable={false}
+          label={inputStrings.number.label}
+          placeholder={inputStrings.number.placeholder}
+          value={numero}
+          onChangeText={(value) => setNumero(value)}
         />
         <Input
-          label="Cidade"
-          placeholder="Insira o nome da sua cidade"
-          editable={false}
+          label={inputStrings.neighbor.label}
+          placeholder={inputStrings.neighbor.placeholder}
+          value={bairro}
+          onChangeText={(value) => setBairro(value)}
+        />
+        <Input
+          label={inputStrings.complement.label}
+          placeholder={inputStrings.complement.placeholder}
+          value={complemento}
+          onChangeText={(value) => setComplemento(value)}
+        />
+        <Input
+          label={inputStrings.state.label}
+          placeholder={inputStrings.state.placeholder}
+          value={estado}
+          onChangeText={(value) => setEstado(value)}
+        />
+        <Input
+          label={inputStrings.city.label}
+          placeholder={inputStrings.city.placeholder}
+          value={cidade}
+          onChangeText={(value) => setCidade(value)}
         />
         <Button
           bg-color="positive"

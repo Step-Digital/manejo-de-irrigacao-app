@@ -39,8 +39,10 @@ export class AuthService implements AuthDomain {
 
   async signup(params: SignupDTO): Promise<SignupModel> {
     try {
+      console.log('ENTREI SIGNUP PAPAI')
       return await this.authRepository.signup(params);
     } catch (error) {
+      console.log('CHORA SIGNUP PAPAI')
       const {
         response: { status },
       } = error;

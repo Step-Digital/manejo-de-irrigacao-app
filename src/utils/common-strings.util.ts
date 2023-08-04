@@ -6,6 +6,67 @@ export default {
   header: {
     title: 'Recomendação Diária'
   },
+  signup: {
+    title: 'Dados Pessoais',
+    inputs: {
+      name: {
+        label: 'Nome',
+        placeholder: 'Insira seu nome'
+      },
+      email: {
+        label: 'Email',
+        placeholder: 'Insira seu email'
+      },
+      phone1: {
+        label: 'Telefone',
+        placeholder: 'Insira seu número de telefone'
+      },
+      phone2: {
+        label: 'Telefone 2',
+        placeholder: 'Insira seu número de telefone'
+      },
+      cel: {
+        label: 'Celular',
+        placeholder: 'Insira seu número de celular'
+      },
+      password: {
+        label: 'Senha',
+        placeholder: 'Insira sua senha'
+      },
+      passwordConfirm: {
+        label: 'Confirme sua senha',
+        placeholder: 'Insira sua senha novamente'
+      },
+      cep: {
+        label: 'CEP',
+        placeholder: 'Insira o CEP'
+      },
+      street: {
+        label: 'Logradouro',
+        placeholder: 'Insira o logradouro'
+      },
+      number: {
+        label: 'Número',
+        placeholder: 'Insira o número'
+      },
+      neighbor: {
+        label: 'Bairro',
+        placeholder: 'Insira o bairro'
+      },
+      complement: {
+        label: 'Complemento',
+        placeholder: 'Insira o complemento'
+      },
+      city: {
+        label: 'Cidade',
+        placeholder: 'Insira a cidade'
+      },
+      state: {
+        label: 'Estado',
+        placeholder: 'Insira o estado'
+      },
+    }
+  },
   homeLogged: {
     noProperty: 'Você ainda não possui nenhuma cultura cadastrada.',
     addPropertyText1: 'Para calcular a irrigação diária para sua produção agrícola,',
