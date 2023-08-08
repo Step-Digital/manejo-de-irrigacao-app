@@ -63,10 +63,11 @@ ${({ theme }) => css `
 export const CardContainer = styled.View`
 ${({ theme }) => css`
   width: 100%;
-  background: ${theme.colors["gray-1"]};
+  background: ${theme.colors["gray-2"]};
   padding: 16px;
   display: flex;
   flex-direction: row;
+  border-radius: 8px;
 `}
 `;
 

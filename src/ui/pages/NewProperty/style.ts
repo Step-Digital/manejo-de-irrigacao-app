@@ -80,8 +80,23 @@ ${({ theme }) => css`
   margin: 0;
   position: absolute;
   color: ${theme.colors["neutral-4"]};
-  font-weight: 700;
+  font-family: 'Poppins-bold';
   margin-top: 9px;
 `}
   
+`;
+
+export const ContainerInput = styled.View`
+  border: 1px solid black;
+  ${({ theme }) => css`
+    background-color: transparent;
+    border-radius: 90px;
+    border: 1.5px solid ${theme.colors["gray-3"]};
+    padding: 10px;
+    /* padding-left: 20px; */
+    font-size: ${theme.font.sizes.small}px;
+    font-weight: ${theme.font.weight.medium};
+    font-family: 'Poppins-regular';
+    margin-top: 43px;
+  `}
 `;

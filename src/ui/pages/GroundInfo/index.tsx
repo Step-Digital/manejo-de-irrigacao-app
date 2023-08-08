@@ -58,7 +58,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
     densidade,
   }
 
-  const id = !isLoading && !isLoadingGrounds && data.data[data.data.length - 1].id_propriedade
+  const id = !isLoading && data.data[data.data.length - 1].id_propriedade
 
   const sumbitValues = {
     tipo_solo,
@@ -89,7 +89,6 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
   });
 
   const removeGround = useMutation<AxiosError>({
-    // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
     mutationFn: (id) => groundService.deleteGround(Number(id)),
     mutationKey: ['grounds'],
     onSuccess: (data) => {

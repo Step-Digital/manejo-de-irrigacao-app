@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow manejo to use your location."
+        }
+      ]
+    ]
+  }
+}

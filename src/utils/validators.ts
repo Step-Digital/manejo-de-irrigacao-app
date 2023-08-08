@@ -87,7 +87,7 @@ export const propertyValidators = Yup.object().shape({
   complemento: Yup.string().required(RULES.GENERAL.REQUIRED),
   cidade: Yup.string().required(RULES.GENERAL.REQUIRED),
   estado: Yup.string().required(RULES.GENERAL.REQUIRED),
-  cep: Yup.string().max(8).required(RULES.GENERAL.REQUIRED),
+  cep: Yup.string().max(9).required(RULES.GENERAL.REQUIRED),
   area_propriedade: Yup.string().required(RULES.GENERAL.REQUIRED),
 });
 

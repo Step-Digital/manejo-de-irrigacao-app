@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { Alert, ScrollView, View } from 'react-native';
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
-import { MaterialIcons } from '@expo/vector-icons'; 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import MaskInput from "react-native-mask-input";
 
 import { strings } from '../../../utils';
 import { cultureValidators } from '../../../utils/validators';
@@ -114,7 +113,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
   })
 
 
-  const properties = data.data.map(item => {
+  const properties = !isLoading && data.data.map(item => {
     return {
       name: item.nome,
       id: item.id_propriedade
@@ -242,7 +241,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
             {dataCulture && dataCulture.data.map(item => {
               if (item.segmento === 'Hortaliça') {
                 return (
-                  <S.CategoryContainer>
+                  <S.CategoryContainer key={item.nome}>
                     <S.CategoryButton onPress={() => selectCulture(item)}>
                       <CategoryCard 
                         text={item.nome}
@@ -256,7 +255,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
             {dataCulture && dataCulture.data.map(item => {
               if (item.segmento === 'Frutífera') {
                 return (
-                  <S.CategoryContainer>
+                  <S.CategoryContainer key={item.nome}>
                     <S.CategoryButton onPress={() => selectCulture(item)}>
                       <CategoryCard 
                         text={item.nome}
@@ -270,7 +269,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
             {dataCulture && dataCulture.data.map(item => {
               if (item.segmento === 'Grão' || item.segmento === 'Cereal') {
                 return (
-                  <S.CategoryContainer>
+                  <S.CategoryContainer key={item.nome}>
                     <S.CategoryButton onPress={() => selectCulture(item)}>
                       <CategoryCard 
                         text={item.nome}
@@ -284,7 +283,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
             {dataCulture && dataCulture.data.map(item => {
               if (item.segmento === 'Raiz') {
                 return (
-                  <S.CategoryContainer>
+                  <S.CategoryContainer key={item.nome}>
                     <S.CategoryButton onPress={() => selectCulture(item)}>
                       <CategoryCard 
                         text={item.nome}
@@ -298,7 +297,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
             {dataCulture && dataCulture.data.map(item => {
               if (item.segmento === 'Pastagem') {
                 return (
-                  <S.CategoryContainer>
+                  <S.CategoryContainer key={item.nome}>
                     <S.CategoryButton onPress={() => selectCulture(item)}>
                       <CategoryCard 
                         text={item.nome}
@@ -312,7 +311,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
             {dataCulture && dataCulture.data.map(item => {
               if (item.segmento === 'Capineira') {
                 return (
-                  <S.CategoryContainer>
+                  <S.CategoryContainer key={item.nome}>
                     <S.CategoryButton onPress={() => selectCulture(item)}>
                       <CategoryCard 
                         text={item.nome}
@@ -368,12 +367,26 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
             value={nome_cultura}
             onChangeText={(value) => setNome_cultura(value)}
           />
-          <Input 
-            label={inputStrings.date.label} 
-            placeholder={inputStrings.date.placeholder}  
-            value={data_plantio}
-            onChangeText={(value) => setData_plantio(value)}
-          />
+          <S.Label>{inputStrings.date.label} </S.Label>
+          <S.ContainerInput>
+            <MaskInput 
+              placeholder={inputStrings.date.placeholder}  
+              value={data_plantio}
+              onChangeText={(value) => setData_plantio(value)}
+              mask={[
+                /\d/,
+                /\d/,
+                "/",
+                /\d/,
+                /\d/,
+                "/",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+              ]}
+            />
+          </S.ContainerInput>
           <View>
             <Input 
               label={inputStrings.area.label} 

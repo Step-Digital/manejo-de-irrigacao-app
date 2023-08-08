@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MaskInput from 'react-native-mask-input';
+import MaskInput from "react-native-mask-input";
 import { AuthDomain } from "../../../core/domain/auth.domain";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { Button } from "../../components/button";
@@ -9,14 +9,14 @@ import { Typography } from "../../components/typography";
 import { HeaderAuth } from "../../components/header-auth";
 import { Input } from "../../components/input";
 import { useMutation } from "@tanstack/react-query";
-import { SignupDTO } from "../../../core/dtos/auth";
 import { SignupModel } from "../../../core/models/auth";
 import { AxiosError } from "axios";
 import { FlashMessage } from "../../components/flash-message";
 import { signupValidators } from "../../../utils/validators";
 import { strings } from "../../../utils";
+import ceppromise from 'cep-promise'
 
-import * as S from './style';
+import * as S from "./style";
 
 export type SignupProps = {
   auth: AuthDomain;
@@ -41,6 +41,7 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
   const [complemento, setComplemento] = useState("");
   const [bairro, setBairro] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
+  const [showLoad, setShowLoad] = useState(false);
 
   const validateValues = {
     nome,
@@ -71,11 +72,10 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
     cidade,
     password,
     estado,
-    roles: ["user"]
+    roles: ["user"],
   };
 
-  console.log('submitvalues',submitValues )
-
+  console.log("submitvalues", submitValues);
 
   async function validate() {
     try {
@@ -93,9 +93,9 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
   const onSignup = useMutation<SignupModel, AxiosError>({
     mutationFn: () => auth.signup(submitValues),
     onSuccess: () => {
-      navigation.navigate('Login') 
+      navigation.navigate("Login");
     },
-    onError: (data) => console.log('data', JSON.stringify(data, null, 2)) 
+    onError: (data) => console.log("data", JSON.stringify(data, null, 2)),
   });
 
   const onSumbit = async () => {
@@ -110,6 +110,27 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
     validate();
   }, []);
 
+  const getCep = async () => {
+    setShowLoad(true);
+    const cepString = cep;
+    if (cepString.length < 9) {
+      return;
+    }
+    try {
+      const { city, neighborhood, street, state } = await ceppromise(
+        cepString.replace(/[^0-9]+/g, '')
+      );
+      setCidade(city);
+      setBairro(neighborhood);
+      setLogradouro(street);
+      setEstado(state)
+      setShowLoad(false);
+    } catch (e) {
+      setShowLoad(false);
+      Alert.alert('O CEP não foi encontrado!');
+    }
+  };
+
   return (
     <ScrollView
       style={styles.container}
@@ -120,134 +141,198 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
     >
       <HeaderAuth />
       <View style={styles.form}>
-        <Typography
-          style={{
-            marginVertical: 15,
-            fontFamily: "Poppins-bold",
-          }}
-          color="positive"
-          size="huge"
-          weight="regular"
-        >
-          {strings.signup.title}
-        </Typography>
-        <Input
-          label={inputStrings.name.label}
-          placeholder={inputStrings.name.placeholder}
-          value={nome}
-          onChangeText={(value) => setNome(value)}
-        />
-        <Input
-          label={inputStrings.email.label}
-          placeholder={inputStrings.email.placeholder}
-          value={email}
-          onChangeText={(value) => setEmail(value)}
-        />
-        <Input
-          label={inputStrings.phone1.label}
-          placeholder={inputStrings.phone1.placeholder}
-          value={telefone1}
-          onChangeText={(value) => setTelefone1(value)}
-        />
-        <View>
-        <Input
-          label={inputStrings.phone2.label}
-          placeholder={inputStrings.phone2.placeholder}
-          value={telefone2}
-          onChangeText={(value) => setTelefone2(value)}
+        <>
+          <Typography
+            style={{
+              marginVertical: 15,
+              fontFamily: "Poppins-bold",
+            }}
+            color="positive"
+            size="huge"
+            weight="regular"
+          >
+            {strings.signup.title}
+          </Typography>
+          <Input
+            label={inputStrings.name.label}
+            placeholder={inputStrings.name.placeholder}
+            value={nome}
+            onChangeText={(value) => setNome(value)}
           />
-          </View>
-        <View>
-
-        <Input
-          label={inputStrings.cel.label}
-          placeholder={inputStrings.cel.placeholder}
-          value={celular}
-          onChangeText={(value) => setCelular(value)}
+          <Input
+            label={inputStrings.email.label}
+            placeholder={inputStrings.email.placeholder}
+            value={email}
+            onChangeText={(value) => setEmail(value)}
           />
-          </View>
-        <Input
-          label={inputStrings.password.label}
-          placeholder={inputStrings.password.placeholder}
-          value={password}
-          onChangeText={(value) => setPassword(value)}
-        />
-        <Input
-          label={inputStrings.passwordConfirm.label}
-          placeholder={inputStrings.passwordConfirm.placeholder}
-          value={passwordConfirm}
-          onChangeText={(value) => setPasswordConfirm(value)}
-        />
-        <Typography
-          style={{
-            marginVertical: 15,
-            fontFamily: "Poppins-bold",
-          }}
-          color="positive"
-          size="huge"
-          weight="regular"
-        >
-          Endereço
-        </Typography>
-          {console.log('cep', cep)}
-          <S.Label>{inputStrings.cep.placeholder}</S.Label>
-        <S.ContainerInput>
-          <MaskInput
-            // label={inputStrings.cep.label}
-            placeholder={inputStrings.cep.placeholder}
-            value={cep}
-            onChangeText={(masked, unmasked) => {setCep(masked)}}
-            mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
+          <S.Label>{inputStrings.phone1.label}</S.Label>
+          <S.ContainerInput>
+            <MaskInput
+              placeholder={inputStrings.phone1.placeholder}
+              value={telefone1}
+              onChangeText={(value) => setTelefone1(value)}
+              inputMode="numeric"
+              mask={[
+                "(",
+                /\d/,
+                /\d/,
+                ")",
+                " ",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                "-",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+              ]}
             />
           </S.ContainerInput>
-        <Input
-          label={inputStrings.street.label}
-          placeholder={inputStrings.street.placeholder}
-          value={logradouro}
-          onChangeText={(value) => setLogradouro(value)}
-        />
-        <Input
-          label={inputStrings.number.label}
-          placeholder={inputStrings.number.placeholder}
-          value={numero}
-          onChangeText={(value) => setNumero(value)}
-        />
-        <Input
-          label={inputStrings.neighbor.label}
-          placeholder={inputStrings.neighbor.placeholder}
-          value={bairro}
-          onChangeText={(value) => setBairro(value)}
-        />
-        <Input
-          label={inputStrings.complement.label}
-          placeholder={inputStrings.complement.placeholder}
-          value={complemento}
-          onChangeText={(value) => setComplemento(value)}
-        />
-        <Input
-          label={inputStrings.state.label}
-          placeholder={inputStrings.state.placeholder}
-          value={estado}
-          onChangeText={(value) => setEstado(value)}
-        />
-        <Input
-          label={inputStrings.city.label}
-          placeholder={inputStrings.city.placeholder}
-          value={cidade}
-          onChangeText={(value) => setCidade(value)}
-        />
-        <Button
-          bg-color="positive"
-          style={{
-            marginVertical: 30,
-          }}
-          loading={onSignup.isLoading}
-          onPress={() => onSumbit()}
-        >
-          <Typography size="normal" color="pure-white" weight="bold">
-            Cadastrar
+          <S.Label>{inputStrings.phone2.label}</S.Label>
+          <View>
+            <S.ContainerInput>
+              <MaskInput
+                placeholder={inputStrings.phone2.placeholder}
+                value={telefone2}
+                onChangeText={(value) => setTelefone2(value)}
+                inputMode="numeric"
+                mask={[
+                  "(",
+                  /\d/,
+                  /\d/,
+                  ")",
+                  " ",
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  "-",
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                ]}
+              />
+            </S.ContainerInput>
+          </View>
+          <S.Label>{inputStrings.cel.label}</S.Label>
+          <View>
+            <S.ContainerInput>
+              <MaskInput
+                placeholder={inputStrings.cel.placeholder}
+                value={celular}
+                onChangeText={(value) => setCelular(value)}
+                inputMode="numeric"
+                mask={[
+                  "(",
+                  /\d/,
+                  /\d/,
+                  ")",
+                  " ",
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  "-",
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                  /\d/,
+                ]}
+              />
+            </S.ContainerInput>
+          </View>
+          <Input
+            label={inputStrings.password.label}
+            placeholder={inputStrings.password.placeholder}
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+          />
+          <Input
+            label={inputStrings.passwordConfirm.label}
+            placeholder={inputStrings.passwordConfirm.placeholder}
+            value={passwordConfirm}
+            onChangeText={(value) => setPasswordConfirm(value)}
+          />
+          <Typography
+            style={{
+              marginVertical: 15,
+              fontFamily: "Poppins-bold",
+            }}
+            color="positive"
+            size="huge"
+            weight="regular"
+          >
+            Endereço
           </Typography>
-        </Button>
+          <S.Label>{inputStrings.cep.placeholder}</S.Label>
+          <S.ContainerInput>
+            <MaskInput
+              placeholder={inputStrings.cep.placeholder}
+              value={cep}
+              inputMode="numeric"
+              onBlur={() => getCep()}
+              onChangeText={(masked, unmasked) => {
+                setCep(masked);
+              }}
+              mask={[/\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/]}
+            />
+          </S.ContainerInput>
+          <Input
+            label={inputStrings.street.label}
+            placeholder={inputStrings.street.placeholder}
+            value={logradouro}
+            onChangeText={(value) => setLogradouro(value)}
+          />
+          <Input
+            label={inputStrings.number.label}
+            placeholder={inputStrings.number.placeholder}
+            value={numero}
+            onChangeText={(value) => setNumero(value)}
+            inputMode="numeric"
+          />
+          <Input
+            label={inputStrings.neighbor.label}
+            placeholder={inputStrings.neighbor.placeholder}
+            value={bairro}
+            onChangeText={(value) => setBairro(value)}
+          />
+          <Input
+            label={inputStrings.complement.label}
+            placeholder={inputStrings.complement.placeholder}
+            value={complemento}
+            onChangeText={(value) => setComplemento(value)}
+          />
+          <Input
+            label={inputStrings.state.label}
+            placeholder={inputStrings.state.placeholder}
+            value={estado}
+            onChangeText={(value) => setEstado(value)}
+          />
+          <Input
+            label={inputStrings.city.label}
+            placeholder={inputStrings.city.placeholder}
+            value={cidade}
+            onChangeText={(value) => setCidade(value)}
+          />
+          <Button
+            bg-color="positive"
+            style={{
+              marginVertical: 30,
+            }}
+            loading={onSignup.isLoading}
+            onPress={() => onSumbit()}
+          >
+            <Typography size="normal" color="pure-white" weight="bold">
+              Cadastrar
+            </Typography>
+          </Button>
+        </>
       </View>
       {onSignup.isError && (
         <FlashMessage
