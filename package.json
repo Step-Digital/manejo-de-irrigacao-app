@@ -9,9 +9,12 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@ant-design/react-native": "^5.0.4",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "@rneui/base": "^4.0.0-rc.8",
+    "@rneui/themed": "^4.0.0-rc.8",
     "@tanstack/react-query": "^4.29.19",
     "@types/react": "~18.0.27",
     "axios": "^1.4.0",
@@ -34,6 +37,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-select-dropdown": "^3.3.4",
     "react-native-svg": "13.4.0",
+    "react-native-toast-message": "^2.1.6",
     "styled-components": "^6.0.2",
     "typescript": "^4.9.4",
     "yup": "^1.2.0"

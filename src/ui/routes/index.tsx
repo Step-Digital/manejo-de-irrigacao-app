@@ -13,9 +13,12 @@ import { MakeGroundInfo } from "../../core/main/factories/pages/GroundInfo/groun
 import { MakeBombInfo } from "../../core/main/factories/pages/bombInfo/bombInfo.factory";
 import { MakeSystemInfo } from "../../core/main/factories/pages/systemInfo/systemInfo.factory";
 import { MakeCulture } from "../../core/main/factories/pages/Culture/culture.factory";
+import { MakeMenu } from "../../core/main/factories/pages/menu/menu.factory";
+import { MakeProfile } from "../../core/main/factories/pages/profile/profile.factory";
 import { PropertyRegistered } from "../pages/propertyRegistered";
 import { CultureRegistered } from "../pages/CultureRegistered";
-import { Menu } from "../pages/Menu";
+import { About } from "../pages/About";
+import { Profile } from "../pages/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +42,9 @@ export const GlobalRoutes: React.FC = () => {
       <Stack.Screen name="PropertyRegistered" component={PropertyRegistered} />
       <Stack.Screen name="CultureInfo" component={MakeCulture} />
       <Stack.Screen name="CultureRegistered" component={CultureRegistered} />
-      <Stack.Screen name="Menu" component={Menu} />
+      <Stack.Screen name="Menu" component={MakeMenu} />
+      <Stack.Screen name="About" component={About} />
+      <Stack.Screen name="Profile" component={MakeProfile} />
       
 
     </Stack.Navigator>

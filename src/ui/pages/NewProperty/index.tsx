@@ -24,6 +24,7 @@ import { Select } from "../../components/SelectInput";
 
 import * as S from "./style";
 import { AuthDomain } from "../../../core/domain/auth.domain";
+import { ShowToast } from "../../components/toast";
 
 type NewPropertyProps = {
   auth: AuthDomain;
@@ -67,7 +68,7 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
     area_propriedade,
   };
 
-  console.log('valida', validateValues)
+  console.log("valida", validateValues);
 
   const sumbitValues = {
     nome,
@@ -98,7 +99,6 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
 
   const createProperty = useMutation<AxiosError>({
     mutationFn: () => propertyService.newProperty(sumbitValues),
-    onSuccess: () => navigation.navigate("GroundInfo"),
   });
 
   const onSubmit = async () => {
@@ -238,17 +238,22 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
               </Typography>
             </S.GPSButtonFull>
           )}
-          {loadLatLng && location === null && <Typography
-          style={{
-            fontFamily: "Poppins-regular",
-            fontSize: 14,
-            textAlign: "center",
-            lineHeight: 15,
-            marginLeft: 16,
-          }}
-          color="positive"
-          size="normal"
-          weight="bold">{text}</Typography>}
+          {loadLatLng && location === null && (
+            <Typography
+              style={{
+                fontFamily: "Poppins-regular",
+                fontSize: 14,
+                textAlign: "center",
+                lineHeight: 15,
+                marginLeft: 16,
+              }}
+              color="positive"
+              size="normal"
+              weight="bold"
+            >
+              {text}
+            </Typography>
+          )}
           {showForm && (
             <View style={{ flex: 1 }}>
               <Input
@@ -317,8 +322,18 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
                       style={{ width: 160 }}
                       value={cep}
                       onChangeText={(value) => setCep(value)}
-                      mask={[/\d/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/]}
-                      />
+                      mask={[
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                        "-",
+                        /\d/,
+                        /\d/,
+                        /\d/,
+                      ]}
+                    />
                   </S.ContainerInput>
                 </View>
               </S.InputsContainer>
@@ -360,6 +375,15 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
             <AntDesign name="arrowright" size={24} color="#fff" />
           </Button>
         </S.Content>
+        {createProperty.error && (
+          <ShowToast message={strings.newProperty.error} />
+        )}
+        {createProperty.isSuccess && (
+          <>
+            <ShowToast message={strings.newProperty.success} />
+            {navigation.navigate("GroundInfo")}
+          </>
+        )}
       </ScrollView>
     </S.Container>
   );

@@ -58,7 +58,7 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
     densidade,
   }
 
-  const id = !isLoading && data.data[data.data.length - 1].id_propriedade
+  const id = data && data.data[data.data.length - 1].id_propriedade
 
   const sumbitValues = {
     tipo_solo,

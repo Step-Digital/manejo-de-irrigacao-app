@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
+import Toast from "react-native-toast-message";
 import MaskInput from "react-native-mask-input";
 import { AuthDomain } from "../../../core/domain/auth.domain";
-import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  View,
+  ToastAndroid,
+} from "react-native";
 import { Button } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
@@ -14,7 +21,8 @@ import { AxiosError } from "axios";
 import { FlashMessage } from "../../components/flash-message";
 import { signupValidators } from "../../../utils/validators";
 import { strings } from "../../../utils";
-import ceppromise from 'cep-promise'
+import { ShowToast } from "../../components/toast";
+import ceppromise from "cep-promise";
 
 import * as S from "./style";
 
@@ -92,10 +100,6 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
 
   const onSignup = useMutation<SignupModel, AxiosError>({
     mutationFn: () => auth.signup(submitValues),
-    onSuccess: () => {
-      navigation.navigate("Login");
-    },
-    onError: (data) => console.log("data", JSON.stringify(data, null, 2)),
   });
 
   const onSumbit = async () => {
@@ -118,16 +122,16 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
     }
     try {
       const { city, neighborhood, street, state } = await ceppromise(
-        cepString.replace(/[^0-9]+/g, '')
+        cepString.replace(/[^0-9]+/g, "")
       );
       setCidade(city);
       setBairro(neighborhood);
       setLogradouro(street);
-      setEstado(state)
+      setEstado(state);
       setShowLoad(false);
     } catch (e) {
       setShowLoad(false);
-      Alert.alert('O CEP não foi encontrado!');
+      Alert.alert("O CEP não foi encontrado!");
     }
   };
 
@@ -270,7 +274,7 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
           >
             Endereço
           </Typography>
-          <S.Label>{inputStrings.cep.placeholder}</S.Label>
+          <S.Label>{inputStrings.cep.label}</S.Label>
           <S.ContainerInput>
             <MaskInput
               placeholder={inputStrings.cep.placeholder}
@@ -334,21 +338,14 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
           </Button>
         </>
       </View>
-      {onSignup.isError && (
-        <FlashMessage
-          title={onSignup.error.message}
-          duration={3000}
-          show
-          type="error"
-        />
+      {onSignup.error && (
+        <ShowToast message={onSignup.error.message} />
       )}
       {onSignup.isSuccess && (
-        <FlashMessage
-          title={"Cadastro realizado com sucesso!"}
-          duration={3000}
-          show
-          type="success"
-        />
+        <>
+          <ShowToast message="Cadastro realizado com sucesso" />
+          {navigation.navigate('Login')}
+        </>
       )}
     </ScrollView>
   );

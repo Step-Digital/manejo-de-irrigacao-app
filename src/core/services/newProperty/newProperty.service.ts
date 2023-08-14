@@ -37,6 +37,18 @@ export class NewPropertyService implements NewPropertyDomain {
     }
   }
 
+  async getAllPropertiesData(): Promise<any> {
+    try {
+      console.log("ENTREI getAllPropertiesData PAPAI")
+      const { token } = await this.authRepository.getToken();
+      return await this.newPropertyRepository.getAllPropertiesData(token);
+    } catch (error) {
+      console.log("CHORAAA getAllPropertiesData")
+      console.log(error)
+    }
+  }
+
+
   async newIrrigationSystem(params: SystemInfoDTO): Promise<any> {
     try {
       const { token } = await this.authRepository.getToken();

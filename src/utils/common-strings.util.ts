@@ -3,6 +3,13 @@ export default {
     createAccount: "Crie uma conta gratuitamente",
     haveRegistration: "Já possuo cadastro",
   },
+  about: {
+    header: 'Sobre o Projeto',
+    title: 'Quem somos nós',
+    about: 'Em desenvolvimento...',
+    namesTitle: 'Nomes dos envolvidos',
+    footer: 'Realização'
+  },
   header: {
     title: 'Recomendação Diária'
   },
@@ -74,7 +81,8 @@ export default {
     addButton: {
       addCulture: 'Adicionar Cultura',
       addProperty: 'Nova Propriedade'
-    }
+    },
+    info: 'Para esse calculo de irrigação é necessário o dado de precipitação na sua propriedade. Quanto maior a precisão nos dados, maior a assertividade no manejo de irrigação.'
   },
   modal: {
     title: 'Bem-Vindo!',
@@ -88,6 +96,21 @@ export default {
     onboarding3: 'Além disso, você poderá controlar e monitorar seu sistema de irrigação para obter o melhor desempenho para sua produção.',
     onboarding4: 'Estamos aqui para ajudá-lo a ter sucesso com suas culturas! Comece agora para ter acesso a todas as ferramentas e informações.'
   },
+  preciptationModal: {
+    title: 'Precipitação Diária',
+    text: 'Para calcular a irrigação diária, precisamos saber a precipitação do dia anterior na sua propriedade.',
+    inputs: {
+      property: {
+        label: 'Nome da Propriedade',
+        placeholder: 'Ex. 0 mm'
+      },
+      property2: {
+        label: 'Nome da Propriedade 2',
+        placeholder: 'Ex. 0 mm'
+      }
+    },
+    button: 'Salvar'
+  },
   newProperty: {
     header: {
       title: 'Nova Propriedade',
@@ -100,6 +123,8 @@ export default {
     gpsButton: {
       text: 'Detectar via GPS'
     },
+    success:'Propriedade cadastrada com sucesso',
+    error:'Erro ao cadastrar a propriedade',
     inputs: {
       name: {
         label: 'Nome da Propriedade',
@@ -146,6 +171,8 @@ export default {
   groundInfo: {
     title: 'Dados do Solo',
     addButtonn: 'Adicionar Solo',
+    success:'Solo cadastrado com sucesso',
+    error:'Erro ao cadastrar a solo',
     inputs: {
       groundType: {
         label: 'Tipo do Solo',
@@ -168,6 +195,8 @@ export default {
   bombInfo: {
     title: 'Dados da Motobomba',
     addButtonn: 'Adicionar Motobomba',
+    success:'Motobomba cadastrada com sucesso',
+    error:'Erro ao cadastrar a motobomba',
     inputs: {
       manufacturer: {
         label: 'Fabricante',
@@ -198,6 +227,8 @@ export default {
   SystemInfo: {
     title: 'Sistema de Irrigação',
     addButtonn: 'Adicionar Sistema de Irrigação',
+    success:'Sistema cadastrada com sucesso',
+    error:'Erro ao cadastrar a sistema',
     inputs: {
       name: {
         label: 'Nome do Sistema',
