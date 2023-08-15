@@ -44,6 +44,7 @@ export const Select = ({
   label,
   width = '100%',
   setValue,
+  setId,
 }) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -65,6 +66,7 @@ export const Select = ({
     } else {
       setSelected(item)
       setValue(item?.[objValue])
+      setId(item?.[objKey])
       setVisible(false)
     }
   }

@@ -12,10 +12,13 @@ import { MakeNewProperty } from "../../core/main/factories/pages/newProperty/new
 import { MakeGroundInfo } from "../../core/main/factories/pages/GroundInfo/groundInfo.factory";
 import { MakeBombInfo } from "../../core/main/factories/pages/bombInfo/bombInfo.factory";
 import { MakeSystemInfo } from "../../core/main/factories/pages/systemInfo/systemInfo.factory";
+import { MakeCulture } from "../../core/main/factories/pages/Culture/culture.factory";
+import { MakeMenu } from "../../core/main/factories/pages/menu/menu.factory";
+import { MakeProfile } from "../../core/main/factories/pages/profile/profile.factory";
 import { PropertyRegistered } from "../pages/propertyRegistered";
-import { CultureInfo } from "../pages/CultureInfo";
 import { CultureRegistered } from "../pages/CultureRegistered";
-import { Menu } from "../pages/Menu";
+import { About } from "../pages/About";
+import { Profile } from "../pages/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,15 +33,20 @@ export const GlobalRoutes: React.FC = () => {
       <Stack.Screen name="Home" component={MakeHome} />
       <Stack.Screen name="Login" component={MakeLogin} />
       <Stack.Screen name="HomeLogged" component={MakeHomeLogged} />
-      <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen name="Signup" component={MakeSignup} />
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
       <Stack.Screen name="NewProperty" component={MakeNewProperty} />
       <Stack.Screen name="GroundInfo" component={MakeGroundInfo} />
       <Stack.Screen name="BombInfo" component={MakeBombInfo} />
       <Stack.Screen name="SystemInfo" component={MakeSystemInfo} />
       <Stack.Screen name="PropertyRegistered" component={PropertyRegistered} />
-      <Stack.Screen name="CultureInfo" component={CultureInfo} />
+      <Stack.Screen name="CultureInfo" component={MakeCulture} />
       <Stack.Screen name="CultureRegistered" component={CultureRegistered} />
+      <Stack.Screen name="Menu" component={MakeMenu} />
+      <Stack.Screen name="About" component={About} />
+      <Stack.Screen name="Profile" component={MakeProfile} />
+      
+
     </Stack.Navigator>
   );
 };

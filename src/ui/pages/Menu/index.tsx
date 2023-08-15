@@ -11,9 +11,21 @@ import { NavigationProps } from "../../routes/types/StackNavigationProps";
 
 import * as S from './style';
 import { Typography } from '../../components/typography';
+import { AuthDomain } from '../../../core/domain/auth.domain';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
-export function Menu(){
+type MenuProps = {
+  auth: AuthDomain;
+};
+
+export const  Menu: React.FC = ({ auth }: MenuProps) => {
   const navigation = useNavigation<NavigationProps>();
+
+  const logout = useMutation<AxiosError>({
+    mutationFn: () => auth.logout({}),
+    onSuccess: () => navigation.navigate('Home'),
+  });
 
   return (
     <S.Container>
@@ -64,7 +76,7 @@ export function Menu(){
               {strings.menu.recomendations}
             </Typography>
         </S.MenuOptionContainer>
-        <S.MenuOptionContainer>
+        <S.MenuOptionContainer onPress={() => navigation.navigate('HomeLogged')}>
         <Image
           source={require("../../../../assets/Regular.png")}
           style={{
@@ -86,7 +98,7 @@ export function Menu(){
             {strings.menu.myProperties}
           </Typography>
         </S.MenuOptionContainer>
-        <S.MenuOptionContainer>
+        <S.MenuOptionContainer onPress={() => navigation.navigate('Profile')}>
           <Ionicons name="person-outline" size={16} color="white" />
           <Typography
             style={{
@@ -102,7 +114,7 @@ export function Menu(){
             {strings.menu.profile}
           </Typography>
         </S.MenuOptionContainer>
-        <S.MenuOptionContainer>
+        <S.MenuOptionContainer onPress={() => navigation.navigate('About')} >
           <FontAwesome5 name="building" size={16} color="white" />
           <Typography
               style={{
@@ -118,7 +130,7 @@ export function Menu(){
               {strings.menu.about}
             </Typography>
         </S.MenuOptionContainer>
-        <S.MenuOptionContainer>
+        <S.MenuOptionContainer onPress={() => logout.mutate()}>
           <AntDesign name="closecircleo" size={16} color="white" />
           <Typography
               style={{

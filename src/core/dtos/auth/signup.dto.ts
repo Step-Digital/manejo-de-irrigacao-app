@@ -1,5 +1,3 @@
-export type Role = "user"
-
 export type SignupDTO = {
   nome: string;
   email: string;
@@ -14,5 +12,5 @@ export type SignupDTO = {
   cidade: string;
   estado: string;
   password: string;
-  roles: Role[];
+  roles: String[];
 }

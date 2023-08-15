@@ -36,6 +36,19 @@ export class NewPropertyRepository implements NewPropertyDomain {
     };
   }
 
+  async getAllPropertiesData(token: string): Promise<any> {
+    const {
+      data,
+    } = await this.httpClient.get<any>("/propriedade/allPropertyData", {
+      headers: {
+        ["Authorization"]: `Bearer ${token}`
+      }
+    });
+    return {
+      data,
+    };
+  }
+
   async newBomb(params: NewBombDTO, token: string): Promise<any> {
     const {
       data: { data },

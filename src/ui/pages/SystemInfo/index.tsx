@@ -61,7 +61,7 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
     queryFn: () => propertyService.getProperties()
   })
 
-  const { data: dataSystems, isLoading: isLoadingSystems } = useQuery({
+  const { data: dataSystems, isLoading: isLoadingSystems, refetch } = useQuery({
     queryKey: ["irrigationSystems"], 
     queryFn: () => irrigationSystemService.getSystems()
   })
@@ -125,13 +125,13 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
     comprimento_vao_balanco: 0,
     velocidade_ultima_torre: 0,
     ativo: true,
-    id_propriedade: data.data[data.data.length - 1].id_propriedade,
+    id_propriedade: !isLoading && data.data[data.data.length - 1].id_propriedade,
   }
 
   const createSystem = useMutation<AxiosError>({
     mutationFn: () => irrigationSystemService.newIrrigationSystem(sumbitValues),
     onSuccess: (data) => {
-      console.log(data);
+      refetch()
     },
   });
 
@@ -150,9 +150,10 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
 
   const removeSystem = useMutation<AxiosError>({
     // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
-    mutationFn: () => irrigationSystemService.deleteSystem(2),
+    mutationFn: (id) => irrigationSystemService.deleteSystem(Number(id)),
+    mutationKey: ['irrigationSystems'],
     onSuccess: (data) => {
-      console.log(data);
+      refetch()
     },
   });
 
@@ -162,14 +163,6 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
    } else {
     return createSystem.mutate()
    }
-  }
-
-  if (!isLoading) {
-    console.log('properties', JSON.stringify(data.data[data.data.length - 1].id_propriedade, null, 2))
-  }
-
-  if (!isLoadingSystems) {
-    console.log('systems', JSON.stringify(dataSystems.data, null, 2))
   }
 
   if (isLoading && isLoadingSystems) return <Text>Carregando...</Text>
@@ -189,52 +182,41 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
         <ProgressBar active width="80px" />
       </S.ProgressBarContainer>
       <S.Content>
-      <Formik
-          initialValues={initialValues}
-          onSubmit={() => {}}
-          validationSchema={systemValidators}
-        >
-          {({ 
-            values,
-            errors,
-            handleChange,
-            isValid,
-            dirty
-         }) => (
+        <View>
+          <Typography
+            style={{
+              marginTop: 24,
+              fontFamily: 'Poppins-bold',
+              fontSize: 22,
+            }}
+            color="positive"
+            size="normal"
+            weight="regular"
+          >
+            {strings.SystemInfo.title}
+          </Typography>
+          <Input 
+            label={inputStrings.name.label} 
+            placeholder={inputStrings.name.placeholder}  
+            style={{ fontFamily: 'Poppins-regular' }} 
+            value={nome}
+            onChangeText={(value) => setNome(value)}
+          />
+          <Input 
+            label={inputStrings.efficiency.label} 
+            placeholder={inputStrings.efficiency.placeholder}   
+            value={eficiencia_irrigacao}
+            onChangeText={(value) => setEficiencia_irrigacao(value)}
+            inputMode="numeric"
+          />
+          <Input 
+            label={inputStrings.area.label} 
+            placeholder={inputStrings.area.placeholder}   
+            value={area_total_plantio}
+            onChangeText={(value) => setArea_total_plantio(value)}
+            inputMode="numeric"
+          />
           <View>
-            <Typography
-              style={{
-                marginTop: 24,
-                fontFamily: 'Poppins-bold',
-                fontSize: 22,
-              }}
-              color="positive"
-              size="normal"
-              weight="regular"
-            >
-              {strings.SystemInfo.title}
-            </Typography>
-            <Input 
-              label={inputStrings.name.label} 
-              placeholder={inputStrings.name.placeholder}  
-              style={{ fontFamily: 'Poppins-regular' }} 
-              value={nome}
-              onChangeText={(value) => setNome(value)}
-            />
-            <Input 
-              label={inputStrings.efficiency.label} 
-              placeholder={inputStrings.efficiency.placeholder}   
-              value={eficiencia_irrigacao}
-              onChangeText={(value) => setEficiencia_irrigacao(value)}
-              inputMode="numeric"
-            />
-            <Input 
-              label={inputStrings.area.label} 
-              placeholder={inputStrings.area.placeholder}   
-              value={area_total_plantio}
-              onChangeText={(value) => setArea_total_plantio(value)}
-              inputMode="numeric"
-            />
             <Input 
               label={inputStrings.sectorQuantity.label} 
               placeholder={inputStrings.sectorQuantity.placeholder}   
@@ -242,222 +224,221 @@ export const SystemInfo:React.FC<SystemInfoProps> = ({ irrigationSystemService, 
               onChangeText={(value) => setQuantidade_setores(value)}
               inputMode="numeric"
             />
-            <Select 
-              label={inputStrings.irrigationType.label}
-              touchableText={inputStrings.irrigationType.placeholder}
-              data={irrigationTypeSelect}
-              setValue={setTipo_irrigacao}
-            />
+          </View>
+          <Select 
+            label={inputStrings.irrigationType.label}
+            touchableText={inputStrings.irrigationType.placeholder}
+            data={irrigationTypeSelect}
+            setValue={setTipo_irrigacao}
+            setId={() => {}}
+          />
 
-            {tipo_irrigacao === 'Aspersão Convencional' && (
-              <>
-                <Input 
-                  label={inputStrings.sectorName.label} 
-                  placeholder={inputStrings.sectorName.placeholder}  
-                  value={nome_setor}
-                  onChangeText={(value) => setNome_setor(value)}
-                />
-                <Input 
-                  label={inputStrings.irrigatedArea.label} 
-                  placeholder={inputStrings.irrigatedArea.placeholder}  
-                  value={area_irrigada}
-                  onChangeText={(value) => setArea_irrigada(value)}
-                  inputMode="numeric"
-                />
-                <Input 
-                  label={inputStrings.sprinklerFlow.label} 
-                  placeholder={inputStrings.sprinklerFlow.placeholder}  
-                  value={vazao_aspressor}
-                  onChangeText={(value) => setVazao_aspressor(value)}
-                  inputMode="numeric"
-                />
-                <Input 
-                  label={inputStrings.sprinklerSpace.label} 
-                  placeholder={inputStrings.sprinklerSpace.placeholder}  
-                  value={espacamento_aspressor}
-                  onChangeText={(value) => setEspacamento_aspressor(value)}
-                  inputMode="numeric"
-                />
-                <Input 
-                  label={inputStrings.linesSpace.label} 
-                  placeholder={inputStrings.linesSpace.placeholder}  
-                  value={espacamento_linha}
-                  onChangeText={(value) => setEspacamento_linha(value)}
-                  inputMode="numeric"
-                />
-                <Input 
-                  label={inputStrings.CUC.label} 
-                  placeholder={inputStrings.CUC.placeholder}  
-                  value={coeficiente_uniformidade}
-                  onChangeText={(value) => setCoeficiente_uniformidade(value)}
-                  inputMode="numeric"
-                />
-                <Input 
-                  label={inputStrings.efficiencySystem.label} 
-                  placeholder={inputStrings.efficiencySystem.placeholder}  
-                  value={eficiencia_sistema}
-                  onChangeText={(value) => setEficiencia_sistema(value)}
-                  inputMode="numeric"
-                />
-              </>
-            )}
+          {tipo_irrigacao === 'Aspersão Convencional' && (
+            <>
+              <Input 
+                label={inputStrings.sectorName.label} 
+                placeholder={inputStrings.sectorName.placeholder}  
+                value={nome_setor}
+                onChangeText={(value) => setNome_setor(value)}
+              />
+              <Input 
+                label={inputStrings.irrigatedArea.label} 
+                placeholder={inputStrings.irrigatedArea.placeholder}  
+                value={area_irrigada}
+                onChangeText={(value) => setArea_irrigada(value)}
+                inputMode="numeric"
+              />
+              <Input 
+                label={inputStrings.sprinklerFlow.label} 
+                placeholder={inputStrings.sprinklerFlow.placeholder}  
+                value={vazao_aspressor}
+                onChangeText={(value) => setVazao_aspressor(value)}
+                inputMode="numeric"
+              />
+              <Input 
+                label={inputStrings.sprinklerSpace.label} 
+                placeholder={inputStrings.sprinklerSpace.placeholder}  
+                value={espacamento_aspressor}
+                onChangeText={(value) => setEspacamento_aspressor(value)}
+                inputMode="numeric"
+              />
+              <Input 
+                label={inputStrings.linesSpace.label} 
+                placeholder={inputStrings.linesSpace.placeholder}  
+                value={espacamento_linha}
+                onChangeText={(value) => setEspacamento_linha(value)}
+                inputMode="numeric"
+              />
+              <Input 
+                label={inputStrings.CUC.label} 
+                placeholder={inputStrings.CUC.placeholder}  
+                value={coeficiente_uniformidade}
+                onChangeText={(value) => setCoeficiente_uniformidade(value)}
+                inputMode="numeric"
+              />
+              <Input 
+                label={inputStrings.efficiencySystem.label} 
+                placeholder={inputStrings.efficiencySystem.placeholder}  
+                value={eficiencia_sistema}
+                onChangeText={(value) => setEficiencia_sistema(value)}
+                inputMode="numeric"
+              />
+            </>
+          )}
 
-            {tipo_irrigacao === 'Microaspersão ou Gotejamento' && (
-              <>
-                <Input 
-                  label={inputStrings.sectorName.label} 
-                  placeholder={inputStrings.sectorName.placeholder}
-                  value={nome_setor}
-                  onChangeText={(value) => setNome_setor(value)}
-                  />
-                <Input 
-                  label={inputStrings.irrigatedArea.label} 
-                  placeholder={inputStrings.irrigatedArea.placeholder}
-                  value={area_irrigada}
-                  onChangeText={(value) => setArea_irrigada(value)} 
+          {tipo_irrigacao === 'Microaspersão ou Gotejamento' && (
+            <>
+              <Input 
+                label={inputStrings.sectorName.label} 
+                placeholder={inputStrings.sectorName.placeholder}
+                value={nome_setor}
+                onChangeText={(value) => setNome_setor(value)}
                 />
-                <Input 
-                  label={inputStrings.issuerFlow.label} 
-                  placeholder={inputStrings.issuerFlow.placeholder}
-                  value={vazao_emissor}
-                  onChangeText={(value) => setVazao_emissor(value)} 
-                />
-                <Input 
-                  label={inputStrings.issuerSpace.label} 
-                  placeholder={inputStrings.issuerSpace.placeholder} 
-                  value={espacamento_emissor}
-                  onChangeText={(value) => setEspacamento_emissor(value)}
-                />
-                <Input 
-                  label={inputStrings.linesSpace.label} 
-                  placeholder={inputStrings.linesSpace.placeholder} 
-                  value={espacamento_linha}
-                  onChangeText={(value) => setEspacamento_linha(value)}
-                />
-                <Input 
-                  label={inputStrings.CUC.label} 
-                  placeholder={inputStrings.CUC.placeholder}  
-                  value={coeficiente_uniformidade}
-                  onChangeText={(value) => setCoeficiente_uniformidade(value)}
-                />
-                <Input 
-                  label={inputStrings.efficiencySystem.label} 
-                  placeholder={inputStrings.efficiencySystem.placeholder}  
-                  value={eficiencia_sistema}
-                  onChangeText={(value) => setEficiencia_sistema(value)}
-                />
-                <Input 
-                  label={inputStrings.wetAreaPercentage.label} 
-                  placeholder={inputStrings.wetAreaPercentage.placeholder} 
-                  value={percentual_area_molhada}
-                  onChangeText={(value) => setpercentual_area_molhada(value)}
-                />
-                <Input 
-                  label={inputStrings.shadedAreaPercentage.label} 
-                  placeholder={inputStrings.shadedAreaPercentage.placeholder} 
-                  value={percentual_area_sombreada}
-                  onChangeText={(value) => setPercentual_area_sombreada(value)}
-                />
-              </>
-            )}
+              <Input 
+                label={inputStrings.irrigatedArea.label} 
+                placeholder={inputStrings.irrigatedArea.placeholder}
+                value={area_irrigada}
+                onChangeText={(value) => setArea_irrigada(value)} 
+              />
+              <Input 
+                label={inputStrings.issuerFlow.label} 
+                placeholder={inputStrings.issuerFlow.placeholder}
+                value={vazao_emissor}
+                onChangeText={(value) => setVazao_emissor(value)} 
+              />
+              <Input 
+                label={inputStrings.issuerSpace.label} 
+                placeholder={inputStrings.issuerSpace.placeholder} 
+                value={espacamento_emissor}
+                onChangeText={(value) => setEspacamento_emissor(value)}
+              />
+              <Input 
+                label={inputStrings.linesSpace.label} 
+                placeholder={inputStrings.linesSpace.placeholder} 
+                value={espacamento_linha}
+                onChangeText={(value) => setEspacamento_linha(value)}
+              />
+              <Input 
+                label={inputStrings.CUC.label} 
+                placeholder={inputStrings.CUC.placeholder}  
+                value={coeficiente_uniformidade}
+                onChangeText={(value) => setCoeficiente_uniformidade(value)}
+              />
+              <Input 
+                label={inputStrings.efficiencySystem.label} 
+                placeholder={inputStrings.efficiencySystem.placeholder}  
+                value={eficiencia_sistema}
+                onChangeText={(value) => setEficiencia_sistema(value)}
+              />
+              <Input 
+                label={inputStrings.wetAreaPercentage.label} 
+                placeholder={inputStrings.wetAreaPercentage.placeholder} 
+                value={percentual_area_molhada}
+                onChangeText={(value) => setpercentual_area_molhada(value)}
+              />
+              <Input 
+                label={inputStrings.shadedAreaPercentage.label} 
+                placeholder={inputStrings.shadedAreaPercentage.placeholder} 
+                value={percentual_area_sombreada}
+                onChangeText={(value) => setPercentual_area_sombreada(value)}
+              />
+            </>
+          )}
 
-            <S.AddButton onPress={() => onSumbit()}>
-                <Ionicons name="add" size={24} color="#fff" />
-                <Typography
-                  style={{
-                    fontFamily: 'Poppins-bold',
-                    fontSize: 12,
-                  }}
-                  color="pure-white"
-                  size="normal"
-                  weight="regular"
-                  >
-                  {strings.SystemInfo.addButtonn}
-                </Typography>
-            </S.AddButton>
-
-            {dataSystems && dataSystems.data.map(item => {
-              if (item.tipo_irrigacao === 'Aspersão Convencional') {
-                return (
-                  <S.CardContainer key={item.id_sistema_irrigacao}>
-                    <S.CardContent>
-                      <S.InfoTitle>{item.nome}</S.InfoTitle>
-                      <S.InfoText>Eficiência de Irrigação: <S.InfoTextBold>{item.eficiencia_irrigacao}%</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Área total do Plantio: <S.InfoTextBold>{item.area_total_plantio}m²</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Quantidade de Setores: <S.InfoTextBold>{item.quantidade_setores}</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Tipo de Irrigação: <S.InfoTextBold>{item.tipo_irrigacao}</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Nome do Setor: <S.InfoTextBold>{item.nome_setor}</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Área irrigada: <S.InfoTextBold>{item.area_irrigada}m²</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Vazão do Aspersor: <S.InfoTextBold>{item.vazao_aspressor}L/H</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Espaçamento entre Aspersores: <S.InfoTextBold>{item.espacamento_aspressor}m</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Espaçamento entre linhas: <S.InfoTextBold>{item.espacamento_linha}m</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Coeficiente de Uniformidade CUC: <S.InfoTextBold>{item.coeficiente_uniformidade}%</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Eficiência do Sistema: <S.InfoTextBold>{item.eficiencia_sistema}%</S.InfoTextBold></S.InfoText>
-                    </S.CardContent>
-                    <TouchableOpacity onPress={() => removeSystem.mutate()}>
-                      <Ionicons name="trash-outline" size={24} color="red" />
-                    </TouchableOpacity>
-                  </S.CardContainer>
-                )
-              }
-              if (item.tipo_irrigacao === 'Microaspersão ou Gotejamento') {
-                return (
-                  <S.CardContainer key={item.id_sistema_irrigacao}>
-                    <S.CardContent>
-                      <S.InfoTitle>{item.nome}</S.InfoTitle>
-                      <S.InfoText>Eficiência de Irrigação: <S.InfoTextBold>{item.eficiencia_irrigacao}%</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Área total do Plantio: <S.InfoTextBold>{item.area_total_plantio}m²</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Quantidade de Setores: <S.InfoTextBold>{item.quantidade_setores}</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Tipo de Irrigação: <S.InfoTextBold>{item.tipo_irrigacao}</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Nome do Setor: <S.InfoTextBold>{item.nome_setor}</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Área irrigada: <S.InfoTextBold>{item.area_irrigada}m²</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Vazão do Emissor: <S.InfoTextBold>{item.vazao_emissor}L/H</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Espaçamento entre Emissores: <S.InfoTextBold>{item.espacamento_emissor}m</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Espaçamento entre linhas: <S.InfoTextBold>{item.espacamento_linha}m</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Coeficiente de Uniformidade CUC: <S.InfoTextBold>{item.coeficiente_uniformidade}%</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Eficiência do Sistema: <S.InfoTextBold>{item.eficiencia_sistema}%</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Percentual de aŕea molhada: <S.InfoTextBold>{item.percentual_area_molhada}%</S.InfoTextBold></S.InfoText>
-                      <S.InfoText>Percentual de aŕea sombreada: <S.InfoTextBold>{item.percentual_area_sombreada}%</S.InfoTextBold></S.InfoText>
-                    </S.CardContent>
-                    <TouchableOpacity onPress={() => removeSystem.mutate()}>
-                      <Ionicons name="trash-outline" size={24} color="red" />
-                    </TouchableOpacity>
-                  </S.CardContainer>
-                )
-              }
-            })}
-
-            <Button 
-              onPress={() => navigation.navigate('PropertyRegistered')}
-              disabled={!systems} 
-              bg-color="positive" 
-              style={{ 
-                display: 'flex', 
-                flexDirection: 'row', 
-                justifyContent: 'flex-end', 
-                paddingRight: 24, 
-                marginTop: 24, 
-                marginBottom: 24 
-              }}
-              >
+          <S.AddButton onPress={() => onSumbit()}>
+              <Ionicons name="add" size={24} color="#fff" />
               <Typography
                 style={{
                   fontFamily: 'Poppins-bold',
-                  fontSize: 18,
-                  width: 190,
+                  fontSize: 12,
                 }}
                 color="pure-white"
                 size="normal"
                 weight="regular"
                 >
-              Continuar
+                {strings.SystemInfo.addButtonn}
               </Typography>
-              <AntDesign name="arrowright" size={24} color="#fff" />
-            </Button>
-          </View>
-         )}
-        </Formik>
-        
+          </S.AddButton>
+
+          {dataSystems && dataSystems.data.map(item => {
+            if (item.tipo_irrigacao === 'Aspersão Convencional') {
+              return (
+                <S.CardContainer key={item.id_sistema_irrigacao}>
+                  <S.CardContent>
+                    <S.InfoTitle>{item.nome}</S.InfoTitle>
+                    <S.InfoText>Eficiência de Irrigação: <S.InfoTextBold>{item.eficiencia_irrigacao}%</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Área total do Plantio: <S.InfoTextBold>{item.area_total_plantio}m²</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Quantidade de Setores: <S.InfoTextBold>{item.quantidade_setores}</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Tipo de Irrigação: <S.InfoTextBold>{item.tipo_irrigacao}</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Nome do Setor: <S.InfoTextBold>{item.nome_setor}</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Área irrigada: <S.InfoTextBold>{item.area_irrigada}m²</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Vazão do Aspersor: <S.InfoTextBold>{item.vazao_aspressor}L/H</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Espaçamento entre Aspersores: <S.InfoTextBold>{item.espacamento_aspressor}m</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Espaçamento entre linhas: <S.InfoTextBold>{item.espacamento_linha}m</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Coeficiente de Uniformidade CUC: <S.InfoTextBold>{item.coeficiente_uniformidade}%</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Eficiência do Sistema: <S.InfoTextBold>{item.eficiencia_sistema}%</S.InfoTextBold></S.InfoText>
+                  </S.CardContent>
+                  <TouchableOpacity onPress={() => removeSystem.mutate(item.id_sistema_irrigacao)}>
+                    <Ionicons name="trash-outline" size={24} color="red" />
+                  </TouchableOpacity>
+                </S.CardContainer>
+              )
+            }
+            if (item.tipo_irrigacao === 'Microaspersão ou Gotejamento') {
+              return (
+                <S.CardContainer key={item.id_sistema_irrigacao}>
+                  <S.CardContent>
+                    <S.InfoTitle>{item.nome}</S.InfoTitle>
+                    <S.InfoText>Eficiência de Irrigação: <S.InfoTextBold>{item.eficiencia_irrigacao}%</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Área total do Plantio: <S.InfoTextBold>{item.area_total_plantio}m²</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Quantidade de Setores: <S.InfoTextBold>{item.quantidade_setores}</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Tipo de Irrigação: <S.InfoTextBold>{item.tipo_irrigacao}</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Nome do Setor: <S.InfoTextBold>{item.nome_setor}</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Área irrigada: <S.InfoTextBold>{item.area_irrigada}m²</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Vazão do Emissor: <S.InfoTextBold>{item.vazao_emissor}L/H</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Espaçamento entre Emissores: <S.InfoTextBold>{item.espacamento_emissor}m</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Espaçamento entre linhas: <S.InfoTextBold>{item.espacamento_linha}m</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Coeficiente de Uniformidade CUC: <S.InfoTextBold>{item.coeficiente_uniformidade}%</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Eficiência do Sistema: <S.InfoTextBold>{item.eficiencia_sistema}%</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Percentual de aŕea molhada: <S.InfoTextBold>{item.percentual_area_molhada}%</S.InfoTextBold></S.InfoText>
+                    <S.InfoText>Percentual de aŕea sombreada: <S.InfoTextBold>{item.percentual_area_sombreada}%</S.InfoTextBold></S.InfoText>
+                  </S.CardContent>
+                  <TouchableOpacity onPress={() => removeSystem.mutate(item.id_sistema_irrigacao)}>
+                    <Ionicons name="trash-outline" size={24} color="red" />
+                  </TouchableOpacity>
+                </S.CardContainer>
+              )
+            }
+          })}
+
+          <Button 
+            onPress={() => navigation.navigate('PropertyRegistered')}
+            disabled={!systems} 
+            bg-color="positive" 
+            style={{ 
+              display: 'flex', 
+              flexDirection: 'row', 
+              justifyContent: 'flex-end', 
+              paddingRight: 24, 
+              marginTop: 24, 
+              marginBottom: 24 
+            }}
+            >
+            <Typography
+              style={{
+                fontFamily: 'Poppins-bold',
+                fontSize: 18,
+                width: 190,
+              }}
+              color="pure-white"
+              size="normal"
+              weight="regular"
+              >
+            Continuar
+            </Typography>
+            <AntDesign name="arrowright" size={24} color="#fff" />
+          </Button>
+        </View>
       </S.Content>
       </ScrollView>
     </S.Container>

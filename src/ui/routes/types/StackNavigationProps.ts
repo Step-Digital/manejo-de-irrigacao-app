@@ -14,6 +14,8 @@ export type RootStackParamList = {
   CultureInfo: undefined;
   CultureRegistered: undefined;
   Menu: undefined;
+  About: undefined;
+  Profile: undefined;
 }
 
 export type NavigationProps = NativeStackNavigationProp<RootStackParamList>

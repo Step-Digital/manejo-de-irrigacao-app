@@ -3,8 +3,76 @@ export default {
     createAccount: "Crie uma conta gratuitamente",
     haveRegistration: "Já possuo cadastro",
   },
+  about: {
+    header: 'Sobre o Projeto',
+    title: 'Quem somos nós',
+    about: 'Em desenvolvimento...',
+    namesTitle: 'Nomes dos envolvidos',
+    footer: 'Realização'
+  },
   header: {
     title: 'Recomendação Diária'
+  },
+  signup: {
+    title: 'Dados Pessoais',
+    inputs: {
+      name: {
+        label: 'Nome',
+        placeholder: 'Insira seu nome'
+      },
+      email: {
+        label: 'Email',
+        placeholder: 'Insira seu email'
+      },
+      phone1: {
+        label: 'Telefone',
+        placeholder: 'Insira seu número de telefone'
+      },
+      phone2: {
+        label: 'Telefone 2',
+        placeholder: 'Insira seu número de telefone'
+      },
+      cel: {
+        label: 'Celular',
+        placeholder: 'Insira seu número de celular'
+      },
+      password: {
+        label: 'Senha',
+        placeholder: 'Insira sua senha'
+      },
+      passwordConfirm: {
+        label: 'Confirme sua senha',
+        placeholder: 'Insira sua senha novamente'
+      },
+      cep: {
+        label: 'CEP',
+        placeholder: 'Insira o CEP'
+      },
+      street: {
+        label: 'Logradouro',
+        placeholder: 'Insira o logradouro'
+      },
+      number: {
+        label: 'Número',
+        placeholder: 'Insira o número'
+      },
+      neighbor: {
+        label: 'Bairro',
+        placeholder: 'Insira o bairro'
+      },
+      complement: {
+        label: 'Complemento',
+        placeholder: 'Insira o complemento'
+      },
+      city: {
+        label: 'Cidade',
+        placeholder: 'Insira a cidade'
+      },
+      state: {
+        label: 'Estado',
+        placeholder: 'Insira o estado'
+      },
+    }
   },
   homeLogged: {
     noProperty: 'Você ainda não possui nenhuma cultura cadastrada.',
@@ -13,7 +81,8 @@ export default {
     addButton: {
       addCulture: 'Adicionar Cultura',
       addProperty: 'Nova Propriedade'
-    }
+    },
+    info: 'Para esse calculo de irrigação é necessário o dado de precipitação na sua propriedade. Quanto maior a precisão nos dados, maior a assertividade no manejo de irrigação.'
   },
   modal: {
     title: 'Bem-Vindo!',
@@ -27,6 +96,21 @@ export default {
     onboarding3: 'Além disso, você poderá controlar e monitorar seu sistema de irrigação para obter o melhor desempenho para sua produção.',
     onboarding4: 'Estamos aqui para ajudá-lo a ter sucesso com suas culturas! Comece agora para ter acesso a todas as ferramentas e informações.'
   },
+  preciptationModal: {
+    title: 'Precipitação Diária',
+    text: 'Para calcular a irrigação diária, precisamos saber a precipitação do dia anterior na sua propriedade.',
+    inputs: {
+      property: {
+        label: 'Nome da Propriedade',
+        placeholder: 'Ex. 0 mm'
+      },
+      property2: {
+        label: 'Nome da Propriedade 2',
+        placeholder: 'Ex. 0 mm'
+      }
+    },
+    button: 'Salvar'
+  },
   newProperty: {
     header: {
       title: 'Nova Propriedade',
@@ -39,6 +123,8 @@ export default {
     gpsButton: {
       text: 'Detectar via GPS'
     },
+    success:'Propriedade cadastrada com sucesso',
+    error:'Erro ao cadastrar a propriedade',
     inputs: {
       name: {
         label: 'Nome da Propriedade',
@@ -85,6 +171,8 @@ export default {
   groundInfo: {
     title: 'Dados do Solo',
     addButtonn: 'Adicionar Solo',
+    success:'Solo cadastrado com sucesso',
+    error:'Erro ao cadastrar a solo',
     inputs: {
       groundType: {
         label: 'Tipo do Solo',
@@ -107,6 +195,8 @@ export default {
   bombInfo: {
     title: 'Dados da Motobomba',
     addButtonn: 'Adicionar Motobomba',
+    success:'Motobomba cadastrada com sucesso',
+    error:'Erro ao cadastrar a motobomba',
     inputs: {
       manufacturer: {
         label: 'Fabricante',
@@ -137,6 +227,8 @@ export default {
   SystemInfo: {
     title: 'Sistema de Irrigação',
     addButtonn: 'Adicionar Sistema de Irrigação',
+    success:'Sistema cadastrada com sucesso',
+    error:'Erro ao cadastrar a sistema',
     inputs: {
       name: {
         label: 'Nome do Sistema',
@@ -228,6 +320,15 @@ export default {
     gobackButton: 'Voltar para o Início',
     text1: 'Parabéns, você cadastrou uma cultura!',
     text2: 'Volte para o Início e veja os seus números diários de irrigação.',
+    category: {
+      hotalicas: 'Hortaliças',
+      frutíferas: 'Frutíferas',
+      forrageiras: 'Forrageiras',
+      grãosecereais: 'Grãos e Cereais',
+      raiz: 'Raiz',
+      pastagem: 'Pastagem',
+      capineira: 'Capineira',
+    },
     inputs: {
       search: {
         label: 'Pesquisar',

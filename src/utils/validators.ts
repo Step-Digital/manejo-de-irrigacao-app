@@ -69,9 +69,8 @@ export const signupValidators = Yup.object().shape({
   nome: Yup.string().required(RULES.GENERAL.REQUIRED),
   email: Yup.string().email(RULES.EMAIL.VALID).required(RULES.GENERAL.REQUIRED),
   telefone1: Yup.string().required(RULES.GENERAL.REQUIRED),
-  celuar: Yup.string().required(RULES.GENERAL.REQUIRED),
+  celular: Yup.string().required(RULES.GENERAL.REQUIRED),
   password: Yup.string().min(8, RULES.PASSWORD.VALID).required(RULES.GENERAL.REQUIRED),
-  confirmPassword: Yup.string().min(8, RULES.PASSWORD.VALID).required(RULES.GENERAL.REQUIRED),
   cep: Yup.string().required(RULES.GENERAL.REQUIRED),
   logradouro: Yup.string().required(RULES.GENERAL.REQUIRED),
   numero: Yup.string().required(RULES.GENERAL.REQUIRED),
@@ -88,7 +87,7 @@ export const propertyValidators = Yup.object().shape({
   complemento: Yup.string().required(RULES.GENERAL.REQUIRED),
   cidade: Yup.string().required(RULES.GENERAL.REQUIRED),
   estado: Yup.string().required(RULES.GENERAL.REQUIRED),
-  cep: Yup.string().max(8).required(RULES.GENERAL.REQUIRED),
+  cep: Yup.string().max(9).required(RULES.GENERAL.REQUIRED),
   area_propriedade: Yup.string().required(RULES.GENERAL.REQUIRED),
 });
 
@@ -123,13 +122,13 @@ export const systemValidators = Yup.object().shape({
 
 export const cultureValidators = Yup.object().shape({
   nome_cultura: Yup.string().required(RULES.GENERAL.REQUIRED),
-  data_plantio: Yup.number().required(RULES.GENERAL.REQUIRED),
-  area_plantio: Yup.number().required(RULES.GENERAL.REQUIRED),
-  setores: Yup.number().required(RULES.GENERAL.REQUIRED),
+  data_plantio: Yup.string().required(RULES.GENERAL.REQUIRED),
+  area_plantio: Yup.string().required(RULES.GENERAL.REQUIRED),
+  setores: Yup.string().required(RULES.GENERAL.REQUIRED),
   estagio_colheita: Yup.string().required(RULES.GENERAL.REQUIRED),
-  id_dados_cultura: Yup.number().required(RULES.GENERAL.REQUIRED),
-  id_propriedade: Yup.number().required(RULES.GENERAL.REQUIRED),
+  id_dados_cultura: Yup.string().required(RULES.GENERAL.REQUIRED),
+  id_propriedade: Yup.string().required(RULES.GENERAL.REQUIRED),
   id_sistema_irrigacao: Yup.string().required(RULES.GENERAL.REQUIRED),
-  id_motobomba: Yup.number().required(RULES.GENERAL.REQUIRED),
-  id_solo: Yup.number().required(RULES.GENERAL.REQUIRED),
+  id_motobomba: Yup.string().required(RULES.GENERAL.REQUIRED),
+  id_solo: Yup.string().required(RULES.GENERAL.REQUIRED),
 });
