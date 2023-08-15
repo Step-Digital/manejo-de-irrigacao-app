@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import * as Location from "expo-location";
+// import * as Location from "expo-location";
 import MaskInput from "react-native-mask-input";
 
 import { CacheDomain } from "../../../core/domain/cache.domain";
@@ -109,21 +109,21 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
     }
   };
 
-  const getLatLng = async () => {
-    setLoadLatLng(true);
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      setLoadLatLng(false);
-      return;
-    }
+  // const getLatLng = async () => {
+  //   setLoadLatLng(true);
+  //   // let { status } = await Location.requestForegroundPermissionsAsync();
+  //   if (status !== "granted") {
+  //     setErrorMsg("Permission to access location was denied");
+  //     setLoadLatLng(false);
+  //     return;
+  //   }
 
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-    setLoadLatLng(false);
-    setLatitude(String(location.coords.latitude));
-    setLongitude(String(location.coords.longitude));
-  };
+  //   // let location = await Location.getCurrentPositionAsync({});
+  //   setLocation(location);
+  //   setLoadLatLng(false);
+  //   setLatitude(String(location.coords.latitude));
+  //   setLongitude(String(location.coords.longitude));
+  // };
 
   let text = "Carregando..";
   if (errorMsg) {
@@ -220,7 +220,7 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
             </S.ButtonsContainer>
           )}
           {showForm && (
-            <S.GPSButtonFull onPress={() => getLatLng()}>
+            <S.GPSButtonFull>
               <EvilIcons name="location" size={24} color="#fff" />
               <Typography
                 style={{
