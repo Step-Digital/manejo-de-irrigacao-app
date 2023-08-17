@@ -40,6 +40,8 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
   const [ponto_murcha, setPonto_murcha] = useState('');
   const [densidade, setDensidade] = useState('');
   const [status, setStatus] = useState({ type: '', message: '' })
+  const [idProperty, setIdProperty] = useState(null);
+
 
   const { data, isLoading } = useQuery({
     queryKey: ["properties"], 
@@ -58,14 +60,14 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
     densidade,
   }
 
-  const id = data && data.data[data.data.length - 1].id_propriedade
+  // const id = data && data.data[data.data.length - 1].id_propriedade
 
   const sumbitValues = {
     tipo_solo,
     capacidade_campo: Number(capacidade_campo),
     ponto_murcha: Number(ponto_murcha),
     densidade: Number(densidade),
-    id_propriedade: id,
+    id_propriedade: idProperty,
   }
 
   async function validate() {
@@ -106,6 +108,9 @@ export const GroundInfo:React.FC<GroundInfoProps> = ({ groundService, propertySe
 
   useEffect(() => {
     validate()
+    if (!isLoading) {
+      setIdProperty(data && data.data[data.data.length - 1].id_propriedade)
+    }
   }, [])
 
   if (isLoading && isLoadingGrounds) return <Text>Carregando...</Text>

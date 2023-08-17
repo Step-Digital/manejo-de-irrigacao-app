@@ -79,13 +79,14 @@ export const OpenModalButtonText = styled.Text`
 export const PropertyContainer = styled.View`
   padding: 24px 16px 0 16px;
   
+  
 `;
 
 export const PropertyHeader = styled.View`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-direction:column; 
 `;
 
 export const OpenClosePorpertiesButton = styled.TouchableOpacity``;
