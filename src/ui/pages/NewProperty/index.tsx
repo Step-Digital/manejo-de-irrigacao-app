@@ -37,7 +37,7 @@ const inputStrings = strings.newProperty.inputs;
 export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
   propertyService,
 }) => {
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(true);
   const [nome, setNome] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");

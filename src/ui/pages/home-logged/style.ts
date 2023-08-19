@@ -80,7 +80,7 @@ export const PropertyContainer = styled.View`
   padding: 24px 16px 0 16px;
 `;
 
-export const PropertyHeader = styled.View`
+export const PropertyHeader = styled.TouchableOpacity`
   display: flex;
   justify-content: space-between;
   align-items: center;

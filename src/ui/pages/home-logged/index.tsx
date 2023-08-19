@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Text, View, ScrollView } from "react-native";
 import { Typography } from "../../components/typography";
 import { Header } from "../../components/Header";
@@ -8,7 +8,6 @@ import { NavigationProps } from "../../routes/types/StackNavigationProps";
 import { strings } from "../../../utils";
 import { useQuery } from "@tanstack/react-query";
 import { MaterialIcons } from "@expo/vector-icons";
-import { AxiosError } from "axios";
 
 import * as S from "./style";
 import { OnboardingModal } from "../../components/OnboardingModal";
@@ -27,12 +26,16 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
   const [openButtonsMOdal, setOpenButtonsModal] = useState(false);
   const [showProperties, setShowProperties] = useState(null);
 
-  const { data, isLoading, refetch: refresh } = useQuery({
+  const {
+    data,
+    isLoading,
+    refetch: refresh,
+  } = useQuery({
     queryKey: ["properties"],
     queryFn: () => propertyService.getProperties(),
   });
 
-  const { data: allData, isLoading: isLoadingAll, refetch } = useQuery({
+  const { data: allData, isLoading: isLoadingAll } = useQuery({
     queryKey: ["AllProperties"],
     queryFn: () => propertyService.getAllPropertiesData(),
   });
@@ -42,8 +45,6 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
     return false;
   }
 
-  console.log("allData", JSON.stringify(allData, null, 2));
-
   const navigation = useNavigation<NavigationProps>();
 
   if (isLoading && isLoadingAll) return <Text>Carregando...</Text>;
@@ -51,74 +52,68 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
   const isSomeCulture =
     allData && allData.data.some((item) => item.cultura.length > 0);
 
-    // useEffect(() => {
-    //   refetch()
-    //   refresh()
-    // }, [allData, data])
-
   return (
     <S.Container>
       <Header minHeader={false} />
       {allData && isSomeCulture && (
-
-      <ScrollView>
-        <S.PropertyContainer>
-          <S.PropertyHeader>
+        <ScrollView>
+          <S.PropertyContainer>
             {allData &&
               allData.data.map((it) => {
                 return (
                   <>
-                    {it.cultura.length !== 0 && (
-                      <View
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          width: "100%",
-                        }}
-                      >
-                        <View style={{ display: "flex", flexDirection: "row" }}>
-                          <Image
-                            source={require("../../../../assets/farmGreen.png")}
-                            transition={1000}
-                            style={{
-                              width: 21,
-                              height: 21,
-                              marginBottom: 4,
-                              marginLeft: 4,
-                            }}
-                            contentFit="cover"
-                          />
-                          <Typography
-                            style={{
-                              textAlign: "left",
-                              fontFamily: "Poppins-regular",
-                              fontSize: 18,
-                              marginLeft: 8,
-                            }}
-                            color="neutral-4"
-                            size="normal"
-                            weight="medium"
-                          >
-                            {it.nome} &nbsp;
-                            <Typography
-                              style={{
-                                textAlign: "left",
-                                fontFamily: "Poppins-regular",
-                                fontSize: 18,
-                              }}
-                              color="gray-5"
-                              size="normal"
-                              weight="medium"
-                            >
-                              ({it.cultura.length})
-                            </Typography>
-                          </Typography>
-                        </View>
-                        {showProperties === it.id_propriedade ? (
+                    <S.PropertyHeader>
+                      {it.cultura.length !== 0 &&
+                        (showProperties === it.id_propriedade ? (
                           <S.OpenClosePorpertiesButton
                             onPress={() => setShowProperties(null)}
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              width: "100%",
+                            }}
                           >
+                            <View
+                              style={{ display: "flex", flexDirection: "row" }}
+                            >
+                              <Image
+                                source={require("../../../../assets/farmGreen.png")}
+                                transition={1000}
+                                style={{
+                                  width: 21,
+                                  height: 21,
+                                  marginBottom: 4,
+                                  marginLeft: 4,
+                                }}
+                                contentFit="cover"
+                              />
+                              <Typography
+                                style={{
+                                  textAlign: "left",
+                                  fontFamily: "Poppins-regular",
+                                  fontSize: 18,
+                                  marginLeft: 8,
+                                }}
+                                color="neutral-4"
+                                size="normal"
+                                weight="medium"
+                              >
+                                {it.nome} &nbsp;
+                                <Typography
+                                  style={{
+                                    textAlign: "left",
+                                    fontFamily: "Poppins-regular",
+                                    fontSize: 18,
+                                  }}
+                                  color="gray-5"
+                                  size="normal"
+                                  weight="medium"
+                                >
+                                  ({it.cultura.length})
+                                </Typography>
+                              </Typography>
+                            </View>
                             <MaterialIcons
                               name="keyboard-arrow-up"
                               size={32}
@@ -128,17 +123,61 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
                         ) : (
                           <S.OpenClosePorpertiesButton
                             onPress={() => setShowProperties(it.id_propriedade)}
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              width: "100%",
+                            }}
                           >
+                            <View
+                              style={{ display: "flex", flexDirection: "row" }}
+                            >
+                              <Image
+                                source={require("../../../../assets/farmGreen.png")}
+                                transition={1000}
+                                style={{
+                                  width: 21,
+                                  height: 21,
+                                  marginBottom: 4,
+                                  marginLeft: 4,
+                                }}
+                                contentFit="cover"
+                              />
+                              <Typography
+                                style={{
+                                  textAlign: "left",
+                                  fontFamily: "Poppins-regular",
+                                  fontSize: 18,
+                                  marginLeft: 8,
+                                }}
+                                color="neutral-4"
+                                size="normal"
+                                weight="medium"
+                              >
+                                {it.nome} &nbsp;
+                                <Typography
+                                  style={{
+                                    textAlign: "left",
+                                    fontFamily: "Poppins-regular",
+                                    fontSize: 18,
+                                  }}
+                                  color="gray-5"
+                                  size="normal"
+                                  weight="medium"
+                                >
+                                  ({it.cultura.length})
+                                </Typography>
+                              </Typography>
+                            </View>
                             <MaterialIcons
                               name="keyboard-arrow-down"
                               size={32}
                               color="#00344A"
                             />
                           </S.OpenClosePorpertiesButton>
-                        )}
-                      </View>
-                    )}
-
+                        ))}
+                    </S.PropertyHeader>
                     <View>
                       {showProperties === it.id_propriedade &&
                         it.cultura &&
@@ -161,9 +200,8 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
                   </>
                 );
               })}
-          </S.PropertyHeader>
-        </S.PropertyContainer>
-      </ScrollView>
+          </S.PropertyContainer>
+        </ScrollView>
       )}
 
       <S.Content>
