@@ -2,20 +2,13 @@ import React, { useState, useEffect } from "react";
 import MaskInput from "react-native-mask-input";
 import { AuthDomain } from "../../../core/domain/auth.domain";
 import { NewPropertyDomain } from "../../../core/domain/newProperty.domain";
-import { Alert, ScrollView, StyleSheet, View, Text } from "react-native";
-import { Button } from "../../components/button";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
 import { Typography } from "../../components/typography";
-import { HeaderAuth } from "../../components/header-auth";
 import { Input } from "../../components/input";
 import { useQuery } from "@tanstack/react-query";
-import { SignupModel } from "../../../core/models/auth";
-import { AxiosError } from "axios";
-import { FlashMessage } from "../../components/flash-message";
-import { signupValidators } from "../../../utils/validators";
 import { strings } from "../../../utils";
-import ceppromise from "cep-promise";
 
 import * as S from "./style";
 import { Header } from "../../components/Header";
@@ -29,21 +22,7 @@ const inputStrings = strings.signup.inputs;
 
 export const Profile: React.FC<ProfileProps> = ({ auth, propertyService }) => {
   const navigation = useNavigation<NavigationProps>();
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone1, setTelefone1] = useState("");
-  const [telefone2, setTelefone2] = useState("");
-  const [celular, setCelular] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [cep, setCep] = useState("");
-  const [logradouro, setLogradouro] = useState("");
-  const [numero, setNumero] = useState("");
-  const [estado, setEstado] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [complemento, setComplemento] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [status, setStatus] = useState({ type: "", message: "" });
   const [allData, setAllData] = useState({});
 
   const { data, isLoading } = useQuery({

@@ -51,10 +51,10 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
   const isSomeCulture =
     allData && allData.data.some((item) => item.cultura.length > 0);
 
-    useEffect(() => {
-      refetch()
-      refresh()
-    }, [allData, data])
+    // useEffect(() => {
+    //   refetch()
+    //   refresh()
+    // }, [allData, data])
 
   return (
     <S.Container>

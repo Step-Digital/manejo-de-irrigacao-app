@@ -15,10 +15,9 @@ import { MakeSystemInfo } from "../../core/main/factories/pages/systemInfo/syste
 import { MakeCulture } from "../../core/main/factories/pages/Culture/culture.factory";
 import { MakeMenu } from "../../core/main/factories/pages/menu/menu.factory";
 import { MakeProfile } from "../../core/main/factories/pages/profile/profile.factory";
-import { PropertyRegistered } from "../pages/propertyRegistered";
-import { CultureRegistered } from "../pages/CultureRegistered";
+import { MakePropertyRegistered } from "../../core/main/factories/pages/property-registered/property-registered.factory";
+import { MakeCultureRegistered } from "../../core/main/factories/pages/culture-registered/culture-registered.factory";
 import { About } from "../pages/About";
-import { Profile } from "../pages/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,9 +38,9 @@ export const GlobalRoutes: React.FC = () => {
       <Stack.Screen name="GroundInfo" component={MakeGroundInfo} />
       <Stack.Screen name="BombInfo" component={MakeBombInfo} />
       <Stack.Screen name="SystemInfo" component={MakeSystemInfo} />
-      <Stack.Screen name="PropertyRegistered" component={PropertyRegistered} />
+      <Stack.Screen name="PropertyRegistered" component={MakePropertyRegistered} />
       <Stack.Screen name="CultureInfo" component={MakeCulture} />
-      <Stack.Screen name="CultureRegistered" component={CultureRegistered} />
+      <Stack.Screen name="CultureRegistered" component={MakeCultureRegistered} />
       <Stack.Screen name="Menu" component={MakeMenu} />
       <Stack.Screen name="About" component={About} />
       <Stack.Screen name="Profile" component={MakeProfile} />
