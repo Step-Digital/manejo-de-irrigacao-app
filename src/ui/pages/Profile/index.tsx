@@ -55,17 +55,21 @@ export const Profile: React.FC<ProfileProps> = ({ auth, propertyService }) => {
 
   useEffect(() => {
     if (!isLoading) {
-      setAllData(data.data)
+      setAllData(data.data);
     }
   }, []);
 
   if (isLoading) {
-    return <Text>Carregando...</Text>
-  } 
+    return <Text>Carregando...</Text>;
+  }
 
   return (
     <>
-      <Header minTitle="Meu Perfil" minHeader action={() => navigation.navigate('Menu')} />
+      <Header
+        minTitle="Meu Perfil"
+        minHeader
+        action={() => navigation.navigate("Menu")}
+      />
       <ScrollView
         style={styles.container}
         contentContainerStyle={{
@@ -89,20 +93,23 @@ export const Profile: React.FC<ProfileProps> = ({ auth, propertyService }) => {
             <Input
               label={inputStrings.name.label}
               placeholder={inputStrings.name.placeholder}
-              value={data && data.data[0].nome || 'Nome...'}
+              value={(data && data.data[0].user.nome) || "---"}
               editable={false}
+              style={{ color: "black" }}
             />
             <Input
               label={inputStrings.email.label}
               placeholder={inputStrings.email.placeholder}
-              value={data && data.data[0].email}
+              value={(data && data.data[0].user.email) || "---"}
               editable={false}
+              style={{ color: "black" }}
             />
             <S.Label>{inputStrings.phone1.label}</S.Label>
             <S.ContainerInput>
               <MaskInput
-                value={data && data.data[0].telefone1}
+                value={(data && data.data[0].user.telefone1) || "---"}
                 editable={false}
+                style={{ color: "black" }}
                 mask={[
                   "(",
                   /\d/,
@@ -126,8 +133,9 @@ export const Profile: React.FC<ProfileProps> = ({ auth, propertyService }) => {
             <View>
               <S.ContainerInput>
                 <MaskInput
-                   value={data && data.data[0].telefone2}
+                  value={(data && data.data[0].user.telefone2) || "---"}
                   editable={false}
+                  style={{ color: "black" }}
                   mask={[
                     "(",
                     /\d/,
@@ -153,8 +161,9 @@ export const Profile: React.FC<ProfileProps> = ({ auth, propertyService }) => {
               <S.ContainerInput>
                 <MaskInput
                   placeholder={inputStrings.cel.placeholder}
-                  value={data && data.data[0].celular}
+                  value={(data && data.data[0].user.celular) || "---"}
                   editable={false}
+                  style={{ color: "black" }}
                   mask={[
                     "(",
                     /\d/,
@@ -191,7 +200,8 @@ export const Profile: React.FC<ProfileProps> = ({ auth, propertyService }) => {
               <MaskInput
                 placeholder={inputStrings.cep.placeholder}
                 value={data && data.data[0].cep}
-                  editable={false}
+                style={{ color: "black" }}
+                editable={false}
                 onChangeText={(masked, unmasked) => {
                   setCep(masked);
                 }}
@@ -201,37 +211,43 @@ export const Profile: React.FC<ProfileProps> = ({ auth, propertyService }) => {
             <Input
               label={inputStrings.street.label}
               placeholder={inputStrings.street.placeholder}
-              value={data && data.data[0].logradouro}
-                  editable={false}
+              value={(data && data.data[0].user.logradouro) || "---"}
+              editable={false}
+              style={{ color: "black" }}
             />
             <Input
               label={inputStrings.number.label}
               placeholder={inputStrings.number.placeholder}
-              value={data && data.data[0].numero}
-                  editable={false}
+              value={(data && data.data[0].user.numero) || "---"}
+              editable={false}
+              style={{ color: "black" }}
             />
             <Input
               label={inputStrings.neighbor.label}
               placeholder={inputStrings.neighbor.placeholder}
-              value={data && data.data[0].bairro}
+              value={(data && data.data[0].user.bairro) || "---"}
+              style={{ color: "black" }}
               editable={false}
             />
             <Input
               label={inputStrings.complement.label}
               placeholder={inputStrings.complement.placeholder}
-              value={data && data.data[0].complemento}
+              value={(data && data.data[0].user.complemento) || "---"}
+              style={{ color: "black" }}
               editable={false}
             />
             <Input
               label={inputStrings.state.label}
               placeholder={inputStrings.state.placeholder}
-              value={data && data.data[0].estado}
+              value={(data && data.data[0].user.estado) || "---"}
+              style={{ color: "black" }}
               editable={false}
             />
             <Input
               label={inputStrings.city.label}
               placeholder={inputStrings.city.placeholder}
-              value={data && data.data[0].cidade}
+              value={(data && data.data[0].user.cidade) || "---"}
+              style={{ color: "black" }}
               editable={false}
             />
           </>

@@ -11,7 +11,7 @@ const Touchable = (text = 'Selecione...', onPress, selected, objValue, label, wi
       <S.Container width={width}>
         <Text style={styles.label}>{label}</Text>
         <TouchableOpacity onPress={onPress} style={styles.touchableContainer}>
-          <Text style={styles.touchableText}>{selected === null ? text : selected?.[objValue]}</Text>
+          {selected === null ? <Text style={styles.touchableText}>{text}</Text> : <Text>{selected?.[objValue]}</Text>}
           <MaterialIcons name="keyboard-arrow-down" size={26} color="#00344A" />
         </TouchableOpacity>
       </S.Container>

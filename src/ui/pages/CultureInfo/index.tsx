@@ -154,9 +154,12 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
     id_solo,
   }
 
+  console.log('validate', JSON.stringify(validateValues, null, 2))
+  console.log('date', data_plantio.split('/').reverse().join('-'))
+
   const sumbitValues = {
     nome_cultura,
-    data_plantio,
+    data_plantio: data_plantio.split('/').reverse().join('-'),
     area_plantio,
     setores,
     estagio_colheita,
@@ -166,6 +169,8 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({ cultureService, proper
     id_motobomba: Number(id_motobomba),
     id_solo: Number(id_solo),
   }
+
+  console.log('sumbitValues', JSON.stringify(sumbitValues, null, 2))
 
   async function validate() {
     try {

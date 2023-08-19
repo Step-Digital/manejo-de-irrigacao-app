@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import { Typography } from "../../components/typography";
 import { Header } from "../../components/Header";
 import { Image } from "expo-image";
@@ -27,12 +27,12 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
   const [openButtonsMOdal, setOpenButtonsModal] = useState(false);
   const [showProperties, setShowProperties] = useState(null);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch: refresh } = useQuery({
     queryKey: ["properties"],
     queryFn: () => propertyService.getProperties(),
   });
 
-  const { data: allData, isLoading: isLoadingAll } = useQuery({
+  const { data: allData, isLoading: isLoadingAll, refetch } = useQuery({
     queryKey: ["AllProperties"],
     queryFn: () => propertyService.getAllPropertiesData(),
   });
@@ -42,175 +42,189 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
     return false;
   }
 
-  console.log("teste", allData && allData.data.length === 0);
-
   console.log("allData", JSON.stringify(allData, null, 2));
 
   const navigation = useNavigation<NavigationProps>();
 
   if (isLoading && isLoadingAll) return <Text>Carregando...</Text>;
 
+  const isSomeCulture =
+    allData && allData.data.some((item) => item.cultura.length > 0);
+
+    useEffect(() => {
+      refetch()
+      refresh()
+    }, [allData, data])
+
   return (
     <S.Container>
       <Header minHeader={false} />
-      <S.PropertyContainer>
-        <S.PropertyHeader>
-          {allData &&
-            allData.data.map((it) => {
-              return (
-                <>
-                  {it.cultura.length !== 0 && (
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        width: "100%",
-                      }}
-                    >
-                      <View style={{ display: "flex", flexDirection: "row" }}>
-                        <Image
-                          source={require("../../../../assets/farmGreen.png")}
-                          transition={1000}
-                          style={{
-                            width: 21,
-                            height: 21,
-                            marginBottom: 4,
-                            marginLeft: 4,
-                          }}
-                          contentFit="cover"
-                        />
-                        <Typography
-                          style={{
-                            textAlign: "left",
-                            fontFamily: "Poppins-regular",
-                            fontSize: 18,
-                            marginLeft: 8,
-                          }}
-                          color="neutral-4"
-                          size="normal"
-                          weight="medium"
-                        >
-                          {it.nome} &nbsp;
+      {allData && isSomeCulture && (
+
+      <ScrollView>
+        <S.PropertyContainer>
+          <S.PropertyHeader>
+            {allData &&
+              allData.data.map((it) => {
+                return (
+                  <>
+                    {it.cultura.length !== 0 && (
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          width: "100%",
+                        }}
+                      >
+                        <View style={{ display: "flex", flexDirection: "row" }}>
+                          <Image
+                            source={require("../../../../assets/farmGreen.png")}
+                            transition={1000}
+                            style={{
+                              width: 21,
+                              height: 21,
+                              marginBottom: 4,
+                              marginLeft: 4,
+                            }}
+                            contentFit="cover"
+                          />
                           <Typography
                             style={{
                               textAlign: "left",
                               fontFamily: "Poppins-regular",
                               fontSize: 18,
+                              marginLeft: 8,
                             }}
-                            color="gray-5"
+                            color="neutral-4"
                             size="normal"
                             weight="medium"
                           >
-                            ({it.cultura.length})
+                            {it.nome} &nbsp;
+                            <Typography
+                              style={{
+                                textAlign: "left",
+                                fontFamily: "Poppins-regular",
+                                fontSize: 18,
+                              }}
+                              color="gray-5"
+                              size="normal"
+                              weight="medium"
+                            >
+                              ({it.cultura.length})
+                            </Typography>
                           </Typography>
-                        </Typography>
+                        </View>
+                        {showProperties === it.id_propriedade ? (
+                          <S.OpenClosePorpertiesButton
+                            onPress={() => setShowProperties(null)}
+                          >
+                            <MaterialIcons
+                              name="keyboard-arrow-up"
+                              size={32}
+                              color="#00344A"
+                            />
+                          </S.OpenClosePorpertiesButton>
+                        ) : (
+                          <S.OpenClosePorpertiesButton
+                            onPress={() => setShowProperties(it.id_propriedade)}
+                          >
+                            <MaterialIcons
+                              name="keyboard-arrow-down"
+                              size={32}
+                              color="#00344A"
+                            />
+                          </S.OpenClosePorpertiesButton>
+                        )}
                       </View>
-                      {showProperties === it.id_propriedade ? (
-                        <S.OpenClosePorpertiesButton
-                          onPress={() => setShowProperties(null)}
-                        >
-                          <MaterialIcons
-                            name="keyboard-arrow-up"
-                            size={32}
-                            color="#00344A"
-                          />
-                        </S.OpenClosePorpertiesButton>
-                      ) : (
-                        <S.OpenClosePorpertiesButton
-                          onPress={() => setShowProperties(it.id_propriedade)}
-                        >
-                          <MaterialIcons
-                            name="keyboard-arrow-down"
-                            size={32}
-                            color="#00344A"
-                          />
-                        </S.OpenClosePorpertiesButton>
-                      )}
+                    )}
+
+                    <View>
+                      {showProperties === it.id_propriedade &&
+                        it.cultura &&
+                        it.cultura.map((item) => {
+                          return (
+                            <CultureCard
+                              image={require("../../../../assets/onboarding4.png")}
+                              cultureTitle={item.nome_cultura}
+                              plantingDate={item.data_plantio}
+                              stage={item.estagio_colheita}
+                              sector={item.setores}
+                              precipitation={`${it.precipitacao}mm`}
+                              groundStatus="-10mm"
+                              irrigationValue="2 Horas / 5.000 L"
+                              irrigationValueTotal="4 Horas / 10.000 L"
+                            />
+                          );
+                        })}
                     </View>
-                  )}
+                  </>
+                );
+              })}
+          </S.PropertyHeader>
+        </S.PropertyContainer>
+      </ScrollView>
+      )}
 
-                  <View>
-                    {showProperties === it.id_propriedade &&
-                      it.cultura &&
-                      it.cultura.map((item) => {
-                        return (
-                          <CultureCard
-                            image={require("../../../../assets/onboarding4.png")}
-                            cultureTitle={item.nome_cultura}
-                            plantingDate={item.data_plantio}
-                            stage={item.estagio_colheita}
-                            sector={item.setores}
-                            precipitation={`${it.precipitacao}mm`}
-                            groundStatus="-10mm"
-                            irrigationValue="2 Horas / 5.000 L"
-                            irrigationValueTotal="4 Horas / 10.000 L"
-                          />
-                        );
-                      })}
-                  </View>
-                </>
-              );
-            })}
-        </S.PropertyHeader>
-      </S.PropertyContainer>
-
-      {allData && allData.data.length === 0 && (
-        <S.Content>
-          <Image
-            source={require("../../../../assets/culture.png")}
-            transition={1000}
-            style={{
-              width: 260,
-              height: 193,
-            }}
-            contentFit="cover"
-          />
-          <Typography
-            style={{
-              width: 320,
-              textAlign: "center",
-              marginTop: 32,
-              fontFamily: "Poppins-regular",
-            }}
-            color="gray-4"
-            size="normal"
-            weight="regular"
-          >
-            {strings.homeLogged.noProperty}
-          </Typography>
-          {data && data.data.length === 0 && (
+      <S.Content>
+        {allData && !isSomeCulture && (
+          <>
+            <Image
+              source={require("../../../../assets/culture.png")}
+              transition={1000}
+              style={{
+                width: 260,
+                height: 193,
+              }}
+              contentFit="cover"
+            />
             <Typography
               style={{
-                // width: 338,
+                width: 320,
                 textAlign: "center",
-                marginTop: 16,
+                marginTop: 32,
                 fontFamily: "Poppins-regular",
-                padding: 16,
               }}
               color="gray-4"
               size="normal"
               weight="regular"
             >
-              {strings.homeLogged.addPropertyText1} &nbsp;
-              <Typography
-                style={{
-                  textAlign: "center",
-                  width: 328,
-                  marginTop: 32,
-                  textDecorationLine: "underline",
-                }}
-                color="positive"
-                size="normal"
-                weight="bold"
-                onPress={() => navigation.navigate("NewProperty")}
-              >
-                {strings.homeLogged.addPropertyText2}
-              </Typography>
+              {strings.homeLogged.noProperty}
             </Typography>
-          )}
-        </S.Content>
-      )}
+          </>
+        )}
+
+        {allData && allData.data.length === 0 && (
+          <Typography
+            style={{
+              // width: 338,
+              textAlign: "center",
+              marginTop: 16,
+              fontFamily: "Poppins-regular",
+              padding: 16,
+            }}
+            color="gray-4"
+            size="normal"
+            weight="regular"
+          >
+            {strings.homeLogged.addPropertyText1} &nbsp;
+            <Typography
+              style={{
+                textAlign: "center",
+                width: 328,
+                marginTop: 32,
+                textDecorationLine: "underline",
+              }}
+              color="positive"
+              size="normal"
+              weight="bold"
+              onPress={() => navigation.navigate("NewProperty")}
+            >
+              {strings.homeLogged.addPropertyText2}
+            </Typography>
+          </Typography>
+        )}
+      </S.Content>
 
       <S.ButtonContainer>
         <S.OpenModalButton
