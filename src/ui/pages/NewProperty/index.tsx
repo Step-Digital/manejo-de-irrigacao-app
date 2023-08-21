@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Alert, ScrollView, View, Text } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { useMutation } from "@tanstack/react-query";

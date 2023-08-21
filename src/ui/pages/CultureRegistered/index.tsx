@@ -27,8 +27,6 @@ export const CultureRegistered: React.FC<PropertyRegisteredProps> = ({ propertyS
     queryFn: () => propertyService.getAllPropertiesData(),
   });
 
-  console.log('data', data && JSON.stringify(data.data, null, 2));
-
   const onSubmit = () => {
     refetch()
     navigation.navigate('HomeLogged')

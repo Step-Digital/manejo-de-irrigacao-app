@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Alert, ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
-import { Formik } from 'formik';
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
@@ -102,7 +101,6 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
   }
 
   const removeBomb = useMutation<AxiosError>({
-    // VER COMO PASSA VARIÁVEL PARA O USEMUTATION
     mutationFn: (id) => bombService.deleteBomb(Number(id)),
     mutationKey: ['bombs'],
     onSuccess: (data) => {

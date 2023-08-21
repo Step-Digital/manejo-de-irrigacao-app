@@ -1,8 +1,13 @@
 import styled, { css } from 'styled-components/native';
 
+interface AddCultureButtonProps {
+  isDisabled: boolean;
+}
+
 export const Container = styled.View`
   position: relative;
   height: 100%;
+  background-color: #ffffff;
 `;
 
 export const Content = styled.View`
@@ -34,9 +39,9 @@ export const ButtonModalContainer = styled.View`
   border-radius: 4px;
 `;
 
-export const AddCultureButton = styled.TouchableOpacity`
-  ${({ theme }) => css`
-    background-color: ${theme.colors["positive"]};
+export const AddCultureButton = styled.TouchableOpacity<AddCultureButtonProps>`
+  ${({ theme, isDisabled }) => css`
+    background-color: ${isDisabled ? theme.colors["gray-3"] : theme.colors["positive"]};
     display: flex;
     flex-direction: row;
     padding: 16px;

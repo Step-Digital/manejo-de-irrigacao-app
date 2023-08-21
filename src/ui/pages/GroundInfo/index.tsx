@@ -43,7 +43,6 @@ export const GroundInfo: React.FC<GroundInfoProps> = ({
   const [ponto_murcha, setPonto_murcha] = useState("");
   const [densidade, setDensidade] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
-  const [idProperty, setIdProperty] = useState(null);
 
   const {
     data,
@@ -69,11 +68,6 @@ export const GroundInfo: React.FC<GroundInfoProps> = ({
     ponto_murcha,
     densidade,
   };
-
-  console.log('data', JSON.stringify(data, null, 2))
-
-  // const id =
-  //   !isLoading && data && data.data[data.data.length - 1].id_propriedade;
 
   const sumbitValues = {
     tipo_solo,

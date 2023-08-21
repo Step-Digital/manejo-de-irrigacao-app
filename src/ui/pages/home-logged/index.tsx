@@ -63,6 +63,7 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
                 return (
                   <>
                     <S.PropertyHeader>
+                      
                       {it.cultura.length !== 0 &&
                         (showProperties === it.id_propriedade ? (
                           <S.OpenClosePorpertiesButton
@@ -276,8 +277,12 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
       {openButtonsMOdal && (
         <S.ButtonModalContainer>
           <S.AddCultureButton
+            isDisabled={disableButton() === true}
             bg-color="positive"
-            onPress={() => navigation.navigate("CultureInfo")}
+            onPress={() => {
+              navigation.navigate("CultureInfo");
+              setOpenButtonsModal(false);
+            }}
             disabled={disableButton()}
           >
             <Image
@@ -298,7 +303,10 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
           </S.AddCultureButton>
           <S.AddPropertyButton
             bg-color="positive"
-            onPress={() => navigation.navigate("NewProperty")}
+            onPress={() => {
+              navigation.navigate("NewProperty");
+              setOpenButtonsModal(false);
+            }}
           >
             <Image
               source={require("../../../../assets/Regular.png")}

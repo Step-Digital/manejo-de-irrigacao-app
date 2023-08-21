@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input } from "../../components/input";
 import { Button } from "../../components/button";
 import { Typography } from "../../components/typography";
-import { Image } from "expo-image";
-import { Alert, Text, View } from "react-native";
-import Icon from "@expo/vector-icons/Feather";
+import { Alert, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
 import { AuthDomain } from "../../../core/domain/auth.domain";
@@ -13,7 +11,6 @@ import { useMutation } from "@tanstack/react-query";
 import { LoginModel } from "../../../core/models/auth";
 import { AxiosError } from "axios";
 import { FlashMessage } from "../../components/flash-message";
-import { useBottomSheet } from "../../components/bottomsheet/bottomsheet.contex";
 import { BottomSheet } from "../../components/bottomsheet";
 import { HeaderAuth } from "../../components/header-auth";
 import { loginValidators } from '../../../utils/validators';
@@ -25,7 +22,6 @@ export type LoginProps = {
 
 export const LoginScreen: React.FC<LoginProps> = ({ auth, cache }) => {
   const navigation = useNavigation<NavigationProps>();
-  const { toggleBottomNavigationView } = useBottomSheet();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState({ type: '', message: '' })
@@ -72,9 +68,6 @@ export const LoginScreen: React.FC<LoginProps> = ({ auth, cache }) => {
         return onLogin.mutate()
       } 
   }
-  // const onForgotPassword = useMutation({
-  //   mutationFn: () => {}
-  // })
 
   useEffect(() => {
     validate()
@@ -148,7 +141,6 @@ export const LoginScreen: React.FC<LoginProps> = ({ auth, cache }) => {
         </View>
         <Button
           bg-color="positive"
-          // disabled={onLogin.isLoading || password === "" || email === ""}
           loading={onLogin.isLoading}
           onPress={() => onSumbit()}
         >

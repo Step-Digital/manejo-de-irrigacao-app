@@ -7,7 +7,7 @@ import { Image } from "expo-image";
 import * as S from "./styles";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
 import { Typography } from "../../components/typography";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const About: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
