@@ -19,5 +19,6 @@ export const Text = styled.Text`
     font-size: 22px;
     font-family: 'Poppins-bold';
     margin-left: 16px;
+    z-index: 1;
   `}
 `;

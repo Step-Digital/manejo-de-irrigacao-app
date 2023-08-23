@@ -4,6 +4,7 @@ import { Alert, ScrollView, View } from "react-native";
 import { NavigationProps } from "../../routes/types/StackNavigationProps";
 import MaskInput from "react-native-mask-input";
 import moment from "moment";
+import { Image } from "expo-image";
 
 import { strings } from "../../../utils";
 import { cultureValidators } from "../../../utils/validators";
@@ -230,10 +231,12 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
   function setStage() {
     var initialDate = data_plantio;
     var dateNow = new Date();
-    var diff = moment(initialDate, "DD/MM/YYYY").diff(
-      moment(dateNow, "DD/MM/YYYY")
+    var diff = moment(dateNow, "DD/MM/YYYY").diff(
+      moment(initialDate, "DD/MM/YYYY")
     );
     var days = moment.duration(diff).asDays();
+  console.log("days", days)
+
 
     if (
       days >
@@ -292,8 +295,8 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                 if (item.segmento === "Hortaliça") {
                   return (
                     <S.CategoryContainer key={item.nome}>
-                      <S.CategoryButton onPress={() => selectCulture(item)}>
-                        <CategoryCard text={item.nome} />
+                      <S.CategoryButton  onPress={() => selectCulture(item)}>
+                        <CategoryCard text={item.nome} image={item.image_url} />
                       </S.CategoryButton>
                     </S.CategoryContainer>
                   );
@@ -307,8 +310,8 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                 if (item.segmento === "Frutífera") {
                   return (
                     <S.CategoryContainer key={item.nome}>
-                      <S.CategoryButton onPress={() => selectCulture(item)}>
-                        <CategoryCard text={item.nome} />
+                      <S.CategoryButton  onPress={() => selectCulture(item)}>
+                        <CategoryCard text={item.nome}  image={item.image_url}  />
                       </S.CategoryButton>
                     </S.CategoryContainer>
                   );
@@ -323,7 +326,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                   return (
                     <S.CategoryContainer key={item.nome}>
                       <S.CategoryButton onPress={() => selectCulture(item)}>
-                        <CategoryCard text={item.nome} />
+                        <CategoryCard text={item.nome}  image={item.image_url}  />
                       </S.CategoryButton>
                     </S.CategoryContainer>
                   );
@@ -338,7 +341,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                   return (
                     <S.CategoryContainer key={item.nome}>
                       <S.CategoryButton onPress={() => selectCulture(item)}>
-                        <CategoryCard text={item.nome} />
+                        <CategoryCard text={item.nome}  image={item.image_url}  />
                       </S.CategoryButton>
                     </S.CategoryContainer>
                   );
@@ -353,7 +356,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                   return (
                     <S.CategoryContainer key={item.nome}>
                       <S.CategoryButton onPress={() => selectCulture(item)}>
-                        <CategoryCard text={item.nome} />
+                        <CategoryCard text={item.nome}  image={item.image_url}  />
                       </S.CategoryButton>
                     </S.CategoryContainer>
                   );
@@ -368,7 +371,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                   return (
                     <S.CategoryContainer key={item.nome}>
                       <S.CategoryButton onPress={() => selectCulture(item)}>
-                        <CategoryCard text={item.nome} />
+                        <CategoryCard text={item.nome}  image={item.image_url}  />
                       </S.CategoryButton>
                     </S.CategoryContainer>
                   );

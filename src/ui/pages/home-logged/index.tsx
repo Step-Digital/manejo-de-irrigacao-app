@@ -52,6 +52,8 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
   const isSomeCulture =
     allData && allData.data.some((item) => item.cultura.length > 0);
 
+  console.log('allData', JSON.stringify(allData, null, 2));
+
   return (
     <S.Container>
       <Header minHeader={false} />
@@ -185,7 +187,7 @@ export const HomeLogged: React.FC<HomeLoggedProps> = ({ propertyService }) => {
                         it.cultura.map((item) => {
                           return (
                             <CultureCard
-                              image={require("../../../../assets/onboarding4.png")}
+                              image={item.dados_cultura.image_url}
                               cultureTitle={item.nome_cultura}
                               plantingDate={item.data_plantio}
                               stage={item.estagio_colheita}
