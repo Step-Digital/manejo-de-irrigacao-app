@@ -36,8 +36,6 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
   const navigation = useNavigation<NavigationProps>();
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [telefone1, setTelefone1] = useState("");
-  const [telefone2, setTelefone2] = useState("");
   const [celular, setCelular] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -55,7 +53,6 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
     nome,
     email,
     password,
-    telefone1,
     celular,
     passwordConfirm,
     cep,
@@ -69,8 +66,6 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
   const submitValues = {
     nome,
     email,
-    telefone1,
-    telefone2,
     celular,
     cep,
     logradouro,
@@ -169,60 +164,6 @@ export const SignupScreen: React.FC<SignupProps> = ({ auth }) => {
             value={email}
             onChangeText={(value) => setEmail(value)}
           />
-          <S.Label>{inputStrings.phone1.label}</S.Label>
-          <S.ContainerInput>
-            <MaskInput
-              placeholder={inputStrings.phone1.placeholder}
-              value={telefone1}
-              onChangeText={(value) => setTelefone1(value)}
-              inputMode="numeric"
-              mask={[
-                "(",
-                /\d/,
-                /\d/,
-                ")",
-                " ",
-                /\d/,
-                /\d/,
-                /\d/,
-                /\d/,
-                /\d/,
-                "-",
-                /\d/,
-                /\d/,
-                /\d/,
-                /\d/,
-              ]}
-            />
-          </S.ContainerInput>
-          <S.Label>{inputStrings.phone2.label}</S.Label>
-          <View>
-            <S.ContainerInput>
-              <MaskInput
-                placeholder={inputStrings.phone2.placeholder}
-                value={telefone2}
-                onChangeText={(value) => setTelefone2(value)}
-                inputMode="numeric"
-                mask={[
-                  "(",
-                  /\d/,
-                  /\d/,
-                  ")",
-                  " ",
-                  /\d/,
-                  /\d/,
-                  /\d/,
-                  /\d/,
-                  /\d/,
-                  "-",
-                  /\d/,
-                  /\d/,
-                  /\d/,
-                  /\d/,
-                ]}
-              />
-            </S.ContainerInput>
-          </View>
           <S.Label>{inputStrings.cel.label}</S.Label>
           <View>
             <S.ContainerInput>

@@ -43,8 +43,6 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [logradouro, setLogradouro] = useState("");
-  const [numero, setNumero] = useState("");
-  const [complemento, setComplemento] = useState("");
   const [cidade, setCidade] = useState("");
   const [estado, setEstado] = useState("");
   const [cep, setCep] = useState("");
@@ -62,10 +60,8 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
     latitude,
     longitude,
     logradouro,
-    complemento,
     cidade,
     estado,
-    numero,
     cep,
     area_propriedade,
   };
@@ -75,10 +71,8 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
     latitude,
     longitude,
     logradouro,
-    complemento,
     cidade,
     estado,
-    numero,
     cep,
     area_propriedade: Number(area_propriedade),
     precipitacao: 70,

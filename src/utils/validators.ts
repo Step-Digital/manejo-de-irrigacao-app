@@ -68,7 +68,6 @@ export const loginValidators = Yup.object().shape({
 export const signupValidators = Yup.object().shape({
   nome: Yup.string().required(RULES.GENERAL.REQUIRED),
   email: Yup.string().email(RULES.EMAIL.VALID).required(RULES.GENERAL.REQUIRED),
-  telefone1: Yup.string().required(RULES.GENERAL.REQUIRED),
   celular: Yup.string().required(RULES.GENERAL.REQUIRED),
   password: Yup.string().min(8, RULES.PASSWORD.VALID).required(RULES.GENERAL.REQUIRED),
   cep: Yup.string().required(RULES.GENERAL.REQUIRED),
@@ -83,8 +82,6 @@ export const propertyValidators = Yup.object().shape({
   latitude: Yup.string().required(RULES.GENERAL.REQUIRED),
   longitude: Yup.string().required(RULES.GENERAL.REQUIRED),
   logradouro: Yup.string().required(RULES.GENERAL.REQUIRED),
-  numero: Yup.string().required(RULES.GENERAL.REQUIRED),
-  complemento: Yup.string().required(RULES.GENERAL.REQUIRED),
   cidade: Yup.string().required(RULES.GENERAL.REQUIRED),
   estado: Yup.string().required(RULES.GENERAL.REQUIRED),
   cep: Yup.string().max(9).required(RULES.GENERAL.REQUIRED),
