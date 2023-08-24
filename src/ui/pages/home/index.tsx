@@ -45,21 +45,12 @@ export const HomeScreen: React.FC<HomeProps> = ({ auth, cache }) => {
       <S.StyledHeader>
         <Image
           style={localStyles.nameAppImage}
-          source={require("../../../../assets/name-app.png")}
+          source={require("../../../../assets/white-new-logo.png")}
           placeholder={"asdas"}
           contentFit="contain"
           transition={1000}
         />
       </S.StyledHeader>
-      <S.StyledLogoContainer>
-        <Image
-          style={localStyles.logoImage}
-          source={require("../../../../assets/logo-white.png")}
-          placeholder={"asdas"}
-          contentFit="contain"
-          transition={1000}
-        />
-      </S.StyledLogoContainer>
       <S.StyledContent>
         {autoLogin.isLoading && (
           <ActivityIndicator size={"large"} color={"#00344A"} />
@@ -115,7 +106,7 @@ export const HomeScreen: React.FC<HomeProps> = ({ auth, cache }) => {
 const localStyles = StyleSheet.create({
   nameAppImage: {
     width: 200,
-    height: 81,
+    height: 91,
   },
   logoImage: {
     width: 120,

@@ -47,7 +47,7 @@ export const PrecipitationTextContainer = styled.View`
 export const StatusGroundContainer = styled.View`
   display: flex;
   flex-direction: column;
-  margin-left: 52px;
+  margin-left: 32px;
 `;
 
 export const FooterCard = styled.View`

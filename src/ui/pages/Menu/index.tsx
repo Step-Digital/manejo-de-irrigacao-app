@@ -36,23 +36,11 @@ export const  Menu: React.FC = ({ auth }: MenuProps) => {
       </S.CloseContainer>
       <S.logoContainer>
       <Image
-        source={require("../../../../assets/logo-white.png")}
+        source={require("../../../../assets/white-new-logo.png")}
         transition={1000}
         style={{
-          width: 81,
-          height: 81,
-          marginTop: 16,
-          display: 'flex',
-          marginRight: 16
-        }}
-        contentFit="cover"
-      />
-      <Image
-        source={require("../../../../assets/logo-white-2.png")}
-        transition={1000}
-        style={{
-          width: 129,
-          height: 66,
+          width: 239,
+          height: 96,
           marginTop: 16,
           display: 'flex',
         }}

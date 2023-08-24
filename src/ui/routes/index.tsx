@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 export const GlobalRoutes: React.FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
       }}

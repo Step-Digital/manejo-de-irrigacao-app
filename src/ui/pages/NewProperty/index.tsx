@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import * as Location from "expo-location";
 import MaskInput from "react-native-mask-input";
+import ceppromise from "cep-promise";
 
 import { CacheDomain } from "../../../core/domain/cache.domain";
 import { NewPropertyDomain } from "../../../core/domain/newProperty.domain";
@@ -54,6 +55,7 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [loadLatLng, setLoadLatLng] = useState(null);
+  const [showLoad, setShowLoad] = useState(false);
 
   const validateValues = {
     nome,
@@ -67,8 +69,6 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
     cep,
     area_propriedade,
   };
-
-  console.log("valida", validateValues);
 
   const sumbitValues = {
     nome,
@@ -123,6 +123,27 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
     setLoadLatLng(false);
     setLatitude(String(location.coords.latitude));
     setLongitude(String(location.coords.longitude));
+  };
+
+  const getCep = async () => {
+    setShowLoad(true);
+    const cepString = cep;
+    if (cepString.length < 9) {
+      return;
+    }
+    try {
+      const { city, street, state } = await ceppromise(
+        cepString.replace(/[^0-9]+/g, "")
+      );
+      console.log("state", state)
+      setCidade(city);
+      setLogradouro(street);
+      setEstado(state);
+      setShowLoad(false);
+    } catch (e) {
+      setShowLoad(false);
+      Alert.alert("O CEP não foi encontrado!");
+    }
   };
 
   let text = "Carregando..";
@@ -271,49 +292,7 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
                 onChangeText={(value) => setLongitude(value)}
                 inputMode="numeric"
               />
-              <Input
-                label={inputStrings.street.label}
-                placeholder={inputStrings.street.placeholder}
-                value={logradouro}
-                onChangeText={(value) => setLogradouro(value)}
-              />
               <S.InputsContainer>
-                <Input
-                  label={inputStrings.number.label}
-                  placeholder={inputStrings.number.placeholder}
-                  value={numero}
-                  onChangeText={(value) => setNumero(value)}
-                  inputMode="numeric"
-                  style={{ width: 180 }}
-                />
-                <Input
-                  label={inputStrings.complement.label}
-                  placeholder={inputStrings.complement.placeholder}
-                  value={complemento}
-                  onChangeText={(value) => setComplemento(value)}
-                  style={{ width: 180 }}
-                />
-              </S.InputsContainer>
-              <View>
-                <Input
-                  label={inputStrings.city.label}
-                  placeholder={inputStrings.city.placeholder}
-                  value={cidade}
-                  onChangeText={(value) => setCidade(value)}
-                />
-              </View>
-              <S.InputsContainer>
-                <Select
-                  label="Estado"
-                  touchableText="Selecione..."
-                  width="180px"
-                  data={states}
-                  objKey="id"
-                  objValue="name"
-                  title="Estado"
-                  setValue={setEstado}
-                  setId={() => {}}
-                />
                 <View>
                   <S.Label>{inputStrings.cep.label}</S.Label>
                   <S.ContainerInput>
@@ -322,6 +301,7 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
                       style={{ width: 160 }}
                       value={cep}
                       onChangeText={(value) => setCep(value)}
+                      onBlur={() => getCep()}
                       mask={[
                         /\d/,
                         /\d/,
@@ -336,7 +316,33 @@ export const NewPropertyScreen: React.FC<NewPropertyProps> = ({
                     />
                   </S.ContainerInput>
                 </View>
+                <Select
+                  label="Estado"
+                  touchableText="Selecione..."
+                  width="180px"
+                  data={states}
+                  objKey="id"
+                  objValue="name"
+                  title="Estado"
+                  setValue={setEstado}
+                  setId={() => {}}
+                  stateValue={estado}
+                />
               </S.InputsContainer>
+              <Input
+                label={inputStrings.street.label}
+                placeholder={inputStrings.street.placeholder}
+                value={logradouro}
+                onChangeText={(value) => setLogradouro(value)}
+              />
+              <View>
+                <Input
+                  label={inputStrings.city.label}
+                  placeholder={inputStrings.city.placeholder}
+                  value={cidade}
+                  onChangeText={(value) => setCidade(value)}
+                />
+              </View>
             </View>
           )}
 

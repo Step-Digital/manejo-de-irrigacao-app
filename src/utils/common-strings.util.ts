@@ -163,8 +163,8 @@ export default {
         placeholder: 'Ex: 00000-000'
       },
       area: {
-        label: 'Área da Propriedade',
-        placeholder: 'Ex: 10 ha'
+        label: 'Área da Propriedade (ha)',
+        placeholder: 'Ex: 10'
       },
     }
   },
@@ -179,16 +179,16 @@ export default {
         placeholder: 'Selecione...'
       },
       capacity: {
-        label: 'Capacidade de Campo',
-        placeholder: 'Ex: 95%'
+        label: 'Capacidade de Campo (%)',
+        placeholder: 'Ex: 95'
       },
       point: {
-        label: 'Ponto de Murcha',
-        placeholder: 'Ex: 10%'
+        label: 'Ponto de Murcha (%)',
+        placeholder: 'Ex: 10'
       },
       density: {
-        label: 'Densidade',
-        placeholder: 'Ex: 100 g/m³'
+        label: 'Densidade (g/m³)',
+        placeholder: 'Ex: 100'
       },
     }
   },
@@ -207,19 +207,19 @@ export default {
         placeholder: 'Modelo...'
       },
       power: {
-        label: 'Potência',
-        placeholder: 'Ex: 500w'
+        label: 'Potência (w)',
+        placeholder: 'Ex: 500'
       },
       flowRate: {
-        label: 'Vazão Máxima',
-        placeholder: 'Ex: 500 m³/ha'
+        label: 'Vazão Máxima (m³/ha)',
+        placeholder: 'Ex: 500 '
       },
       consumption: {
-        label: 'Consumo da Bomba',
-        placeholder: 'Ex: 500 kw/h'
+        label: 'Consumo da Bomba (kw/h)',
+        placeholder: 'Ex: 500'
       },
       value: {
-        label: 'Valor do Kw',
+        label: 'Valor do Kw (R$)',
         placeholder: 'Ex: R$ 00,00'
       },
     }
@@ -235,12 +235,12 @@ export default {
         placeholder: 'Nome do sistema...'
       },
       efficiency: {
-        label: 'Eficiência de Irrigação',
-        placeholder: 'Ex: 95%'
+        label: 'Eficiência de Irrigação (%)',
+        placeholder: 'Ex: 95'
       },
       area: {
-        label: 'Área total do Plantio',
-        placeholder: 'Ex: 1000 m²'
+        label: 'Área total do Plantio (m²)',
+        placeholder: 'Ex: 1000'
       },
       sectorQuantity: {
         label: 'Quantidade de Setores',
@@ -255,44 +255,44 @@ export default {
         placeholder: 'Digite'
       },
       irrigatedArea: {
-        label: 'Área Irrigada',
-        placeholder: 'Ex: 300 m²'
+        label: 'Área Irrigada (m²)',
+        placeholder: 'Ex: 300'
       },
       sprinklerFlow: {
-        label: 'Vazão do Aspersor',
-        placeholder: 'Ex: 2.000 L/H'
+        label: 'Vazão do Aspersor (L/H)',
+        placeholder: 'Ex: 2.000'
       },
       sprinklerSpace: {
-        label: 'Espaçamento entre Aspersores',
-        placeholder: 'Ex: 10 m'
+        label: 'Espaçamento entre Aspersores (m)',
+        placeholder: 'Ex: 10'
       },
       linesSpace: {
-        label: 'Espaçamento entre Linhas',
-        placeholder: 'Ex: 10 m'
+        label: 'Espaçamento entre Linhas (m)',
+        placeholder: 'Ex: 10'
       },
       CUC: {
-        label: 'Coeficiente de Uniformidade CUC',
-        placeholder: 'Ex: 10%'
+        label: 'Coeficiente de Uniformidade CUC (%)',
+        placeholder: 'Ex: 10'
       },
       efficiencySystem: {
-        label: 'Eficiência do Sistema',
-        placeholder: 'Ex: 95%'
+        label: 'Eficiência do Sistema (%)',
+        placeholder: 'Ex: 95'
       },
       issuerFlow: {
-        label: 'Vazão do emissor',
-        placeholder: 'Ex: 2.000 L/h'
+        label: 'Vazão do emissor (L/h)',
+        placeholder: 'Ex: 2.000'
       },
       issuerSpace: {
-        label: 'Espaçamento entre emissores',
-        placeholder: 'Ex: 10 m'
+        label: 'Espaçamento entre emissores (m)',
+        placeholder: 'Ex: 10'
       },
       wetAreaPercentage: {
-        label: 'Percentual de área molhada',
-        placeholder: 'Ex: 95%'
+        label: 'Percentual de área molhada (%)',
+        placeholder: 'Ex: 95'
       },
       shadedAreaPercentage: {
-        label: 'Percentual de área sombreada',
-        placeholder: 'Ex: 95%'
+        label: 'Percentual de área sombreada (%)',
+        placeholder: 'Ex: 95'
       },
     }
   },
@@ -339,7 +339,7 @@ export default {
         placeholder: ''
       },
       cultureName: {
-        label: 'Nome da Cultura',
+        label: 'Identificação da Área',
         placeholder: 'Ex: Caturra, da Terra...'
       },
       date: {
@@ -347,15 +347,15 @@ export default {
         placeholder: 'Ex: dd/mm/aaaa'
       },
       area: {
-        label: 'Área do Plantio',
-        placeholder: 'Ex: 1 ha'
+        label: 'Área do Plantio (ha)',
+        placeholder: 'Ex: 1'
       },
       sector: {
         label: 'Setores',
         placeholder: 'Ex: 0'
       },
       stage: {
-        label: 'Estágio da Colheita',
+        label: 'Estágio Atual da Cultura',
         placeholder: 'Automático'
       },
       property: {

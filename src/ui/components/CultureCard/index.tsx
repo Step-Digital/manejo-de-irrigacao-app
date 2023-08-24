@@ -161,13 +161,13 @@ export const CultureCard: React.FC = ({
               style={{
                 textAlign: "left",
                 fontFamily: "Poppins-bold",
-                fontSize: 16,
+                fontSize: 14,
               }}
               color="gray-7"
               size="normal"
               weight="medium"
             >
-              Precipitação
+              Precipitação (mm)
             </Typography>
             <ControlledTooltip
               popover={
@@ -241,7 +241,7 @@ export const CultureCard: React.FC = ({
             style={{
               textAlign: "left",
               fontFamily: "Poppins-bold",
-              fontSize: 16,
+              fontSize: 14,
             }}
             color="gray-7"
             size="normal"

@@ -414,6 +414,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                 label={inputStrings.culture.label}
                 placeholder={inputStrings.culture.placeholder}
                 value={cultureSelected.nome}
+                editable={false}
               />
               <Input
                 label={inputStrings.cultureName.label}
@@ -463,6 +464,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                 placeholder={inputStrings.stage.placeholder}
                 value={estagio_colheita}
                 onChangeText={(value) => setEstagio_colheita(value)}
+                editable={false}
               />
               <Select
                 label={inputStrings.property.label}
@@ -470,6 +472,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                 setValue={() => {}}
                 data={properties}
                 setId={setId_propriedade}
+                stateValue={null}
               />
               <Select
                 label={inputStrings.groundType.label}
@@ -477,6 +480,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                 setValue={() => {}}
                 setId={setId_solo}
                 data={grounds}
+                stateValue={null}
               />
               <Select
                 label={inputStrings.bomb.label}
@@ -484,6 +488,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                 setValue={() => {}}
                 setId={setId_motobomba}
                 data={bombs}
+                stateValue={null}
               />
               <Select
                 label={inputStrings.irrigationSystem.label}
@@ -491,6 +496,7 @@ export const CultureInfo: React.FC<CultureInfoProps> = ({
                 setValue={() => {}}
                 setId={setId_sistema_irrigacao}
                 data={systems}
+                stateValue={null}
               />
               <Button
                 onPress={() => onSumbit()}

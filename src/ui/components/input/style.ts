@@ -7,7 +7,7 @@ export const StyledWrapper = styled.KeyboardAvoidingView`
   gap: 8px;
 `;
 
-export const SyledLabel = styled.TextInput`
+export const SyledLabel = styled.Text`
 ${({ theme }) => css `
   margin-top: 8px;
   color: ${theme.colors["neutral-4"]};
