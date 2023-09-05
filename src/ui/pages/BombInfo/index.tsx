@@ -42,6 +42,15 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
   const [valor_kw, setValor_kw] = useState('');
   const [status, setStatus] = useState({ type: '', message: '' })
 
+  const cleanBombsInputs = () => {
+    setModelo("");
+    setPotencia("");
+    setVazao_maxima("");
+    setFabricante("");
+    setConsumo("");
+    setValor_kw("");
+  };
+
   const { data, isLoading } = useQuery({
     queryKey: ["properties"], 
     queryFn: () => propertyService.getProperties()
@@ -89,6 +98,7 @@ export const BombInfo:React.FC<BombInfoProps> = ({ bombService, propertyService 
     mutationFn: () => bombService.newBomb(sumbitValues),
     onSuccess: () => {
       refetch()
+      cleanBombsInputs()
     },
   });
 

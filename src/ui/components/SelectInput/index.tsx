@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet, Modal, SafeAreaView, FlatList } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
@@ -48,7 +48,8 @@ export const Select = ({
   width = '100%',
   setValue,
   setId,
-  stateValue
+  stateValue,
+  clean
 }) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -65,6 +66,8 @@ export const Select = ({
     return <OptionComponent />
   }
 
+  console.log('selected', selected);
+
   function toggleSelect(item) {
     if(item?.[objKey] === selected?.[objKey]) {
       setSelected(null)
@@ -76,6 +79,10 @@ export const Select = ({
       setVisible(false)
     }
   }
+
+  useEffect(() => {
+    setSelected(null)
+  }, [clean])
 
   return (
     <>

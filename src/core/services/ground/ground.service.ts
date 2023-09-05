@@ -51,4 +51,15 @@ export class GroundService implements GroundDomain {
       console.log(error)
     }
   }
+
+  async editGround (params: any, id: number): Promise<any> {
+    try {
+      console.log("ENTREI PAPAI EDIT GROUNDS")
+      const { token } = await this.authRepository.getToken();
+      return await this.groundRepository.editGround(params, id, token);
+    } catch (error) {
+      console.log("CHORA PAPAI EDIT GROUNDS")
+      console.log(error)
+    }
+  }
 }

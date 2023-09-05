@@ -45,4 +45,17 @@ export class GroundRepository implements GroundDomain {
       data,
     };
   }
+
+  async editGround(params: any, id: number, token: string): Promise<any> {
+    const {
+      data: { data },
+    } = await this.httpClient.patch<any>(`/solo/${id}`, params, {
+      headers: {
+        ["Authorization"]: `Bearer ${token}`
+      }
+    });
+    return {
+      data,
+    };
+  }
 }

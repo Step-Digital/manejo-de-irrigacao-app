@@ -49,6 +49,20 @@ export class NewPropertyRepository implements NewPropertyDomain {
     };
   }
 
+
+  async getAllPropertiesItems(token: string): Promise<any> {
+    const {
+      data,
+    } = await this.httpClient.get<any>("/propriedade/allPropertyItems", {
+      headers: {
+        ["Authorization"]: `Bearer ${token}`
+      }
+    });
+    return {
+      data,
+    };
+  }
+
   async newBomb(params: NewBombDTO, token: string): Promise<any> {
     const {
       data: { data },
@@ -66,6 +80,19 @@ export class NewPropertyRepository implements NewPropertyDomain {
     const {
       data: { data },
     } = await this.httpClient.post<any>("/sistemairrigacao", params, {
+      headers: {
+        ["Authorization"]: `Bearer ${token}`
+      }
+    });
+    return {
+      data,
+    };
+  }
+
+  async deleteProperty(params: number, token: string): Promise<any> {
+    const {
+      data: { data },
+    } = await this.httpClient.delete<any>(`/propriedade/${params}`, {
       headers: {
         ["Authorization"]: `Bearer ${token}`
       }

@@ -43,6 +43,14 @@ export const GroundInfo: React.FC<GroundInfoProps> = ({
   const [ponto_murcha, setPonto_murcha] = useState("");
   const [densidade, setDensidade] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
+  const [cleanGround, setCleanGround] = useState(false);
+
+  const cleanInputs = () => {
+    setCleanGround(true);
+    setCapacidade_campo("");
+    setPonto_murcha("");
+    setDensidade("");
+  };
 
   const {
     data,
@@ -97,6 +105,7 @@ export const GroundInfo: React.FC<GroundInfoProps> = ({
       }),
     onSuccess: () => {
       refetch();
+      cleanInputs();
     },
   });
 
@@ -159,6 +168,8 @@ export const GroundInfo: React.FC<GroundInfoProps> = ({
             label="Tipo de Solo"
             setValue={(value) => setTipo_solo(value)}
             setId={() => {}}
+            clean={cleanGround}
+            stateValue={undefined}
           />
           <Input
             label={inputStrings.capacity.label}

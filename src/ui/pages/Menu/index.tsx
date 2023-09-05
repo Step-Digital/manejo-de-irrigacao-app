@@ -64,7 +64,7 @@ export const  Menu: React.FC = ({ auth }: MenuProps) => {
               {strings.menu.recomendations}
             </Typography>
         </S.MenuOptionContainer>
-        <S.MenuOptionContainer onPress={() => navigation.navigate('HomeLogged')}>
+        <S.MenuOptionContainer onPress={() => navigation.navigate('Properties')}>
         <Image
           source={require("../../../../assets/Regular.png")}
           style={{

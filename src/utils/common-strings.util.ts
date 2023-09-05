@@ -13,6 +13,12 @@ export default {
   header: {
     title: 'Recomendação Diária'
   },
+  properties: {
+    grouds: 'Número de Solos',
+    bombs: 'Número de Motobombas',
+    systems: 'Número de Sistemas de irrigação',
+    button: 'Detalhes'
+  },
   signup: {
     title: 'Dados Pessoais',
     inputs: {
