@@ -71,7 +71,7 @@ export const PlusButton = styled.TouchableOpacity``;
 
 export const MinusButton = styled.TouchableOpacity``;
 
-export const EditContainer = styled.View`
+export const EditContainer = styled.TouchableOpacity`
 ${({ theme }) => css`
   display: flex;
   flex-direction: row;

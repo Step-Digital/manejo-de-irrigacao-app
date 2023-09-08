@@ -17,6 +17,7 @@ interface CultureCardProps {
   groundStatus: string;
   irrigationValue: string;
   irrigationValueTotal: string;
+  getCulture: () => void;
 }
 
 const ControlledTooltip: React.FC<TooltipProps> = (props) => {
@@ -45,6 +46,7 @@ export const CultureCard: React.FC = ({
   groundStatus,
   irrigationValue,
   irrigationValueTotal,
+  getCulture
 }: CultureCardProps) => {
   const [openEdit, setOpenEdit] = useState(false);
 
@@ -126,7 +128,7 @@ export const CultureCard: React.FC = ({
           />
         </S.ActionsButton>
         {openEdit && (
-          <S.EditContainer>
+          <S.EditContainer onPress={() => getCulture()}>
             <Image
               source={require("../../../../assets/edit.png")}
               transition={300}
@@ -138,19 +140,19 @@ export const CultureCard: React.FC = ({
               }}
               contentFit="cover"
             />
-            <Typography
-              style={{
-                textAlign: "left",
-                fontFamily: "Poppins-regular",
-                fontSize: 12,
-                marginLeft: 8
-              }}
-              color="gray-5"
-              size="normal"
-              weight="medium"
-            >
-              Editar
-            </Typography>
+              <Typography
+                style={{
+                  textAlign: "left",
+                  fontFamily: "Poppins-regular",
+                  fontSize: 12,
+                  marginLeft: 8,
+                }}
+                color="gray-5"
+                size="normal"
+                weight="medium"
+              >
+                Editar
+              </Typography>
           </S.EditContainer>
         )}
       </S.MainInfoContainer>

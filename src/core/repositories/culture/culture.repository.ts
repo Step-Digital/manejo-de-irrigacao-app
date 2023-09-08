@@ -58,4 +58,17 @@ export class CultureRepository implements CultureDomain {
       data,
     };
   }
+
+  async editCulture(params: any, id: number, token: string): Promise<any> {
+    const {
+      data: { data },
+    } = await this.httpClient.patch<any>(`/cultura/${id}`, params, {
+      headers: {
+        ["Authorization"]: `Bearer ${token}`
+      }
+    });
+    return {
+      data,
+    };
+  }
 }

@@ -5,15 +5,16 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import * as S from './style';
 
-const Touchable = (text = 'Selecione...', onPress, selected, objValue, label, width, stateValue) => {
+const Touchable = (text = 'Selecione...', onPress, selected, objValue, label, width, stateValue, selectedEdit) => {
   const TouchableComponent = () => {
     return (
       <S.Container width={width}>
         <Text style={styles.label}>{label}</Text>
         <TouchableOpacity onPress={onPress} style={styles.touchableContainer}>
-          {!stateValue && (
+          {!stateValue && !selectedEdit && (
             selected === null ? <Text style={styles.touchableText}>{text}</Text> : <Text>{selected?.[objValue]}</Text>
             )} 
+            {selectedEdit && selected === null && <Text>{selectedEdit}</Text> }
           {stateValue && <Text style={{ fontWeight: 400}}>{stateValue}</Text>}
           <MaterialIcons name="keyboard-arrow-down" size={26} color="#00344A" />
         </TouchableOpacity>
@@ -49,7 +50,8 @@ export const Select = ({
   setValue,
   setId,
   stateValue,
-  clean
+  clean,
+  selectedEdit
 }) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -58,7 +60,8 @@ export const Select = ({
     objValue,
     label,
     width,
-    stateValue
+    stateValue,
+    selectedEdit,
   );
 
   function renderOption(item) {
@@ -73,12 +76,14 @@ export const Select = ({
       setSelected(null)
     } else {
       console.log('item', item)
+      console.log('teste', item?.[objKey])
       setSelected(item)
       setValue(item?.[objValue])
       setId(item?.[objKey])
       setVisible(false)
     }
   }
+
 
   useEffect(() => {
     setSelected(null)

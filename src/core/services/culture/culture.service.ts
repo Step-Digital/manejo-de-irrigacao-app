@@ -64,4 +64,15 @@ export class CultureService implements CultureDomain {
       console.log(error)
     }
   }
+
+  async editCulture (params: any, id: number): Promise<any> {
+    try {
+      console.log("ENTREI PAPAI EDIT CULTURE")
+      const { token } = await this.authRepository.getToken();
+      return await this.cultureRepository.editCulture(params, id, token);
+    } catch (error) {
+      console.log("CHORA PAPAI EDIT CULTURE")
+      console.log(error)
+    }
+  }
 }
