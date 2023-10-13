@@ -10,9 +10,28 @@ import { Typography } from "../../components/typography";
 
 import * as S from './style';
 import { Button } from "../../components/button";
+import { AuthDomain } from "../../../core/domain/auth.domain";
+import { NewPropertyDomain } from "../../../core/domain/newProperty.domain";
+import { useQuery } from "@tanstack/react-query";
 
-export const CultureRegistered: React.FC = () => {
+type PropertyRegisteredProps = {
+  auth: AuthDomain;
+  propertyService: NewPropertyDomain;
+};
+
+export const CultureRegistered: React.FC<PropertyRegisteredProps> = ({ propertyService, auth}) => {
   const navigation = useNavigation<NavigationProps>();
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["AllProperties"],
+    queryFn: () => propertyService.getAllPropertiesData(),
+  });
+
+  const onSubmit = () => {
+    refetch()
+    navigation.navigate('HomeLogged')
+  }
+
 
   return (
     <S.Container>
@@ -78,7 +97,7 @@ export const CultureRegistered: React.FC = () => {
       </S.Content>
       <S.ButtonContainer>
         <Button 
-          onPress={() => navigation.navigate('HomeLogged')}
+          onPress={() => onSubmit()}
           bg-color="neutral-4" 
           style={{ 
               width: '90%',

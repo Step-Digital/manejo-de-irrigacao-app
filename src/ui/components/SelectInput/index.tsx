@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet, Modal, SafeAreaView, FlatList } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons'; 
 
 import * as S from './style';
 
-const Touchable = (text = 'Selecione...', onPress, selected, objValue, label, width) => {
+const Touchable = (text = 'Selecione...', onPress, selected, objValue, label, width, stateValue, selectedEdit) => {
   const TouchableComponent = () => {
     return (
       <S.Container width={width}>
         <Text style={styles.label}>{label}</Text>
         <TouchableOpacity onPress={onPress} style={styles.touchableContainer}>
-          <Text style={styles.touchableText}>{selected === null ? text : selected?.[objValue]}</Text>
+          {!stateValue && !selectedEdit && (
+            selected === null ? <Text style={styles.touchableText}>{text}</Text> : <Text>{selected?.[objValue]}</Text>
+            )} 
+            {selectedEdit && selected === null && <Text>{selectedEdit}</Text> }
+          {stateValue && <Text style={{ fontWeight: 400}}>{stateValue}</Text>}
           <MaterialIcons name="keyboard-arrow-down" size={26} color="#00344A" />
         </TouchableOpacity>
       </S.Container>
@@ -44,6 +48,10 @@ export const Select = ({
   label,
   width = '100%',
   setValue,
+  setId,
+  stateValue,
+  clean,
+  selectedEdit
 }) => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -51,7 +59,9 @@ export const Select = ({
     selected, 
     objValue,
     label,
-    width
+    width,
+    stateValue,
+    selectedEdit,
   );
 
   function renderOption(item) {
@@ -59,15 +69,25 @@ export const Select = ({
     return <OptionComponent />
   }
 
+  console.log('selected', selected);
+
   function toggleSelect(item) {
     if(item?.[objKey] === selected?.[objKey]) {
       setSelected(null)
     } else {
+      console.log('item', item)
+      console.log('teste', item?.[objKey])
       setSelected(item)
       setValue(item?.[objValue])
+      setId(item?.[objKey])
       setVisible(false)
     }
   }
+
+
+  useEffect(() => {
+    setSelected(null)
+  }, [clean])
 
   return (
     <>

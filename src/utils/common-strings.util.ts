@@ -3,8 +3,82 @@ export default {
     createAccount: "Crie uma conta gratuitamente",
     haveRegistration: "Já possuo cadastro",
   },
+  about: {
+    header: 'Sobre o Projeto',
+    title: 'Quem somos nós',
+    about: 'Em desenvolvimento...',
+    namesTitle: 'Nomes dos envolvidos',
+    footer: 'Realização'
+  },
   header: {
     title: 'Recomendação Diária'
+  },
+  properties: {
+    grouds: 'Número de Solos',
+    bombs: 'Número de Motobombas',
+    systems: 'Número de Sistemas de irrigação',
+    button: 'Detalhes'
+  },
+  signup: {
+    title: 'Dados Pessoais',
+    inputs: {
+      name: {
+        label: 'Nome',
+        placeholder: 'Insira seu nome'
+      },
+      email: {
+        label: 'Email',
+        placeholder: 'Insira seu email'
+      },
+      phone1: {
+        label: 'Telefone',
+        placeholder: 'Insira seu número de telefone'
+      },
+      phone2: {
+        label: 'Telefone 2',
+        placeholder: 'Insira seu número de telefone'
+      },
+      cel: {
+        label: 'Celular',
+        placeholder: 'Insira seu número de celular'
+      },
+      password: {
+        label: 'Senha',
+        placeholder: 'Insira sua senha'
+      },
+      passwordConfirm: {
+        label: 'Confirme sua senha',
+        placeholder: 'Insira sua senha novamente'
+      },
+      cep: {
+        label: 'CEP',
+        placeholder: 'Insira o CEP'
+      },
+      street: {
+        label: 'Logradouro',
+        placeholder: 'Insira o logradouro'
+      },
+      number: {
+        label: 'Número',
+        placeholder: 'Insira o número'
+      },
+      neighbor: {
+        label: 'Bairro',
+        placeholder: 'Insira o bairro'
+      },
+      complement: {
+        label: 'Complemento',
+        placeholder: 'Insira o complemento'
+      },
+      city: {
+        label: 'Cidade',
+        placeholder: 'Insira a cidade'
+      },
+      state: {
+        label: 'Estado',
+        placeholder: 'Insira o estado'
+      },
+    }
   },
   homeLogged: {
     noProperty: 'Você ainda não possui nenhuma cultura cadastrada.',
@@ -13,7 +87,8 @@ export default {
     addButton: {
       addCulture: 'Adicionar Cultura',
       addProperty: 'Nova Propriedade'
-    }
+    },
+    info: 'Para esse calculo de irrigação é necessário o dado de precipitação na sua propriedade. Quanto maior a precisão nos dados, maior a assertividade no manejo de irrigação.'
   },
   modal: {
     title: 'Bem-Vindo!',
@@ -27,6 +102,21 @@ export default {
     onboarding3: 'Além disso, você poderá controlar e monitorar seu sistema de irrigação para obter o melhor desempenho para sua produção.',
     onboarding4: 'Estamos aqui para ajudá-lo a ter sucesso com suas culturas! Comece agora para ter acesso a todas as ferramentas e informações.'
   },
+  preciptationModal: {
+    title: 'Precipitação Diária',
+    text: 'Para calcular a irrigação diária, precisamos saber a precipitação do dia anterior na sua propriedade.',
+    inputs: {
+      property: {
+        label: 'Nome da Propriedade',
+        placeholder: 'Ex. 0 mm'
+      },
+      property2: {
+        label: 'Nome da Propriedade 2',
+        placeholder: 'Ex. 0 mm'
+      }
+    },
+    button: 'Salvar'
+  },
   newProperty: {
     header: {
       title: 'Nova Propriedade',
@@ -39,6 +129,8 @@ export default {
     gpsButton: {
       text: 'Detectar via GPS'
     },
+    success:'Propriedade cadastrada com sucesso',
+    error:'Erro ao cadastrar a propriedade',
     inputs: {
       name: {
         label: 'Nome da Propriedade',
@@ -77,36 +169,40 @@ export default {
         placeholder: 'Ex: 00000-000'
       },
       area: {
-        label: 'Área da Propriedade',
-        placeholder: 'Ex: 10 ha'
+        label: 'Área da Propriedade (ha)',
+        placeholder: 'Ex: 10'
       },
     }
   },
   groundInfo: {
     title: 'Dados do Solo',
     addButtonn: 'Adicionar Solo',
+    success:'Solo cadastrado com sucesso',
+    error:'Erro ao cadastrar a solo',
     inputs: {
       groundType: {
         label: 'Tipo do Solo',
         placeholder: 'Selecione...'
       },
       capacity: {
-        label: 'Capacidade de Campo',
-        placeholder: 'Ex: 95%'
+        label: 'Capacidade de Campo (%)',
+        placeholder: 'Ex: 95'
       },
       point: {
-        label: 'Ponto de Murcha',
-        placeholder: 'Ex: 10%'
+        label: 'Ponto de Murcha (%)',
+        placeholder: 'Ex: 10'
       },
       density: {
-        label: 'Densidade',
-        placeholder: 'Ex: 100 g/m³'
+        label: 'Densidade (g/m³)',
+        placeholder: 'Ex: 100'
       },
     }
   },
   bombInfo: {
     title: 'Dados da Motobomba',
     addButtonn: 'Adicionar Motobomba',
+    success:'Motobomba cadastrada com sucesso',
+    error:'Erro ao cadastrar a motobomba',
     inputs: {
       manufacturer: {
         label: 'Fabricante',
@@ -117,19 +213,19 @@ export default {
         placeholder: 'Modelo...'
       },
       power: {
-        label: 'Potência',
-        placeholder: 'Ex: 500w'
+        label: 'Potência (w)',
+        placeholder: 'Ex: 500'
       },
       flowRate: {
-        label: 'Vazão Máxima',
-        placeholder: 'Ex: 500 m³/ha'
+        label: 'Vazão Máxima (m³/ha)',
+        placeholder: 'Ex: 500 '
       },
       consumption: {
-        label: 'Consumo da Bomba',
-        placeholder: 'Ex: 500 kw/h'
+        label: 'Consumo da Bomba (kw/h)',
+        placeholder: 'Ex: 500'
       },
       value: {
-        label: 'Valor do Kw',
+        label: 'Valor do Kw (R$)',
         placeholder: 'Ex: R$ 00,00'
       },
     }
@@ -137,18 +233,20 @@ export default {
   SystemInfo: {
     title: 'Sistema de Irrigação',
     addButtonn: 'Adicionar Sistema de Irrigação',
+    success:'Sistema cadastrada com sucesso',
+    error:'Erro ao cadastrar a sistema',
     inputs: {
       name: {
         label: 'Nome do Sistema',
         placeholder: 'Nome do sistema...'
       },
       efficiency: {
-        label: 'Eficiência de Irrigação',
-        placeholder: 'Ex: 95%'
+        label: 'Eficiência de Irrigação (%)',
+        placeholder: 'Ex: 95'
       },
       area: {
-        label: 'Área total do Plantio',
-        placeholder: 'Ex: 1000 m²'
+        label: 'Área total do Plantio (m²)',
+        placeholder: 'Ex: 1000'
       },
       sectorQuantity: {
         label: 'Quantidade de Setores',
@@ -163,44 +261,44 @@ export default {
         placeholder: 'Digite'
       },
       irrigatedArea: {
-        label: 'Área Irrigada',
-        placeholder: 'Ex: 300 m²'
+        label: 'Área Irrigada (m²)',
+        placeholder: 'Ex: 300'
       },
       sprinklerFlow: {
-        label: 'Vazão do Aspersor',
-        placeholder: 'Ex: 2.000 L/H'
+        label: 'Vazão do Aspersor (L/H)',
+        placeholder: 'Ex: 2.000'
       },
       sprinklerSpace: {
-        label: 'Espaçamento entre Aspersores',
-        placeholder: 'Ex: 10 m'
+        label: 'Espaçamento entre Aspersores (m)',
+        placeholder: 'Ex: 10'
       },
       linesSpace: {
-        label: 'Espaçamento entre Linhas',
-        placeholder: 'Ex: 10 m'
+        label: 'Espaçamento entre Linhas (m)',
+        placeholder: 'Ex: 10'
       },
       CUC: {
-        label: 'Coeficiente de Uniformidade CUC',
-        placeholder: 'Ex: 10%'
+        label: 'Coeficiente de Uniformidade CUC (%)',
+        placeholder: 'Ex: 10'
       },
       efficiencySystem: {
-        label: 'Eficiência do Sistema',
-        placeholder: 'Ex: 95%'
+        label: 'Eficiência do Sistema (%)',
+        placeholder: 'Ex: 95'
       },
       issuerFlow: {
-        label: 'Vazão do emissor',
-        placeholder: 'Ex: 2.000 L/h'
+        label: 'Vazão do emissor (L/h)',
+        placeholder: 'Ex: 2.000'
       },
       issuerSpace: {
-        label: 'Espaçamento entre emissores',
-        placeholder: 'Ex: 10 m'
+        label: 'Espaçamento entre emissores (m)',
+        placeholder: 'Ex: 10'
       },
       wetAreaPercentage: {
-        label: 'Percentual de área molhada',
-        placeholder: 'Ex: 95%'
+        label: 'Percentual de área molhada (%)',
+        placeholder: 'Ex: 95'
       },
       shadedAreaPercentage: {
-        label: 'Percentual de área sombreada',
-        placeholder: 'Ex: 95%'
+        label: 'Percentual de área sombreada (%)',
+        placeholder: 'Ex: 95'
       },
     }
   },
@@ -228,6 +326,15 @@ export default {
     gobackButton: 'Voltar para o Início',
     text1: 'Parabéns, você cadastrou uma cultura!',
     text2: 'Volte para o Início e veja os seus números diários de irrigação.',
+    category: {
+      hotalicas: 'Hortaliças',
+      frutíferas: 'Frutíferas',
+      forrageiras: 'Forrageiras',
+      grãosecereais: 'Grãos e Cereais',
+      raiz: 'Raiz',
+      pastagem: 'Pastagem',
+      capineira: 'Capineira',
+    },
     inputs: {
       search: {
         label: 'Pesquisar',
@@ -238,7 +345,7 @@ export default {
         placeholder: ''
       },
       cultureName: {
-        label: 'Nome da Cultura',
+        label: 'Identificação da Área',
         placeholder: 'Ex: Caturra, da Terra...'
       },
       date: {
@@ -246,15 +353,15 @@ export default {
         placeholder: 'Ex: dd/mm/aaaa'
       },
       area: {
-        label: 'Área do Plantio',
-        placeholder: 'Ex: 1 ha'
+        label: 'Área do Plantio (ha)',
+        placeholder: 'Ex: 1'
       },
       sector: {
         label: 'Setores',
         placeholder: 'Ex: 0'
       },
       stage: {
-        label: 'Estágio da Colheita',
+        label: 'Estágio Atual da Cultura',
         placeholder: 'Automático'
       },
       property: {

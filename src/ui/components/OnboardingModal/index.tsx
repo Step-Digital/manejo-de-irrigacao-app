@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Text } from 'react-native';
+import { Modal } from 'react-native';
 import { Typography } from "../../components/typography";
 import { AntDesign } from '@expo/vector-icons'; 
 import { Image } from "expo-image";
